@@ -7,7 +7,56 @@
 
 import SwiftUI
 
+// MODIFIER
+struct TextFormat: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.title2)
+            .foregroundColor(.red)
+            
+    }
+}
 
+
+struct Watermark: ViewModifier {
+    var text: String
+    
+    func body(content: Content) -> some View {
+        ZStack(alignment: .bottom) {
+            content
+            
+            Text(text)
+                .font(.caption)
+                .foregroundColor(.white)
+                .padding(5)
+                .background(Color.black)
+                .clipShape(RoundedRectangle(cornerRadius: 25))
+                .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
+        }
+    }
+}
+
+// EXTENSION VIEW
+extension View {
+    
+    func watermarked(with text: String) -> some View {
+        self.modifier(Watermark(text: text))
+    }
+    
+    func formatText() -> some View {
+        self.modifier(TextFormat())
+    }
+}
+
+extension Image {
+    func FlagImage() -> some View {
+        self
+            .renderingMode(.original)
+            .clipShape(Capsule())
+            .overlay(Capsule().stroke(Color.black, lineWidth: 1))
+            .shadow(color: .black, radius: 2)
+    }
+}
 
 struct ContentView: View {
     @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Russia", "Spain", "UK", "US", "Canada"].shuffled()
@@ -23,6 +72,7 @@ struct ContentView: View {
         ZStack {
             LinearGradient(gradient: Gradient(colors: [.black, .white]), startPoint: .top, endPoint: .bottom)
                 .edgesIgnoringSafeArea(.all)
+                
             
             VStack (spacing: 30) {
                 Spacer()
@@ -43,10 +93,12 @@ struct ContentView: View {
                         self.flagTapped(number)
                     }) {
                         Image(self.countries[number])
-                            .renderingMode(.original)
-                            .clipShape(Capsule())
-                            .overlay(Capsule().stroke(Color.black, lineWidth: 1))
-                            .shadow(color: .black, radius: 2)
+                            .FlagImage()
+//                        Image(self.countries[number])
+//                            .renderingMode(.original)
+//                            .clipShape(Capsule())
+//                            .overlay(Capsule().stroke(Color.black, lineWidth: 1))
+//                            .shadow(color: .black, radius: 2)
                     }
                 }
                 ZStack {
@@ -60,6 +112,7 @@ struct ContentView: View {
                 
                 Spacer()
             }
+            .watermarked(with: "Made by Zwitschki")
         }
         .alert(isPresented: $showingScore) {
             Alert(title: Text(scoreTitle), message: Text(userMessage), dismissButton: .default(Text("Continue")) {

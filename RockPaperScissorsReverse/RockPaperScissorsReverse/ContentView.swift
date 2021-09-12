@@ -21,7 +21,7 @@ struct Watermark: ViewModifier {
                 .padding(5)
                 .background(Color.black)
                 .clipShape(RoundedRectangle(cornerRadius: 25))
-                .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
+                .opacity(0.5)
         }
     }
 }
@@ -268,23 +268,23 @@ struct ContentView: View {
                 return true
             }
             
-            // Win
+        // Win
         } else if goals[goalChoice] == "Win" {
-            if choices[userChoice] == "Rock" && choices[botChoice] == "Scissor" {
+            if choices[userChoice] == "Rock" && choices[botChoice] == "Scissors" {
                 return true
             } else if choices[userChoice] == "Paper" && choices[botChoice] == "Rock" {
                 return true
-            } else if choices[userChoice] == "Scissor" && choices[botChoice] == "Paper" {
+            } else if choices[userChoice] == "Scissors" && choices[botChoice] == "Paper" {
                 return true
             }
             
-            // Lose
+        // Lose
         } else if goals[goalChoice] == "Lose" {
-            if choices[userChoice] == "Rock" && choices[botChoice] == "Scissor" {
+            if choices[userChoice] == "Rock" && choices[botChoice] == "Scissors" {
                 return false
             } else if choices[userChoice] == "Paper" && choices[botChoice] == "Rock" {
                 return false
-            } else if choices[userChoice] == "Scissor" && choices[botChoice] == "Paper" {
+            } else if choices[userChoice] == "Scissors" && choices[botChoice] == "Paper" {
                 return false
             } else {
                 return true

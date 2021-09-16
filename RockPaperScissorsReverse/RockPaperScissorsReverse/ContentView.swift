@@ -38,6 +38,25 @@ struct RPSView: ViewModifier {
     }
 }
 
+struct DefaultFont: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.system(size: 28))
+            .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+    }
+}
+
+// Button Style
+struct ButtonDefault: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .padding()
+            .shadow(color: .black, radius: 8)
+            .background(Color.white)
+            .clipShape(Circle())
+    }
+}
+
 
 // extensions
 extension View {
@@ -48,6 +67,11 @@ extension View {
     func rpsview() -> some View {
         self.modifier(RPSView())
     }
+    
+    func defaultFont() -> some View {
+        self.modifier(DefaultFont())
+    }
+    
 }
 
 extension Image {
@@ -64,7 +88,7 @@ extension Image {
 // ContentView
 struct ContentView: View {
     let choices = ["Rock", "Paper", "Scissors"]
-    let symbols = ["🪨", "🍃", "✂️"]
+    let symbols = ["✊", "✋", "✌️"]
     let choicesDict = ["Rock": "🪨", "Paper": "🍃", "Scissor": "✂️"]
     let goals = ["Win", "Lose", "Draw"]
     
@@ -105,7 +129,7 @@ struct ContentView: View {
         NavigationView {
             Form {
                 
-                Picker("Difficulty Level:", selection: $difficultyLevel) {
+                Picker("Difficulty Level | Current:", selection: $difficultyLevel) {
                     ForEach(0..<difficulties.count) {
                         Text("\(self.difficulties[$0])")
                     }
@@ -114,136 +138,146 @@ struct ContentView: View {
                 Section {
                     Label("Bots choice: \(self.choices[botChoice])", systemImage: "brain")
                         .foregroundColor(.white)
-                        .font(.title)
+                        .defaultFont()
                     
-                    HStack(spacing: 20){
-                        Text("Bot choice:")
-                            .bold()
-                            .foregroundColor(.red)
-                        Image(self.choices[botChoice])
-                            .imageFormat()
-                    }
-                }
-                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, alignment: .center)
-                
-                Section {
-                    HStack(spacing: 20){
-                        Text("User Choice:")
-                            .bold()
-                            .foregroundColor(.blue)
-                        Image(choices[userChoice])
-                            .imageFormat()
-                    }
+                    Text("\(symbols[botChoice])")
+                        .font(.system(size: 70))
+                        .padding()
+                        .shadow(color: .black, radius: 8)
+                        .background(Color.white)
+                        .clipShape(Circle())
                     
-                    // Timer
-                    HStack {
-                        Label("Time left: ", systemImage: "clock.fill")
-                            .foregroundColor(.white)
-                        Text("\(timeRemaining)s")
-                            .onReceive(timer) { _ in
-                                if self.gameStart == true {
-                                    if timeRemaining > 0 {
-                                        timeRemaining -= 1
-                                    } else if timeRemaining <= 0 && showResult == false {
-                                        self.gameStart = false
-                                        correctUserChoice = false
-                                        alertTitle = "To slow.."
-                                        alertText = "Next time, think faster!\nLoser!"
-                                        showResult = true
-                                    } else if showResult == true {
-                                        timeRemaining = difficultyLevelTime
-                                    }
-                                }
-                            }
-                    }
-                }
-                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, alignment: .center)
-                
-                Section {
-                    HStack(spacing: 20) {
-                        Section {
-                            VStack {
-                                Text("Current user goal:")
-                                Text("\(goals[goalChoice])")
-                                    .foregroundColor(.blue)
-                                    .font(.title)
-                            }
+                    HStack(spacing: 30){
+                        VStack {
+                            Text("You have to:")
+                                .bold()
+                            Text("\(goals[goalChoice])")
+                                .font(.system(size: 25))
+                                .foregroundColor(.blue)
                         }
                         
-                        Section {
-                            // Play Button
-                            Button(action: {
-                                // set time according to difficutlyLevel
-                                // and let bot + user goal random select
-                                self.timeRemaining = difficultyLevelTime
-                                self.botChoice = Int.random(in: 0..<choices.count)
-                                self.goalChoice = Int.random(in: 0..<goals.count)
-                                
-                                self.gameStart = true
-                            }) {
-                                VStack {
-                                    Image(systemName: "play.circle.fill")
-                                        .resizable()
-                                        .frame(width: 40, height: 40)
-                                        .overlay(Capsule().stroke(Color.black, lineWidth: 2))
-                                        .shadow(color: .black, radius: 8)
-                                    Text("Start")
-                                }
-                            }
-                            .foregroundColor(.green)
-                            .buttonStyle(BorderlessButtonStyle())
-                            
-                            // Stop Button
-                            Button(action: {
-                                
-                                if self.gameStart == false {
-                                    // reset time if time is already stopped
-                                    self.timeRemaining = difficultyLevelTime
-                                    self.showResult = false
-                                    
-                                } else {
-                                    self.gameStart = false
-                                    // check if user made the correct choice
-                                    correctUserChoice = Winner(userChoice: userChoice, botChoice: botChoice)
-                                    if correctUserChoice == true {
-                                        alertTitle = "Winner!"
-                                        alertText = "Nice! Your brain knows no limits!\n🧠"
-                                    } else {
-                                        alertTitle = "Loser"
-                                        alertText = "Your goal was: \(goals[goalChoice])...!"
+                        // Timer
+                        VStack {
+                            Text("Time left: ")
+                                .foregroundColor(.white)
+                                .bold()
+                            HStack(spacing: 10){
+                                Image(systemName: "clock.fill")
+                                Text("\(timeRemaining)s")
+                                    .onReceive(timer) { _ in
+                                        if self.gameStart == true {
+                                            if timeRemaining > 0 {
+                                                timeRemaining -= 1
+                                            } else if timeRemaining <= 0 && showResult == false {
+                                                self.gameStart = false
+                                                correctUserChoice = false
+                                                alertTitle = "To slow.."
+                                                alertText = "Next time, think faster!\nLoser!"
+                                                showResult = true
+                                            } else if showResult == true {
+                                                timeRemaining = difficultyLevelTime
+                                            }
+                                        }
                                     }
-                                    showResult = true
-                                }
-                            }) {
-                                VStack {
-                                    Image(systemName: "play.circle.fill")
-                                        .resizable()
-                                        .frame(width: 40, height: 40)
-                                        .overlay(Capsule().stroke(Color.black, lineWidth: 2))
-                                        .shadow(color: .black, radius: 8)
-                                    Text("Stop")
-                                }
-                                
                             }
-                            .foregroundColor(.red)
-                            .buttonStyle(BorderlessButtonStyle())
-                            
                             
                         }
                     }
-                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, alignment: .center)
-                    
-                    Text("User choice:")
-                        .frame(alignment: .center)
-                    
-                    Picker("Make your choice:", selection: $userChoice) {
-                        ForEach(0..<choices.count) {
-                            Text("\(self.choices[$0])")
-                        }
-                    }
-                    .pickerStyle(SegmentedPickerStyle())
                 }
+                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, alignment: .center)
                 
+                
+                
+                Section {
+                    Text("Make your choise")
+                        //                        .font(.system(size: 30))
+                        .defaultFont()
+                    
+                    HStack {
+                        Section {
+                            // User Choice Buttons
+                            Button(action: {
+                                self.gameStart = false
+                                // check if user made the correct choice
+                                correctUserChoice = Winner(userChoice: 0, botChoice: botChoice)
+                                if correctUserChoice == true {
+                                    alertTitle = "Winner!"
+                                    alertText = "Nice! Your brain knows no limits!\n🧠"
+                                } else {
+                                    alertTitle = "Loser"
+                                    alertText = "Your goal was: \(goals[goalChoice])...!"
+                                }
+                                showResult = true
+                            }) {
+                                Text("\(symbols[0])")
+                            }
+                            .buttonStyle(ButtonDefault())
+                            
+                            Button(action: {
+                                self.gameStart = false
+                                // check if user made the correct choice
+                                correctUserChoice = Winner(userChoice: 1, botChoice: botChoice)
+                                if correctUserChoice == true {
+                                    alertTitle = "Winner!"
+                                    alertText = "Nice! Your brain knows no limits!\n🧠"
+                                } else {
+                                    alertTitle = "Loser"
+                                    alertText = "Your goal was: \(goals[goalChoice])...!"
+                                }
+                                showResult = true
+                            }) {
+                                Text("\(symbols[1])")
+                            }
+                            .buttonStyle(ButtonDefault())
+                            
+                            Button(action: {
+                                self.gameStart = false
+                                // check if user made the correct choice
+                                correctUserChoice = Winner(userChoice: 2, botChoice: botChoice)
+                                if correctUserChoice == true {
+                                    alertTitle = "Winner!"
+                                    alertText = "Nice! Your brain knows no limits!\n🧠"
+                                } else {
+                                    alertTitle = "Loser"
+                                    alertText = "Your goal was: \(goals[goalChoice])...!"
+                                }
+                                showResult = true
+                            }) {
+                                Text("\(symbols[2])")
+                            }
+                            .buttonStyle(ButtonDefault())
+                        }
+                    }
+                    .font(.system(size: 70))
+                }
+                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, alignment: .center)
+                
+                Section {
+                    Button(action: {
+                        // set time according to difficutlyLevel
+                        // and let bot + user goal random select
+                        self.timeRemaining = difficultyLevelTime
+                        self.botChoice = Int.random(in: 0..<choices.count)
+                        self.goalChoice = Int.random(in: 0..<goals.count)
+                        
+                        self.gameStart = true
+                    }) {
+                        HStack {
+                            Image(systemName: "play.circle.fill")
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                                .overlay(Capsule().stroke(Color.black, lineWidth: 2))
+                            //                                .shadow(color: .black, radius: 8)
+                            Text("Start")
+                                .bold()
+                                .font(.system(size: 30))
+                        }
+                        .padding()
+                    }
+                    .foregroundColor(.green)
+                    .buttonStyle(BorderlessButtonStyle())
+                }
+                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, alignment: .center)
             }
             .alert(isPresented: $showResult) {
                 Alert(title: Text(alertTitle), message: Text(alertText), dismissButton: .default(Text("Continue")) {
@@ -251,15 +285,10 @@ struct ContentView: View {
             }
             .watermarked(with: "Made by Zwitschki")
             .navigationBarTitle("Rock-Paper-Scissors")
+            
         }
     }
     
-    //    func AlertType() -> (String, String) {
-    //        self.alertTitle = "Lose"
-    //        self.alertText = "Win"
-    //    }
-    
-    // return true if user made the right choice
     func Winner(userChoice: Int, botChoice: Int) -> Bool {
         
         // Draw
@@ -268,7 +297,7 @@ struct ContentView: View {
                 return true
             }
             
-        // Win
+            // Win
         } else if goals[goalChoice] == "Win" {
             if choices[userChoice] == "Rock" && choices[botChoice] == "Scissors" {
                 return true
@@ -278,7 +307,7 @@ struct ContentView: View {
                 return true
             }
             
-        // Lose
+            // Lose
         } else if goals[goalChoice] == "Lose" {
             if choices[userChoice] == "Rock" && choices[botChoice] == "Scissors" {
                 return false

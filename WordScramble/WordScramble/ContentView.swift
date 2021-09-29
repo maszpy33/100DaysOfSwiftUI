@@ -16,6 +16,8 @@ struct ContentView: View {
     @State private var errorMessage = ""
     @State private var showingError = false
     
+    @State private var score = 0
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -30,9 +32,25 @@ struct ContentView: View {
                     Image(systemName: "\($0.count).circle")
                     Text($0)
                 }
+                
+                Text("One point for each letter in a new word")
+                    .padding()
+                
+                Label("Your Score: \(score)", systemImage: "building.2.crop.circle.fill")
+                    .font(.largeTitle)
+                    .padding()
             }
             .navigationBarTitle(rootWord)
             .onAppear(perform: startGame)
+            .toolbar { // challenge 2
+                Button(action: {
+                    startGame()
+                    usedWords.removeAll()
+                    score = 0
+                }) {
+                    Text("New Word")
+                }
+            }
             .alert(isPresented: $showingError) {
                 Alert(title: Text(errorTitle), message: Text(errorMessage), dismissButton: .default(Text("OK")))
             }
@@ -61,7 +79,14 @@ struct ContentView: View {
             return
         }
         
+        // challenge 1
+        guard rootWord != answer else {
+            wordError(title: "Word not possible", message: "That is litteraly the given word, think harder!")
+            return
+        }
+        
         usedWords.insert(answer, at: 0)
+        score = score + newWord.count
         newWord = ""
     }
     
@@ -73,7 +98,6 @@ struct ContentView: View {
                 return
             }
         }
-        
         fatalError("Could not load start.txt from bundle.")
     }
     
@@ -99,6 +123,10 @@ struct ContentView: View {
         let checker = UITextChecker()
         let range = NSRange(location: 0, length: word.utf16.count)
         let misspelledRange = checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: "en")
+        
+        guard word.count > 2 else {
+            return false
+        }
         
         return misspelledRange.location == NSNotFound
     }

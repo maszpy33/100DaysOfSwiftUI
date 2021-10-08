@@ -23,17 +23,27 @@ extension AnyTransition {
     }
 }
 
+
 struct ContentView: View {
     @State private var isShowingOrange = false
+    @State private var testToggle = false
     
     var body: some View {
-        VStack {
+        VStack(spacing: 30) {
             Button("Tap Me") {
                 withAnimation {
                     self.isShowingOrange.toggle()
                 }
             }
             .foregroundColor(self.isShowingOrange ? .orange : .white)
+            .font(self.isShowingOrange ? .title3 : .title)
+            .padding()
+            .background(Color(red: 0.2, green: 0.2, blue: 0.2))
+            .clipShape(self.isShowingOrange ? RoundedRectangle(cornerRadius: 0) : RoundedRectangle(cornerRadius: 25))
+            .shadow(color: .white, radius: 8)
+            .animation(.default)
+            // wie kann ich den ButtonTransitionForm modifier mit dem toggel verwenden
+            
             if isShowingOrange {
                 ZStack {
 
@@ -46,8 +56,16 @@ struct ContentView: View {
                         .font(.title)
                 }
                 .transition(.pivot)
-
             }
+        }
+    }
+    
+    func ifTrue(_ condition:Bool, apply:(AnyView) -> (AnyView)) -> AnyView {
+        if condition {
+            return apply(AnyView(self))
+        }
+        else {
+            return AnyView(self)
         }
     }
 }

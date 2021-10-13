@@ -7,145 +7,119 @@
 
 import SwiftUI
 
-struct ShakeEffect: GeometryEffect {
-    var amount: CGFloat = 10
-    var shakesPerUnit = 3
-    var animatableData: CGFloat
+struct NumPadButton: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .frame(width: 110, height: 60)
+            .background(Color(red: 0.1, green: 0.4, blue: 0.8))
+            .foregroundColor(.white)
+            .font(.title)
+            .clipShape(Capsule())
+    }
+}
 
-    func effectValue(size: CGSize) -> ProjectionTransform {
-        ProjectionTransform(CGAffineTransform(translationX:
-            amount * sin(animatableData * .pi * CGFloat(shakesPerUnit)),
-            y: 0))
+struct EquasionStyle: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.largeTitle)
     }
 }
 
 struct ContentView: View {
-    @State private var buttonSwitchB = false
-    @State private var animationAmount = 0.0
-    @State private var slideButtonEffect = false
-    @State private var buttonGuess = 1
+    @State private var firstNumber = 0
+    @State private var secondNumber = 0
+    @State private var result = 0
+    @State private var mathOperator = ["plus", "minus", "multiply", "divide"]
+    @State private var mathOperatorSelectioin = 0
     
-    @State private var shakeBool: Bool = false
-    @State private var attempts: Int = 0
-    
-    let slideEffectDuration = 1.5
+    private var gridItemLayout = Array(repeating: GridItem(.flexible(), spacing: 5), count: 3)
     
     var body: some View {
-        ZStack{
-            Color.black
-            VStack (spacing: 50){
+        NavigationView {
+            VStack(spacing: 12){
+                Spacer()
                 
-                Label("Choose whisely", systemImage: "Brain")
-                    .font(.largeTitle)
-                    .foregroundColor(.white)
-                    .shadow(color: .white, radius: 12)
+                HStack {
+                    Text("\(firstNumber)")
+                        .font(.largeTitle)
+                    Label("Icon Only", systemImage: "\(mathOperator[mathOperatorSelectioin])")
+                        .labelStyle(.iconOnly)
+                        .font(.largeTitle)
+                    Text("\(secondNumber)")
+                        .font(.largeTitle)
+                    Label("Icon Only", systemImage: "equal")
+                        .labelStyle(.iconOnly)
+                        .font(.largeTitle)
+                    Text("\(result)")
+                        .font(.largeTitle)
+                }
                 
-                HStack(spacing: 30){
-                    Button("Left") {
-                        self.shakeBool.toggle()
-                        self.buttonGuess = Int.random(in: 0...100)
-                        let shakeOrNot = isEven(numb: buttonGuess)
-                        if shakeOrNot == true {
-                            withAnimation(.default) {
-                                self.attempts += 1
-                            }
+                
+                Spacer()
+                
+                LazyVGrid(columns: gridItemLayout, spacing: 30) {
+                    ForEach((1...9), id: \.self) {
+                        Button("\($0)") {
+                            
                         }
+                        .modifier(NumPadButton())
                     }
-                    .frame(width: 80, height: 40)
-                    .padding()
-                    .background(Color(red: 0.2, green: 0.2, blue: 0.8))
-                    .font(.title)
-                    .clipShape(Capsule())
-                    .foregroundColor(.white)
-                    .shadow(color: Color.white, radius: 12)
-                    .modifier(ShakeEffect(animatableData: CGFloat(self.shakeBool ? 0 : attempts)))
+                }
+
+//                ForEach(0..<3) { row in
+//                    HStack(spacing: 30){
+//                        ForEach(0..<3) { column in
+//                            ForEach((0..<9), id: \.self) {
+//                                Button("\($0)") {
+//
+//                                }
+//                                .modifier(NumPadButton())
+//                            }
+//
+//                        }
+//                    }
+//                }
+                
+                HStack(spacing: 20) {
+                    Button(action: {
+                        print("Some action")
+                    }) {
+                        Label("Icon Only", systemImage: "delete.left")
+                            .labelStyle(.iconOnly)
+                            .frame(width: 110, height: 60)
+                            .background(Color(red: 0.8, green: 0.4, blue: 0.2))
+                            .foregroundColor(.white)
+                            .font(.title)
+                            .clipShape(Capsule())
+                    }
                     
-                    Button("Right") {
-                        self.shakeBool.toggle()
-                        self.buttonGuess = Int.random(in: 0...100)
-                        let shakeOrNot = isEven(numb: buttonGuess)
-                        if shakeOrNot == true {
-                            withAnimation(.default) {
-                                self.attempts += 1
-                            }
-                        }
+                    Button(action: {
+                        print("Some action")
+                    }) {
+                        Label("0", systemImage: "ant")
+                            .modifier(NumPadButton())
+                            .labelStyle(.titleOnly)
                     }
-                    .frame(width: 80, height: 40)
-                    .padding()
-                    .background(Color(red: 0.8, green: 0.2, blue: 0.2))
-                    .font(.title)
-                    .clipShape(Capsule())
-                    .foregroundColor(.white)
-                    .shadow(color: Color.white, radius: 12)
-                    .modifier(ShakeEffect(animatableData: CGFloat(self.shakeBool ? attempts : 0)))
+                    
+                    Button(action: {
+                        print("Some action")
+                    }) {
+                        Label("Submit", systemImage: "delete.left")
+                            .labelStyle(.titleOnly)
+                            .frame(width: 110, height: 60)
+                            .background(Color(red: 0.2, green: 0.8, blue: 0.2))
+                            .foregroundColor(.white)
+                            .font(.title)
+                            .clipShape(Capsule())
+                    }
+                    
                 }
                 
-                Text("Output: \(buttonGuess)")
-                    .font(.largeTitle)
-                    .foregroundColor(.white)
-                    .shadow(color: .white, radius: 12)
-                
-                
-                Button("Tap Me") {
-                    self.buttonSwitchB.toggle()
-                    withAnimation(Animation.linear(duration: slideEffectDuration)) {
-                        self.slideButtonEffect.toggle()
-                    }
-                }
-                .frame(width: 100, height: 50)
-                .padding()
-                .background(self.slideButtonEffect ? .clear : Color(red: 0.2, green: 0.2, blue: 0.2))
-                .foregroundColor(self.slideButtonEffect ? .clear : .green)
-                .font(.title)
-                .clipShape(Capsule())
-                .opacity(self.buttonSwitchB ? 0 : 1)
-                .shadow(color: Color.green, radius: self.slideButtonEffect ? 0 : 12)
-                .animation(.default)
-                .offset(x: 0, y: self.slideButtonEffect ? -250 : 0)
-
-                
-                Label(self.buttonSwitchB ? "Brain Off" : "Brain On", systemImage: "leaf")
-                    .frame(width: 250, height: 80)
-                    .font(.largeTitle)
-                    .padding()
-                    .background(Color.black)
-                    .foregroundColor(.white)
-                    .shadow(color: self.buttonSwitchB ? Color.red : Color.green, radius: 8, x: 8, y: 8)
-                    .blur(radius: self.buttonSwitchB ? 0.99 : 0)
-                    .rotation3DEffect(.degrees(animationAmount), axis: (x: 0, y: 1, z: 1))
-                    .animation(self.buttonSwitchB ?  .default : .interpolatingSpring(stiffness: 12, damping: 2))
-                
-                Button("Tap Me") {
-                    self.buttonSwitchB.toggle()
-                    withAnimation(.interpolatingSpring(stiffness: 5, damping: 1)) {
-                        self.animationAmount += 360
-                    }
-                    withAnimation(Animation.linear(duration: slideEffectDuration)) {
-                        self.slideButtonEffect.toggle()
-                    }
-                }
-                .frame(width: 100, height: 50)
-                .padding()
-                .background(self.slideButtonEffect ? Color(red: 0.2, green: 0.2, blue: 0.2) : .clear)
-                .foregroundColor(self.slideButtonEffect ? .red : .clear)
-                .font(.title)
-                .clipShape(Capsule())
-                .opacity(self.buttonSwitchB ? 1 : 0)
-                .shadow(color: Color.red, radius: self.slideButtonEffect ? 12 : 0)
-                .animation(.default)
-                .offset(x: 0, y: self.slideButtonEffect ? 0 : 250)
+                Spacer()
             }
+            .navigationBarTitle("edutainment")
         }
-        .ignoresSafeArea(.all)
-
         
-    }
-    
-    func isEven(numb: Int) -> Bool {
-        if (numb % 2) == 0 {
-            return true
-        }
-        return false
     }
 }
 

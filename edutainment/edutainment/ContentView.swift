@@ -33,17 +33,17 @@ struct EquasionStyle: ViewModifier {
     }
 }
 
-struct GradientBackgroundStyle: ButtonStyle {
-    func makeBody(configuration: Self.Configuration) -> some View {
-        configuration.label
-            .frame(minWidth: 0, maxWidth: .infinity)
-            .padding()
-            .foregroundColor(.white)
-            .background(LinearGradient(gradient: Gradient(colors: [Color("DarkGreen"), Color("LightGreen")]), startPoint: .leading, endPoint: .trailing))
-            .cornerRadius(40)
-            .padding(.horizontal, 20)
-    }
-}
+//struct GradientBackgroundStyle: ButtonStyle {
+//    func makeBody(configuration: Self.Configuration) -> some View {
+//        configuration.label
+//            .frame(minWidth: 0, maxWidth: .infinity)
+//            .padding()
+//            .foregroundColor(.white)
+//            .background(LinearGradient(gradient: Gradient(colors: [Color("DarkGreen"), Color("LightGreen")]), startPoint: .leading, endPoint: .trailing))
+//            .cornerRadius(40)
+//            .padding(.horizontal, 20)
+//    }
+//}
 
 struct ContentView: View {
     @State private var firstNumber = 0
@@ -94,11 +94,21 @@ struct ContentView: View {
                                 if numb == 10 {
                                     Label("Icon Only", systemImage: "delete.left")
                                         .labelStyle(.iconOnly)
-                                        .modifier(NumPadButtonStyle())
+                                        .frame(width: 120, height: 80)
+                                        .font(.largeTitle)
+                                        .foregroundColor(.white)
+                                        .background(LinearGradient(gradient: Gradient(colors: [Color.green, Color.blue]), startPoint: .leading, endPoint: .trailing))
+                                        .clipShape(Capsule())
+                                        .padding(.horizontal, 50)
                                 } else if numb == 12 {
                                     Label("Submit", systemImage: "ant")
                                         .labelStyle(.titleOnly)
-                                        .modifier(NumPadButtonStyle())
+                                        .frame(width: 120, height: 80)
+                                        .font(.largeTitle)
+                                        .foregroundColor(.white)
+                                        .background(LinearGradient(gradient: Gradient(colors: [Color.blue, Color.green]), startPoint: .leading, endPoint: .trailing))
+                                        .clipShape(Capsule())
+                                        .padding(.horizontal, 50)
                                 } else {
                                     Text("\(numb)")
                                         .modifier(NumPadButtonStyle())

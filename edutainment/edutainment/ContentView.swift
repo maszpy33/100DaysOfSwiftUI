@@ -19,6 +19,18 @@ struct NumPadButtonStyle: ViewModifier {
     }
 }
 
+struct MathOperatorStyle: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .frame(width: 70, height: 60)
+            .font(.largeTitle)
+            .foregroundColor(.white)
+            .background(LinearGradient(gradient: Gradient(colors: [Color.green, Color.orange]), startPoint: .topLeading, endPoint: .bottomLeading))
+            .clipShape(Capsule())
+            .padding(.horizontal, 50)
+    }
+}
+
 struct ButtonScaleEffect: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -33,30 +45,24 @@ struct EquasionStyle: ViewModifier {
     }
 }
 
-//struct GradientBackgroundStyle: ButtonStyle {
-//    func makeBody(configuration: Self.Configuration) -> some View {
-//        configuration.label
-//            .frame(minWidth: 0, maxWidth: .infinity)
-//            .padding()
-//            .foregroundColor(.white)
-//            .background(LinearGradient(gradient: Gradient(colors: [Color("DarkGreen"), Color("LightGreen")]), startPoint: .leading, endPoint: .trailing))
-//            .cornerRadius(40)
-//            .padding(.horizontal, 20)
-//    }
-//}
 
 struct ContentView: View {
     @State private var firstNumber = 0
     @State private var secondNumber = 0
     @State private var result = 0
-    @State private var mathOperator = ["plus", "minus", "multiply", "divide"]
-    @State private var mathOperatorSelectioin = 0
+//    @State private var mathOperator = ["plus", "minus", "multiply", "divide"]
+//    @State private var mathOperatorSelectioin = 0
+    @State private var mathOperator = "plus"
+    
+    @State private var numberToChange = 1
     
     @State private var equlIconColor = true
     
     let buttonNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 12]
+    let mathOperators = ["plus", "minus", "multiply", "divide"]
     
     private var gridItemLayout = Array(repeating: GridItem(.flexible(), spacing: 0), count: 3)
+    private var rowItemLayout = Array(repeating: GridItem(.flexible(), spacing: 0), count: 4)
     
     var body: some View {
         NavigationView {
@@ -66,7 +72,7 @@ struct ContentView: View {
                 HStack {
                     Text("\(firstNumber)")
                         .font(.largeTitle)
-                    Label("Icon Only", systemImage: "\(mathOperator[mathOperatorSelectioin])")
+                    Label("Icon Only", systemImage: "\(mathOperator)")
                         .labelStyle(.iconOnly)
                         .font(.largeTitle)
                         .foregroundColor(.orange)
@@ -84,11 +90,26 @@ struct ContentView: View {
                 
                 Spacer()
                 
+                // MATH OPERATOR BUTTONS
+                LazyVGrid(columns: rowItemLayout) {
+                    ForEach(mathOperators, id: \.self) { mathOperatorChoice in
+                        Button(action: {
+                            print("Math Operator: \(mathOperator)")
+                            self.mathOperator = mathOperatorChoice
+                        }) {
+                            Label("icon only", systemImage: mathOperatorChoice)
+                                .labelStyle(.iconOnly)
+                                .modifier(MathOperatorStyle())
+                        }
+                    }
+                }
+                
                 // NUMPAD BUTTONS
                 LazyVGrid(columns: gridItemLayout) {
                     ForEach(buttonNumbers, id: \.self) { numb in
                         Button(action: {
-                            print("do stuff")
+                            print("First Number: \(firstNumber)")
+                            self.firstNumber = numb
                         }) {
                             HStack{
                                 if numb == 10 {
@@ -97,7 +118,7 @@ struct ContentView: View {
                                         .frame(width: 120, height: 80)
                                         .font(.largeTitle)
                                         .foregroundColor(.white)
-                                        .background(LinearGradient(gradient: Gradient(colors: [Color.green, Color.blue]), startPoint: .leading, endPoint: .trailing))
+                                        .background(LinearGradient(gradient: Gradient(colors: [Color.green, Color.orange]), startPoint: .leading, endPoint: .trailing))
                                         .clipShape(Capsule())
                                         .padding(.horizontal, 50)
                                 } else if numb == 12 {
@@ -106,7 +127,7 @@ struct ContentView: View {
                                         .frame(width: 120, height: 80)
                                         .font(.largeTitle)
                                         .foregroundColor(.white)
-                                        .background(LinearGradient(gradient: Gradient(colors: [Color.blue, Color.green]), startPoint: .leading, endPoint: .trailing))
+                                        .background(LinearGradient(gradient: Gradient(colors: [Color.orange, Color.green]), startPoint: .leading, endPoint: .trailing))
                                         .clipShape(Capsule())
                                         .padding(.horizontal, 50)
                                 } else {
@@ -114,7 +135,7 @@ struct ContentView: View {
                                         .modifier(NumPadButtonStyle())
                                 }
                             }
-
+                            
                         }
                         .buttonStyle(ButtonScaleEffect())
                     }
@@ -125,6 +146,10 @@ struct ContentView: View {
             .navigationBarTitle("edutainment")
         }
         
+    }
+    
+    func operatorFoo() {
+        print("Stuff")
     }
 }
 

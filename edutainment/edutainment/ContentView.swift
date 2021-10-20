@@ -8,13 +8,16 @@
 import SwiftUI
 
 struct NumPadButtonStyle: ViewModifier {
+    var keyColor1: Color
+    var keyColor2: Color
+    
     func body(content: Content) -> some View {
         content
-            .frame(width: 120, height: 80)
+            .frame(width: 120, height: 60)
             .font(.largeTitle)
             .foregroundColor(.white)
-            .background(LinearGradient(gradient: Gradient(colors: [Color.orange, Color.red]), startPoint: .leading, endPoint: .trailing))
-            .clipShape(Capsule())
+            .background(LinearGradient(gradient: Gradient(colors: [keyColor1, keyColor2]), startPoint: .leading, endPoint: .trailing))
+            .clipShape(RoundedRectangle(cornerRadius: 10))
             .padding(.horizontal, 50)
     }
 }
@@ -22,11 +25,11 @@ struct NumPadButtonStyle: ViewModifier {
 struct MathOperatorStyle: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .frame(width: 70, height: 60)
+            .frame(width: 90, height: 60)
             .font(.largeTitle)
             .foregroundColor(.white)
             .background(LinearGradient(gradient: Gradient(colors: [Color.green, Color.orange]), startPoint: .topLeading, endPoint: .bottomLeading))
-            .clipShape(Capsule())
+            .clipShape(RoundedRectangle(cornerRadius: 10))
             .padding(.horizontal, 50)
     }
 }
@@ -47,14 +50,12 @@ struct EquasionStyle: ViewModifier {
 
 
 struct ContentView: View {
-    @State private var firstNumber = 0
-    @State private var secondNumber = 0
-    @State private var result = 0
-//    @State private var mathOperator = ["plus", "minus", "multiply", "divide"]
-//    @State private var mathOperatorSelectioin = 0
+    let firstNumber = 3
+    let secondNumber = 8
+    @State private var result = ""
     @State private var mathOperator = "plus"
     
-    @State private var numberToChange = 1
+//    @State private var focusedNumber = 1
     
     @State private var equlIconColor = true
     
@@ -66,7 +67,7 @@ struct ContentView: View {
     
     var body: some View {
         NavigationView {
-            VStack(spacing: 12){
+            VStack(spacing: 10){
                 Spacer()
                 
                 HStack {
@@ -85,6 +86,9 @@ struct ContentView: View {
                     Text("\(result)")
                         .font(.largeTitle)
                         .foregroundColor(.blue)
+                }
+                .onTapGesture() {
+                    print("Number XY")
                 }
                 
                 
@@ -108,31 +112,30 @@ struct ContentView: View {
                 LazyVGrid(columns: gridItemLayout) {
                     ForEach(buttonNumbers, id: \.self) { numb in
                         Button(action: {
-                            print("First Number: \(firstNumber)")
-                            self.firstNumber = numb
+                            if numb == 10 {
+                                if result.count > 0 || result.count >= 10 {
+                                    self.result.removeLast()
+                                } else {
+                                    print("do nothing")
+                                }
+                            } else if numb == 12 {
+                                print("Submit")
+                            } else {
+                                self.result = self.result + String(numb)
+                            }
                         }) {
                             HStack{
                                 if numb == 10 {
                                     Label("Icon Only", systemImage: "delete.left")
                                         .labelStyle(.iconOnly)
-                                        .frame(width: 120, height: 80)
-                                        .font(.largeTitle)
-                                        .foregroundColor(.white)
-                                        .background(LinearGradient(gradient: Gradient(colors: [Color.green, Color.orange]), startPoint: .leading, endPoint: .trailing))
-                                        .clipShape(Capsule())
-                                        .padding(.horizontal, 50)
+                                        .modifier(NumPadButtonStyle(keyColor1: Color.green, keyColor2: Color.orange))
                                 } else if numb == 12 {
                                     Label("Submit", systemImage: "ant")
                                         .labelStyle(.titleOnly)
-                                        .frame(width: 120, height: 80)
-                                        .font(.largeTitle)
-                                        .foregroundColor(.white)
-                                        .background(LinearGradient(gradient: Gradient(colors: [Color.orange, Color.green]), startPoint: .leading, endPoint: .trailing))
-                                        .clipShape(Capsule())
-                                        .padding(.horizontal, 50)
+                                        .modifier(NumPadButtonStyle(keyColor1: Color.green, keyColor2: Color.orange))
                                 } else {
                                     Text("\(numb)")
-                                        .modifier(NumPadButtonStyle())
+                                        .modifier(NumPadButtonStyle(keyColor1: Color.orange, keyColor2: Color.red))
                                 }
                             }
                             

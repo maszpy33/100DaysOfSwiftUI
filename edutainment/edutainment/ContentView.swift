@@ -113,20 +113,27 @@ struct ContentView: View {
     
     @State private var showSettings = false
 
+    @State private var questionsTotal = 5
+    @State private var difficultyLevel = 0
+    let difficulties = ["Easy", "Medium", "Hard", "RWTH"]
     
     var body: some View {
         if showSettings {
-            SettingsView()
-        } else {
-            
+            SettingsView(questionsTotal: self.$questionsTotal, difficultyLevel: self.$difficultyLevel)
         }
+        
         NavigationView {
             VStack(spacing: 10){
                 
                 Spacer()
                 
+                Label("Questions \(score)/\(questionsTotal + 1) - Difficulty Level: \(difficulties[difficultyLevel])", systemImage: "rabbit")
+                    .font(.system(size: 18))
+                    .foregroundColor(.white)
+                    .modifier(ScoreLabel(width: 360, height: 25, buttonColor1: .green, buttonColor2: .blue))
+                
+                
                 HStack {
-
                     Button(action: {
                         score = 0
                         self.newEquasion()
@@ -136,14 +143,12 @@ struct ContentView: View {
                             .modifier(ScoreLabel(width: 140, height: 40, buttonColor1: .blue, buttonColor2: .green))
                     }
                     
-                    NavigationLink(destination: SettingsView()) {
+                    NavigationLink(destination: SettingsView(questionsTotal: self.$questionsTotal, difficultyLevel: self.$difficultyLevel)) {
                         Label("Settings", systemImage: "slider.vertical.3")
                             .modifier(ScoreLabel(width: 200, height: 40, buttonColor1: .blue, buttonColor2: .green))
                     }
                 }
 
-                
-//                Spacer()
                 
                 Label("Current Score: \(score)", systemImage: "ladybug")
                     .modifier(ScoreLabel(width: 360, height: 60, buttonColor1: .green, buttonColor2: .blue))
@@ -240,10 +245,11 @@ struct ContentView: View {
                 Spacer()
             }
             .navigationBarTitle("edutainment")
-            .toolbar {
-                Button("Refres") {
-                    score = 0
-                    self.newEquasion()
+            .toolbar{
+                Button(action: {
+                    print("Hello World!")
+                }) {
+                    Text("Enter the new world!")
                 }
             }
         }
@@ -282,9 +288,17 @@ struct ContentView: View {
         
     func compareResults(userResult: String, correctResult: Int) -> Bool {
         if correctResult == Int(userResult) {
-            alertText = "Correct, very good my young mathematician!\nOne Point for Griffendor!"
-            self.showAlert = true
-            return true
+            if score == questionsTotal {
+                alertText = "Nice you solved all \(questionsTotal) questions\nOn difficulty level \(difficulties[difficultyLevel])"
+                score = 0
+                self.showAlert = true
+                return true
+            } else {
+                alertText = "Correct, very good my young mathematician!\nOne Point for Griffendor!"
+                self.showAlert = true
+                return true
+            }
+
         } else {
             alertText = "Incorrect, sorry...\nYou submitted \(userResult)\nThink a little harder!"
             self.showAlert = true

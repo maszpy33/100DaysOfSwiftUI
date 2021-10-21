@@ -11,6 +11,7 @@
 		9F5B8EE02711B67E007CEA24 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F5B8EDF2711B67E007CEA24 /* ContentView.swift */; };
 		9F5B8EE22711B683007CEA24 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9F5B8EE12711B683007CEA24 /* Assets.xcassets */; };
 		9F5B8EE52711B683007CEA24 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9F5B8EE42711B683007CEA24 /* Preview Assets.xcassets */; };
+		9F68E4B72722023600DAD085 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F68E4B62722023600DAD085 /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +20,7 @@
 		9F5B8EDF2711B67E007CEA24 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		9F5B8EE12711B683007CEA24 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9F5B8EE42711B683007CEA24 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		9F68E4B62722023600DAD085 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +55,7 @@
 			children = (
 				9F5B8EDD2711B67E007CEA24 /* edutainmentApp.swift */,
 				9F5B8EDF2711B67E007CEA24 /* ContentView.swift */,
+				9F68E4B62722023600DAD085 /* SettingsView.swift */,
 				9F5B8EE12711B683007CEA24 /* Assets.xcassets */,
 				9F5B8EE32711B683007CEA24 /* Preview Content */,
 			);
@@ -138,6 +141,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9F5B8EE02711B67E007CEA24 /* ContentView.swift in Sources */,
+				9F68E4B72722023600DAD085 /* SettingsView.swift in Sources */,
 				9F5B8EDE2711B67E007CEA24 /* edutainmentApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

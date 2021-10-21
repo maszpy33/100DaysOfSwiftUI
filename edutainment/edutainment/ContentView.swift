@@ -42,7 +42,7 @@ struct NumPadButtonStyle: ViewModifier {
             .foregroundColor(.white)
             .background(LinearGradient(gradient: Gradient(colors: [keyColor1, keyColor2]), startPoint: .leading, endPoint: .trailing))
             .clipShape(RoundedRectangle(cornerRadius: 10))
-            .padding(.horizontal, 50)
+            .padding(.horizontal, 5)
     }
 }
 
@@ -52,21 +52,26 @@ struct MathOperatorStyle: ViewModifier {
             .frame(width: 90, height: 60)
             .font(.largeTitle)
             .foregroundColor(.white)
-            .background(LinearGradient(gradient: Gradient(colors: [Color.green, Color.orange]), startPoint: .topLeading, endPoint: .bottomLeading))
+            .background(LinearGradient(gradient: Gradient(colors: [Color.green, Color.blue]), startPoint: .topLeading, endPoint: .bottomLeading))
             .clipShape(RoundedRectangle(cornerRadius: 10))
-            .padding(.horizontal, 50)
+            .padding(.horizontal, 5)
     }
 }
 
 struct ScoreLabel: ViewModifier {
+    var width: CGFloat
+    var height: CGFloat
+    var buttonColor1: Color
+    var buttonColor2: Color
+    
     func body(content: Content) -> some View {
         content
-            .frame(width: 380, height: 60)
+            .frame(width: width, height: height)
             .font(.largeTitle)
             .foregroundColor(.white)
-            .background(LinearGradient(gradient: Gradient(colors: [Color.orange, Color.green]), startPoint: .topLeading, endPoint: .bottomLeading))
+            .background(LinearGradient(gradient: Gradient(colors: [buttonColor1, buttonColor2]), startPoint: .topLeading, endPoint: .bottomLeading))
             .clipShape(RoundedRectangle(cornerRadius: 10))
-            .padding(.horizontal, 50)
+            .padding(.horizontal, 5)
     }
 }
 
@@ -97,30 +102,51 @@ struct ContentView: View {
     
     @State private var equlIconColor = true
     
+    @State private var isCorrectAnswer = false
+    
     let buttonNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 12]
     let mathOperators = ["plus", "minus", "multiply", "divide"]
     @State private var mathOperator = "plus"
     
-    let mathOperatorsLogic = [OperatorChoice.plus, OperatorChoice.minus, OperatorChoice.multiply, OperatorChoice.divide]
-    @State private var mathOperatorLogicChoice = OperatorChoice.plus
-    
     private var gridItemLayout = Array(repeating: GridItem(.flexible(), spacing: 0), count: 3)
     private var rowItemLayout = Array(repeating: GridItem(.flexible(), spacing: 0), count: 4)
     
-    enum OperatorChoice {
-        case plus
-        case minus
-        case multiply
-        case divide
-    }
+    @State private var showSettings = false
+
     
     var body: some View {
+        if showSettings {
+            SettingsView()
+        } else {
+            
+        }
         NavigationView {
             VStack(spacing: 10){
+                
                 Spacer()
                 
+                HStack {
+
+                    Button(action: {
+                        score = 0
+                        self.newEquasion()
+                    }) {
+                        Label("Refresh", systemImage: "slider.vertical.3")
+                            .labelStyle(.titleOnly)
+                            .modifier(ScoreLabel(width: 140, height: 40, buttonColor1: .blue, buttonColor2: .green))
+                    }
+                    
+                    NavigationLink(destination: SettingsView()) {
+                        Label("Settings", systemImage: "slider.vertical.3")
+                            .modifier(ScoreLabel(width: 200, height: 40, buttonColor1: .blue, buttonColor2: .green))
+                    }
+                }
+
+                
+//                Spacer()
+                
                 Label("Current Score: \(score)", systemImage: "ladybug")
-                    .modifier(ScoreLabel())
+                    .modifier(ScoreLabel(width: 360, height: 60, buttonColor1: .green, buttonColor2: .blue))
                     
                 Spacer()
                 
@@ -154,8 +180,6 @@ struct ContentView: View {
                         Button(action: {
                             print("Current Math Operator: \(mathOperator)")
                             self.mathOperator = mathOperatorChoice
-                            let mathOperatorIndex = mathOperators.firstIndex(of: mathOperator)!
-                            self.mathOperatorLogicChoice = mathOperatorsLogic[mathOperatorIndex]
                         }) {
                             Label("icon only", systemImage: mathOperatorChoice)
                                 .labelStyle(.iconOnly)
@@ -177,13 +201,13 @@ struct ContentView: View {
                                 }
                             } else if numb == 12 {
                                 // SUBMIT BUTTON LOGIC
-                                let correctAnswer = calculateCorrectResult(first: firstNumber, second: secondNumber, operatorChoice: mathOperatorsLogic[0])
+                                let correctAnswer = calculateCorrectResult(first: firstNumber, second: secondNumber, operatorChoice: mathOperator)
                                 
                                 print("Correct Answer: ", correctAnswer)
                                 print("Submitted Answer: ", result)
                                 
                                 // Check if Answer is correct
-                                compareResults(userResult: result, correctResult: correctAnswer)
+                                isCorrectAnswer = compareResults(userResult: result, correctResult: correctAnswer)
                                 
                             } else {
                                 // NUMPAD BUTTON LOGIC
@@ -195,16 +219,16 @@ struct ContentView: View {
                                     // DELETE BUTTON
                                     Label("Icon Only", systemImage: "delete.left")
                                         .labelStyle(.iconOnly)
-                                        .modifier(NumPadButtonStyle(keyColor1: Color.green, keyColor2: Color.orange))
+                                        .modifier(NumPadButtonStyle(keyColor1: Color.green, keyColor2: Color.blue))
                                 } else if numb == 12 {
                                     // SUBMIT BUTTON
                                     Label("Submit", systemImage: "ant")
                                         .labelStyle(.titleOnly)
-                                        .modifier(NumPadButtonStyle(keyColor1: Color.green, keyColor2: Color.orange))
+                                        .modifier(NumPadButtonStyle(keyColor1: Color.blue, keyColor2: Color.green))
                                 } else {
                                     // NUMPAD
                                     Text("\(numb)")
-                                        .modifier(NumPadButtonStyle(keyColor1: Color.orange, keyColor2: Color.red))
+                                        .modifier(NumPadButtonStyle(keyColor1: Color.blue, keyColor2: Color.blue))
                                 }
                             }
                             
@@ -218,44 +242,53 @@ struct ContentView: View {
             .navigationBarTitle("edutainment")
             .toolbar {
                 Button("Refres") {
+                    score = 0
                     self.newEquasion()
                 }
             }
         }
         .watermarked(with: "Made by Zwitschki")
         .alert(isPresented: $showAlert) {
-            
             Alert(title: Text("Your submitted answer is..."), message: Text("\(alertText)"), dismissButton: .default(Text("Continue")) {
-                self.newEquasion()
+                if isCorrectAnswer {
+                    self.newEquasion()
+                    score += 1
+                } else {
+                    showAlert = false
+                }
             })
         }
     }
     
-    func calculateCorrectResult(first: Int, second: Int, operatorChoice: OperatorChoice) -> Int {
-        switch operatorChoice {
-        case .plus:
-            let correctResultPlu = first + second
-            return correctResultPlu
-        case .minus:
-            let correctResultMin = first - second
-            return correctResultMin
-        case .multiply:
-            let correctResultMul = first * second
-            return correctResultMul
-        case .divide:
-            let correctResultDiv = first / second
-            return correctResultDiv
+    func calculateCorrectResult(first: Int, second: Int, operatorChoice: String) -> Int {
+        if mathOperator == "plus" {
+            let correctResult = first + second
+            return correctResult
+        } else if mathOperator == "minus" {
+            let correctResult = first - second
+            return correctResult
+        } else if mathOperator == "multiply" {
+            let correctResult = first * second
+            return correctResult
+        } else if mathOperator == "divide" {
+            let correctResult = first / second
+            return correctResult
+        } else {
+            print("ERROR")
+            let correctResult = 404
+            return correctResult
         }
     }
         
-    func compareResults(userResult: String, correctResult: Int) {
+    func compareResults(userResult: String, correctResult: Int) -> Bool {
         if correctResult == Int(userResult) {
             alertText = "Correct, very good my young mathematician!\nOne Point for Griffendor!"
-            self.score += 1
             self.showAlert = true
+            return true
         } else {
-            alertText = "Incorrect, sorry...\nThe correct answer is \(correctResult)\nYou submitted \(userResult)\nNext time think a little harder!"
+            alertText = "Incorrect, sorry...\nYou submitted \(userResult)\nThink a little harder!"
             self.showAlert = true
+            return false
         }
     }
     

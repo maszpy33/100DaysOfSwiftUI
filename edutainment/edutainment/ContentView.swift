@@ -116,6 +116,7 @@ struct ContentView: View {
     @State private var questionsTotal = 5
     @State private var difficultyLevel = 0
     let difficulties = ["Easy", "Medium", "Hard", "RWTH"]
+    let difficultyLogo = ["tortoise", "ladybug", "hare", "brain.head.profile"]
     
     var body: some View {
         if showSettings {
@@ -127,31 +128,30 @@ struct ContentView: View {
                 
                 Spacer()
                 
-                Label("Questions \(score)/\(questionsTotal + 1) - Difficulty Level: \(difficulties[difficultyLevel])", systemImage: "rabbit")
-                    .font(.system(size: 18))
-                    .foregroundColor(.white)
-                    .modifier(ScoreLabel(width: 360, height: 25, buttonColor1: .green, buttonColor2: .blue))
+//                Label("Difficulty Level: \(difficulties[difficultyLevel])", systemImage: difficultyLogo[difficultyLevel])
+//                    .font(.system(size: 18))
+//                    .foregroundColor(.white)
+//                    .modifier(ScoreLabel(width: 360, height: 25, buttonColor1: .blue, buttonColor2: .green))
                 
                 
-                HStack {
+                HStack(spacing: 0){
                     Button(action: {
                         score = 0
                         self.newEquasion()
                     }) {
-                        Label("Refresh", systemImage: "slider.vertical.3")
-                            .labelStyle(.titleOnly)
-                            .modifier(ScoreLabel(width: 140, height: 40, buttonColor1: .blue, buttonColor2: .green))
+                        Label("Refresh", systemImage: "repeat")
+                            .modifier(ScoreLabel(width: 185, height: 40, buttonColor1: .green, buttonColor2: .blue))
                     }
                     
                     NavigationLink(destination: SettingsView(questionsTotal: self.$questionsTotal, difficultyLevel: self.$difficultyLevel)) {
                         Label("Settings", systemImage: "slider.vertical.3")
-                            .modifier(ScoreLabel(width: 200, height: 40, buttonColor1: .blue, buttonColor2: .green))
+                            .modifier(ScoreLabel(width: 185, height: 40, buttonColor1: .green, buttonColor2: .blue))
                     }
                 }
-
                 
-                Label("Current Score: \(score)", systemImage: "ladybug")
-                    .modifier(ScoreLabel(width: 360, height: 60, buttonColor1: .green, buttonColor2: .blue))
+                
+                Label("Current Score: \(score)", systemImage: difficultyLogo[difficultyLevel])
+                    .modifier(ScoreLabel(width: 380, height: 60, buttonColor1: .blue, buttonColor2: .green))
                     
                 Spacer()
                 
@@ -224,12 +224,12 @@ struct ContentView: View {
                                     // DELETE BUTTON
                                     Label("Icon Only", systemImage: "delete.left")
                                         .labelStyle(.iconOnly)
-                                        .modifier(NumPadButtonStyle(keyColor1: Color.green, keyColor2: Color.blue))
+                                        .modifier(NumPadButtonStyle(keyColor1: Color.red, keyColor2: Color.red))
                                 } else if numb == 12 {
                                     // SUBMIT BUTTON
                                     Label("Submit", systemImage: "ant")
                                         .labelStyle(.titleOnly)
-                                        .modifier(NumPadButtonStyle(keyColor1: Color.blue, keyColor2: Color.green))
+                                        .modifier(NumPadButtonStyle(keyColor1: Color.green, keyColor2: Color.green))
                                 } else {
                                     // NUMPAD
                                     Text("\(numb)")
@@ -249,7 +249,7 @@ struct ContentView: View {
                 Button(action: {
                     print("Hello World!")
                 }) {
-                    Text("Enter the new world!")
+                    Text("Level: \(difficulties[difficultyLevel]) | Question \(score)/\(questionsTotal + 1)")
                 }
             }
         }
@@ -258,7 +258,7 @@ struct ContentView: View {
             Alert(title: Text("Your submitted answer is..."), message: Text("\(alertText)"), dismissButton: .default(Text("Continue")) {
                 if isCorrectAnswer {
                     self.newEquasion()
-                    score += 1
+//                    score += 1
                 } else {
                     showAlert = false
                 }
@@ -289,13 +289,14 @@ struct ContentView: View {
     func compareResults(userResult: String, correctResult: Int) -> Bool {
         if correctResult == Int(userResult) {
             if score == questionsTotal {
-                alertText = "Nice you solved all \(questionsTotal) questions\nOn difficulty level \(difficulties[difficultyLevel])"
+                alertText = "Correct!\nNice you solved all \(questionsTotal + 1) questions\nOn difficulty level \(difficulties[difficultyLevel])"
                 score = 0
                 self.showAlert = true
                 return true
             } else {
                 alertText = "Correct, very good my young mathematician!\nOne Point for Griffendor!"
                 self.showAlert = true
+                score += 1
                 return true
             }
 
@@ -307,8 +308,30 @@ struct ContentView: View {
     }
     
     func newEquasion() {
-        firstNumber = Int.random(in: 0...12)
-        secondNumber = Int.random(in: 0...12)
+        var range1 = 33
+        var range2 = 404
+
+        if difficultyLevel == 0 {
+            range1 = 0
+            range2 = 10
+        } else if difficultyLevel == 1 {
+            range1 = 0
+            range2 = 12
+        } else if difficultyLevel == 2 {
+            range1 = 0
+            range2 = 20
+        } else if difficultyLevel == 3 {
+            range1 = 30259
+            range2 = 29040905
+        }
+
+        firstNumber = Int.random(in: range1...range2)
+        secondNumber = Int.random(in: range1...range2)
+        print(firstNumber)
+        print(secondNumber)
+        print(range1)
+        print(range2)
+        print(difficultyLevel)
         result = ""
         showAlert = false
     }

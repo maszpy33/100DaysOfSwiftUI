@@ -40,7 +40,7 @@ struct SettingsView: View {
                     .bold()
                 
                 Picker("How many questions do you want to solve?", selection: $questionsTotal) {
-                    ForEach(1..<20) {
+                    ForEach(1..<21) {
                         Text("\($0) questions")
                     }
                 }

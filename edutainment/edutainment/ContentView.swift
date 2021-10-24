@@ -20,7 +20,7 @@ struct Watermark: ViewModifier {
                 .padding(5)
                 .background(Color.black)
                 .clipShape(RoundedRectangle(cornerRadius: 25))
-                .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
+                .opacity(0.2)
         }
     }
 }
@@ -37,7 +37,7 @@ struct NumPadButtonStyle: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .frame(width: 120, height: 60)
+            .frame(width: 100, height: 60)
             .font(.largeTitle)
             .foregroundColor(.white)
             .background(LinearGradient(gradient: Gradient(colors: [keyColor1, keyColor2]), startPoint: .leading, endPoint: .trailing))
@@ -49,7 +49,7 @@ struct NumPadButtonStyle: ViewModifier {
 struct MathOperatorStyle: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .frame(width: 90, height: 60)
+            .frame(width: 70, height: 60)
             .font(.largeTitle)
             .foregroundColor(.white)
             .background(LinearGradient(gradient: Gradient(colors: [Color.green, Color.blue]), startPoint: .topLeading, endPoint: .bottomLeading))
@@ -90,6 +90,7 @@ struct EquasionStyle: ViewModifier {
 }
 
 
+
 struct ContentView: View {
     @State private var firstNumber = Int.random(in: 0...12)
     @State private var secondNumber = Int.random(in: 0...12)
@@ -112,11 +113,16 @@ struct ContentView: View {
     private var rowItemLayout = Array(repeating: GridItem(.flexible(), spacing: 0), count: 4)
     
     @State private var showSettings = false
-
+    
     @State private var questionsTotal = 5
     @State private var difficultyLevel = 0
     let difficulties = ["Easy", "Medium", "Hard", "RWTH"]
     let difficultyLogo = ["tortoise", "ladybug", "hare", "brain.head.profile"]
+    let difficultyLogo2 = ["owl", "elephant", "duck", "goat"]
+    
+    @State private var slideButtonEffect = false
+    
+    @State private var speakingBubbleText = "Hello my young mathematician! And well this is a quiet long test text, to look how much character fit in the speaking bubble 3"
     
     var body: some View {
         if showSettings {
@@ -124,145 +130,218 @@ struct ContentView: View {
         }
         
         NavigationView {
-            VStack(spacing: 10){
-                
-                Spacer()
-                
-//                Label("Difficulty Level: \(difficulties[difficultyLevel])", systemImage: difficultyLogo[difficultyLevel])
-//                    .font(.system(size: 18))
-//                    .foregroundColor(.white)
-//                    .modifier(ScoreLabel(width: 360, height: 25, buttonColor1: .blue, buttonColor2: .green))
-                
-                
-                HStack(spacing: 0){
-                    Button(action: {
-                        score = 0
-                        self.newEquasion()
-                    }) {
-                        Label("Refresh", systemImage: "repeat")
-                            .modifier(ScoreLabel(width: 185, height: 40, buttonColor1: .green, buttonColor2: .blue))
-                    }
+            ZStack {
+                VStack(spacing: 10){
                     
-                    NavigationLink(destination: SettingsView(questionsTotal: self.$questionsTotal, difficultyLevel: self.$difficultyLevel)) {
-                        Label("Settings", systemImage: "slider.vertical.3")
-                            .modifier(ScoreLabel(width: 185, height: 40, buttonColor1: .green, buttonColor2: .blue))
-                    }
-                }
-                
-                
-                Label("Current Score: \(score)", systemImage: difficultyLogo[difficultyLevel])
-                    .modifier(ScoreLabel(width: 380, height: 60, buttonColor1: .blue, buttonColor2: .green))
+                    Spacer()
                     
-                Spacer()
-                
-                HStack {
-                    Text("\(firstNumber)")
-                        .font(.largeTitle)
-                    Label("Icon Only", systemImage: "\(mathOperator)")
-                        .labelStyle(.iconOnly)
-                        .font(.largeTitle)
-                        .foregroundColor(.orange)
-                    Text("\(secondNumber)")
-                        .font(.largeTitle)
-                    Label("Icon Only", systemImage: "equal")
-                        .labelStyle(.iconOnly)
-                        .font(.largeTitle)
-                        .foregroundColor(self.equlIconColor ? .green : .red)
-                    Text("\(result)")
-                        .font(.largeTitle)
-                        .foregroundColor(.blue)
-                }
-                .onTapGesture() {
-                    print("Number XY")
-                }
-                
-                
-                Spacer()
-                
-                // MATH OPERATOR BUTTONS
-                LazyVGrid(columns: rowItemLayout) {
-                    ForEach(mathOperators, id: \.self) { mathOperatorChoice in
+                    HStack(spacing: 0){
                         Button(action: {
-                            print("Current Math Operator: \(mathOperator)")
-                            self.mathOperator = mathOperatorChoice
+                            score = 0
+                            self.newEquasion()
+                            self.minusAndiDivideOperatorCheck()
                         }) {
-                            Label("icon only", systemImage: mathOperatorChoice)
-                                .labelStyle(.iconOnly)
-                                .modifier(MathOperatorStyle())
+                            Label("Refresh", systemImage: "repeat")
+                                .modifier(ScoreLabel(width: 175, height: 40, buttonColor1: .blue, buttonColor2: .green))
                         }
-                    }
-                }
-                
-                // CONTROLLE BUTTONS
-                LazyVGrid(columns: gridItemLayout) {
-                    ForEach(buttonNumbers, id: \.self) { numb in
-                        Button(action: {
-                            if numb == 10 {
-                                // DELTE BUTTON LOGIC
-                                if result.count > 0 || result.count >= 10 {
-                                    self.result.removeLast()
-                                } else {
-                                    print("do nothing")
-                                }
-                            } else if numb == 12 {
-                                // SUBMIT BUTTON LOGIC
-                                let correctAnswer = calculateCorrectResult(first: firstNumber, second: secondNumber, operatorChoice: mathOperator)
-                                
-                                print("Correct Answer: ", correctAnswer)
-                                print("Submitted Answer: ", result)
-                                
-                                // Check if Answer is correct
-                                isCorrectAnswer = compareResults(userResult: result, correctResult: correctAnswer)
-                                
-                            } else {
-                                // NUMPAD BUTTON LOGIC
-                                self.result = self.result + String(numb)
-                            }
-                        }) {
-                            HStack{
-                                if numb == 10 {
-                                    // DELETE BUTTON
-                                    Label("Icon Only", systemImage: "delete.left")
-                                        .labelStyle(.iconOnly)
-                                        .modifier(NumPadButtonStyle(keyColor1: Color.red, keyColor2: Color.red))
-                                } else if numb == 12 {
-                                    // SUBMIT BUTTON
-                                    Label("Submit", systemImage: "ant")
-                                        .labelStyle(.titleOnly)
-                                        .modifier(NumPadButtonStyle(keyColor1: Color.green, keyColor2: Color.green))
-                                } else {
-                                    // NUMPAD
-                                    Text("\(numb)")
-                                        .modifier(NumPadButtonStyle(keyColor1: Color.blue, keyColor2: Color.blue))
-                                }
-                            }
-                            
+                        .buttonStyle(ButtonScaleEffect())
+                        
+                        NavigationLink(destination: SettingsView(questionsTotal: self.$questionsTotal, difficultyLevel: self.$difficultyLevel)) {
+                            Label("⚙️ Settings", systemImage: "slider.horizontal.3")
+                                .labelStyle(.titleOnly)
+                                .modifier(ScoreLabel(width: 175, height: 40, buttonColor1: .blue, buttonColor2: .green))
                         }
                         .buttonStyle(ButtonScaleEffect())
                     }
+                    
+                    Spacer()
+                    
+                    HStack{
+                        Image("\(difficultyLogo2[difficultyLevel])")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 70, height: 70, alignment: .leading)
+                        Text("Your Score: \(score)")
+                            .bold()
+                            .font(.title)
+                            .frame(width: 260, height: 70)
+                            .overlay(RoundedRectangle(cornerRadius: 18)
+                                        .stroke(LinearGradient(gradient: Gradient(colors: [.green, .blue]), startPoint: .topLeading, endPoint: .bottomLeading), lineWidth: 4))
+                    }
+                    
+                    // EQUATION
+                    ZStack {
+                        Color.red.frame(width: 360, height: 95)
+                            .opacity(0)
+                            .overlay(RoundedRectangle(cornerRadius: 18)
+                                        .stroke(LinearGradient(gradient: Gradient(colors: [.blue, .green]), startPoint: .topLeading, endPoint: .bottomLeading), lineWidth: 4))
+                        
+                        HStack {
+                            Text("\(firstNumber)")
+                                .font(.largeTitle)
+                            Label("Icon Only", systemImage: "\(mathOperator)")
+                                .labelStyle(.iconOnly)
+                                .font(.largeTitle)
+                                .foregroundColor(.orange)
+                            Text("\(secondNumber)")
+                                .font(.largeTitle)
+                            Label("Icon Only", systemImage: "equal")
+                                .labelStyle(.iconOnly)
+                                .font(.largeTitle)
+                                .foregroundColor(self.equlIconColor ? .orange : .red)
+                            Text("\(result)")
+                                .font(.largeTitle)
+                                .foregroundColor(.blue)
+                        }
+                    }
+                    
+                    
+                    
+                    Spacer()
+                    
+                    // MATH OPERATOR BUTTONS
+                    LazyVGrid(columns: rowItemLayout) {
+                        ForEach(mathOperators, id: \.self) { mathOperatorChoice in
+                            Button(action: {
+                                print("Current Math Operator: \(mathOperator)")
+                                self.mathOperator = mathOperatorChoice
+                                self.minusAndiDivideOperatorCheck()
+                            }) {
+                                Label("icon only", systemImage: mathOperatorChoice)
+                                    .labelStyle(.iconOnly)
+                                    .modifier(MathOperatorStyle())
+                            }
+                            .buttonStyle(ButtonScaleEffect())
+                        }
+                    }
+                    
+                    // NUMPAD BUTTONS
+                    LazyVGrid(columns: gridItemLayout) {
+                        ForEach(buttonNumbers, id: \.self) { numb in
+                            Button(action: {
+                                if numb == 10 {
+                                    // DELTE BUTTON LOGIC
+                                    if result.count > 0 || result.count >= 10 {
+                                        self.result.removeLast()
+                                    } else {
+                                        print("do nothing")
+                                    }
+                                } else if numb == 12 {
+                                    // SUBMIT BUTTON LOGIC
+                                    let correctAnswer = calculateCorrectResult(first: firstNumber, second: secondNumber, operatorChoice: mathOperator)
+                                    
+                                    // Check if Answer is correct
+                                    isCorrectAnswer = compareResults(userResult: result, correctResult: correctAnswer)
+                                    
+                                } else {
+                                    // NUMPAD BUTTON LOGIC
+                                    self.result = self.result + String(numb)
+                                }
+                            }) {
+                                HStack{
+                                    if numb == 10 {
+                                        // DELETE BUTTON
+                                        Label("Icon Only", systemImage: "delete.left")
+                                            .labelStyle(.iconOnly)
+                                            .modifier(NumPadButtonStyle(keyColor1: Color.red, keyColor2: Color.red))
+                                    } else if numb == 12 {
+                                        // SUBMIT BUTTON
+                                        Label("Submit", systemImage: "ant")
+                                            .labelStyle(.titleOnly)
+                                            .font(.title)
+                                            .modifier(NumPadButtonStyle(keyColor1: Color.green, keyColor2: Color.green))
+                                    } else {
+                                        // NUMPAD
+                                        Text("\(numb)")
+                                            .modifier(NumPadButtonStyle(keyColor1: Color.blue, keyColor2: Color.blue))
+                                    }
+                                }
+                                
+                            }
+                            .buttonStyle(ButtonScaleEffect())
+                        }
+                    }
+                    
+                    Spacer()
+                }
+                .navigationBarTitle("edutainment")
+                .toolbar{
+                    Button(action: {
+                        print("Hello World!")
+                    }) {
+                        Text("Level: \(difficulties[difficultyLevel]) | Question \(score)/\(questionsTotal + 1)")
+                    }
                 }
                 
-                Spacer()
-            }
-            .navigationBarTitle("edutainment")
-            .toolbar{
-                Button(action: {
-                    print("Hello World!")
-                }) {
-                    Text("Level: \(difficulties[difficultyLevel]) | Question \(score)/\(questionsTotal + 1)")
+                if showAlert {
+                    ZStack {
+                        VStack{
+                            ZStack{
+                                Image("speakingBubble3")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 300, height: 250, alignment: .top)
+                                    .offset(y: 20)
+                                Text("\(alertText)")
+                                    .foregroundColor(.black)
+                                    .font(.system(size: 20, weight: .semibold))
+                                    .multilineTextAlignment(.center)
+                                    .frame(maxWidth: 180, maxHeight: 120, alignment: .top)
+                            }
+                            .offset(x: -30, y: 50)
+                            
+                            ZStack {
+                                Color.black.frame(width: 360, height: 240)
+                                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                                
+                                HStack{
+                                    Text("To coninue\ntap Fin!")
+                                        .font(.title)
+                                        .bold()
+                                        .modifier(ScoreLabel(width: 180, height: 90, buttonColor1: .blue, buttonColor2: .black))
+                                    
+                                    Button(action: {
+                                        showAlert = false
+                                        self.newEquasion()
+                                        self.minusAndiDivideOperatorCheck()
+                                    }) {
+                                        Image("whale_fin")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .shadow(color: .white, radius: 8)
+                                            .frame(width: 90, height: 90, alignment: .top)
+                                    }
+                                    .buttonStyle(ButtonScaleEffect())
+                                }
+                            }
+                        }
+                    }
+                    
                 }
+                
             }
         }
         .watermarked(with: "Made by Zwitschki")
-        .alert(isPresented: $showAlert) {
-            Alert(title: Text("Your submitted answer is..."), message: Text("\(alertText)"), dismissButton: .default(Text("Continue")) {
-                if isCorrectAnswer {
-                    self.newEquasion()
-//                    score += 1
-                } else {
-                    showAlert = false
-                }
-            })
+        //        .alert(isPresented: $showAlert) {
+        //            Alert(title: Text("Your submitted answer is..."), message: Text("\(alertText)"), dismissButton: .default(Text("Continue")) {
+        //                if isCorrectAnswer {
+        //                    self.newEquasion()
+        ////                    score += 1
+        //                } else {
+        //                    showAlert = false
+        //                }
+        //            })
+        //        }
+    }
+    
+    func minusAndiDivideOperatorCheck() {
+        // Avoid negativ results && division with comma result
+        if self.mathOperator == "minus" && firstNumber < secondNumber{
+            (firstNumber, secondNumber) = (secondNumber, firstNumber)
+        } else if self.mathOperator == "divide" {
+            while firstNumber % secondNumber != 0 {
+                self.newEquasion()
+            }
         }
     }
     
@@ -285,7 +364,7 @@ struct ContentView: View {
             return correctResult
         }
     }
-        
+    
     func compareResults(userResult: String, correctResult: Int) -> Bool {
         if correctResult == Int(userResult) {
             if score == questionsTotal {
@@ -299,7 +378,7 @@ struct ContentView: View {
                 score += 1
                 return true
             }
-
+            
         } else {
             alertText = "Incorrect, sorry...\nYou submitted \(userResult)\nThink a little harder!"
             self.showAlert = true
@@ -310,7 +389,7 @@ struct ContentView: View {
     func newEquasion() {
         var range1 = 33
         var range2 = 404
-
+        
         if difficultyLevel == 0 {
             range1 = 0
             range2 = 10
@@ -321,19 +400,16 @@ struct ContentView: View {
             range1 = 0
             range2 = 20
         } else if difficultyLevel == 3 {
-            range1 = 30259
-            range2 = 29040905
+            range1 = 33
+            range2 = 404
         }
-
+        
         firstNumber = Int.random(in: range1...range2)
         secondNumber = Int.random(in: range1...range2)
-        print(firstNumber)
-        print(secondNumber)
-        print(range1)
-        print(range2)
-        print(difficultyLevel)
+        
         result = ""
         showAlert = false
+        
     }
 }
 

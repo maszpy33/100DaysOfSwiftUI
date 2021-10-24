@@ -124,6 +124,8 @@ struct ContentView: View {
     
     @State private var speakingBubbleText = "Hello my young mathematician! And well this is a quiet long test text, to look how much character fit in the speaking bubble 3"
     
+    @State private var isRotating = false
+    
     var body: some View {
         if showSettings {
             SettingsView(questionsTotal: self.$questionsTotal, difficultyLevel: self.$difficultyLevel)
@@ -135,8 +137,10 @@ struct ContentView: View {
                     
                     Spacer()
                     
+                    // REFRESH & SETTINGS BUTTON
                     HStack(spacing: 0){
                         Button(action: {
+                            self.isRotating.toggle()
                             score = 0
                             self.newEquasion()
                             self.minusAndiDivideOperatorCheck()
@@ -156,11 +160,14 @@ struct ContentView: View {
                     
                     Spacer()
                     
+                    // SCORE AND DIFFICULTY INDICATOR
                     HStack{
                         Image("\(difficultyLogo2[difficultyLevel])")
                             .resizable()
                             .scaledToFit()
                             .frame(width: 70, height: 70, alignment: .leading)
+                            .rotationEffect(Angle.degrees(isRotating ? 360 : 0))
+                            .animation(.linear)
                         Text("Your Score: \(score)")
                             .bold()
                             .font(.title)
@@ -391,13 +398,13 @@ struct ContentView: View {
         var range2 = 404
         
         if difficultyLevel == 0 {
-            range1 = 0
+            range1 = 1
             range2 = 10
         } else if difficultyLevel == 1 {
-            range1 = 0
+            range1 = 1
             range2 = 12
         } else if difficultyLevel == 2 {
-            range1 = 0
+            range1 = 1
             range2 = 20
         } else if difficultyLevel == 3 {
             range1 = 33

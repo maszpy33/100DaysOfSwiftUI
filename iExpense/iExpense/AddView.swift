@@ -21,7 +21,8 @@ struct AddView: View {
     @State private var name = ""
     @State private var type = "Personal"
     @State private var amount = ""
-    static let types = ["Bussines", "Personal"]
+    @State private var spendOnDate = Date()
+    static let types = ["Bussines", "Personal", "Tech", "Office", "Groceries"]
     
     @State private var showAlert = false
     @State private var errorTitle = ""
@@ -30,13 +31,15 @@ struct AddView: View {
     var body: some View {
         NavigationView {
             Form {
-                TextField("Name", text: $name)
+                DatePicker("Date of expense:", selection: $spendOnDate, displayedComponents: .date)
+                
                 Picker("Type", selection: $type) {
                     ForEach(Self.types, id: \.self) {
                         Text($0)
                     }
                 }
                 
+                TextField("Name", text: $name)
                 TextField("Amount", text: $amount)
                     .keyboardType(.numberPad)
             }
@@ -70,7 +73,7 @@ struct AddView: View {
                         }
                         
                         let actualAmount = Int(self.amount)!
-                        let item = ExpenseItem(name: self.name, type: self.type, amount: actualAmount)
+                        let item = ExpenseItem(name: self.name, type: self.type, amount: actualAmount, spendOnDate: self.spendOnDate)
                         self.expenses.items.append(item)
                         self.presentationMode.wrappedValue.dismiss()
                     })

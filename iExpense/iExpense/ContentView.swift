@@ -13,6 +13,7 @@ struct ExpenseItem: Identifiable, Codable {
     let name: String
     let type: String
     let amount: Int
+    let spendOnDate: Date
 }
 
 class Expenses: ObservableObject {
@@ -41,9 +42,16 @@ class Expenses: ObservableObject {
     }
 }
 
+
 struct ContentView: View {
     @ObservedObject var expenses = Expenses()
     @State private var showingAddExpense = false
+    
+    static let taskDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        return formatter
+}()
     
     var body: some View {
         NavigationView {
@@ -53,10 +61,14 @@ struct ContentView: View {
                         VStack(alignment: .leading) {
                             Text(item.name)
                                 .font(.headline)
-                            Text(item.type)
+                            HStack {
+                                Text(item.type)
+                                Text(", \(item.spendOnDate, formatter: Self.taskDateFormatter)")
+                            }
                         }
                         
                         Spacer()
+                        
                         Text("\(item.amount)€")
                             .foregroundColor(amountColor(forAmount: item.amount))
                     }

@@ -9,7 +9,7 @@ import SwiftUI
 
 // challenge 3
 extension String {
-    var isStringInt: Bool {
+    var isInt: Bool {
         return Int(self) != nil
     }
 }
@@ -48,41 +48,43 @@ struct AddView: View {
                     },
                 trailing:
                     Button("Save") {
-                // challenge 3
-                if self.amount.isStringInt {
-                    if let actualAmount = Int(self.amount) {
+                        guard self.name != "" else {
+                            self.errorTitle = "input error"
+                            self.errorMessage = "Pleace enter the name of your expense"
+                            self.showAlert = true
+                            return
+                        }
+                        guard self.amount != "" else {
+                            self.errorTitle = "input error"
+                            self.errorMessage = "Pleace enter the costs of your expense"
+                            self.showAlert = true
+                            return
+                        }
                         
+                        guard self.amount.isInt else {
+                            self.errorTitle = "input error"
+                            self.errorMessage = "\(self.amount) is not an integer"
+                            self.showAlert = true
+                            self.amount = ""
+                            return
+                        }
+                        
+                        let actualAmount = Int(self.amount)!
                         let item = ExpenseItem(name: self.name, type: self.type, amount: actualAmount)
                         self.expenses.items.append(item)
                         self.presentationMode.wrappedValue.dismiss()
-                    }
-                } else {
-                    // Challenge 3
-//                    errorTitle = "Input Error"
-//                    errorMessage = "Not a Integer"
-                    self.amountError(title: "Input Error", message: "Not an Integer")
-                    self.showAlert = true
-                }
-
-            })
+                    })
             // Challenge 3
             .alert(isPresented: $showAlert) {
                 Alert(title: Text(errorTitle), message: Text(errorMessage), dismissButton: .default(Text("OK")))
             }
         }
     }
-    
-    // Challenge 3
-    func amountError(title: String, message: String) {
-        errorTitle = title
-        errorMessage = message
-        showAlert = true
-    }
 }
 
 struct AddView_Previews: PreviewProvider {
     static var previews: some View {
-        AddView(expenses: Expenses())
+        AddView(expenses: Expenses()).preferredColorScheme(.dark)
     }
 }
 

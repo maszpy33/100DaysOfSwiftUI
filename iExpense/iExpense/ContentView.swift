@@ -7,28 +7,88 @@
 
 import SwiftUI
 
-struct SecondView: View {
-    @Environment(\.presentationMode) var presentationMode
-    var name: String
-    
-    var body: some View {
-        Label("Second View", systemImage: "globe.asia.australia")
-        Text("User: \(name)")
-        Button("Dismiss") {
-            self.presentationMode.wrappedValue.dismiss()
+
+struct ExpenseItem: Identifiable, Codable {
+    let id = UUID()
+    let name: String
+    let type: String
+    let amount: Int
+}
+
+class Expenses: ObservableObject {
+    @Published var items = [ExpenseItem]() {
+        // loading and saving data
+        didSet {
+            let encoder = JSONEncoder()
+            
+            if let encoded = try? encoder.encode(items) {
+                UserDefaults.standard.set(encoded, forKey: "Items")
+            }
         }
     }
+    
+    init() {
+        if let items = UserDefaults.standard.data(forKey: "Items") {
+            let decoder = JSONDecoder()
+            
+            if let decoded = try? decoder.decode([ExpenseItem].self, from: items) {
+                self.items = decoded
+                return
+            }
+        }
+        
+        self.items = []
+    }
 }
+
 struct ContentView: View {
-    @State private var showingSheet = false
+    @ObservedObject var expenses = Expenses()
+    @State private var showingAddExpense = false
     
     var body: some View {
-        Label("First View", systemImage: "drop")
-        Button("Show Sheet") {
-            self.showingSheet.toggle()
+        NavigationView {
+            List {
+                ForEach(expenses.items) { item in
+                    HStack {
+                        VStack(alignment: .leading) {
+                            Text(item.name)
+                                .font(.headline)
+                            Text(item.type)
+                        }
+                        
+                        Spacer()
+                        Text("\(item.amount)€")
+                            .foregroundColor(amountColor(forAmount: item.amount))
+                    }
+                }
+                .onDelete(perform: removeItems)
+            }
+            .navigationBarTitle("iExpense")
+            .navigationBarItems(
+                // Challenge 1
+                leading: EditButton(),
+                trailing: Button(action: {
+                    self.showingAddExpense = true
+                }) {
+                    Image(systemName: "plus")
+                })
+            .sheet(isPresented: $showingAddExpense) {
+                AddView(expenses: self.expenses)
+            }
         }
-        .sheet(isPresented: $showingSheet) {
-            SecondView(name: "@maszpy")
+    }
+    func removeItems(at offsets: IndexSet) {
+        expenses.items.remove(atOffsets: offsets)
+    }
+    
+    func amountColor(forAmount amount: Int) -> Color {
+        switch amount {
+        case Int.min..<10:
+            return .green
+        case 10..<100:
+            return .orange
+        default:
+            return .red
         }
     }
 }

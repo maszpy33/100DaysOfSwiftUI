@@ -39,7 +39,7 @@ struct AddView: View {
                     }
                 }
                 
-                TextField("Name", text: $name)
+                TextField("Name", text: $name) 
                 TextField("Amount", text: $amount)
                     .keyboardType(.numberPad)
             }

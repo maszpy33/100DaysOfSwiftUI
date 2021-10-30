@@ -51,7 +51,7 @@ struct ContentView: View {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         return formatter
-}()
+    }()
     
     var body: some View {
         NavigationView {

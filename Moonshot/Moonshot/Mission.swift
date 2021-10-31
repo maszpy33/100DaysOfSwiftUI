@@ -7,9 +7,8 @@
 
 import Foundation
 
-
-
 struct Mission: Codable, Identifiable {
+    
     struct CrewRole: Codable {
         let name: String
         let role: String
@@ -26,6 +25,11 @@ struct Mission: Codable, Identifiable {
     
     var image: String {
         "apollo\(id)"
+    }
+    
+    // Challenge 3
+    var crewNames: String {
+        crew.map { $0.name.capitalized }.joined(separator: ", ")
     }
     
     var formattedLaunchDate: String {

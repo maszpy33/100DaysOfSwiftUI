@@ -65,13 +65,11 @@ struct MissionView: View {
                             .padding()
                             .opacity(self.switchDateOrCrew ? 1 : 0)
                             .offset(x: self.switchDateOrCrew ? 0 : -250)
-//                            .animation(self.switchDateOrCrew ? .easeIn(duration: 1) : .easeOut(duration: 1))
                             .animation(.linear)
                         Text(self.switchDateOrCrew ? "Mission launched: \(mission.formattedLaunchDate)" : "Crew: \(mission.crewNames)")
                             .padding()
                             .opacity(self.switchDateOrCrew ? 0 : 1)
                             .offset(x: self.switchDateOrCrew ? 250 : 0)
-//                            .animation(self.switchDateOrCrew ? .easeOut(duration: 1) : .easeIn(duration: 1))
                             .animation(.linear)
                     }
                     
@@ -117,7 +115,6 @@ struct MissionView: View {
             self.switchDateOrCrew.toggle()
         }) {
             Text(self.switchDateOrCrew ? "👨🏻‍🚀 Crew" : "🚀 Launche Date")
-//            Image(systemName: "switch.2")
         })
     }
 }

@@ -17,7 +17,6 @@ struct AstronautView: View {
         
         let allMissions: [Mission] = Bundle.main.decode("missions.json")
         
-        // COPY FROM ANOTHER GITHUB
         missions = allMissions.filter { $0.crew.map { $0.name }.contains(astronaut.id) }
     }
     

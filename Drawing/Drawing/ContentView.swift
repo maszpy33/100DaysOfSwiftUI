@@ -7,19 +7,6 @@
 
 import SwiftUI
 
-struct Triangle: Shape {
-    func path(in rect: CGRect) -> Path {
-        var path = Path()
-        
-        path.move(to: CGPoint(x: rect.midX, y: rect.minY))
-        path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
-        path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
-        path.addLine(to: CGPoint(x: rect.midX, y: rect.minY))
-        
-        return path
-    }
-}
-
 struct Arc: InsettableShape {
     var startAngle: Angle
     var endAngle: Angle
@@ -37,6 +24,16 @@ struct Arc: InsettableShape {
         var arc = self
         arc.insetAmount += amount
         return arc
+    }
+}
+
+extension View {
+    func animate(using animation: Animation = .easeInOut(duration: 1), _ action: @escaping () -> Void) -> some View {
+        onAppear {
+            withAnimation(animation) {
+                action()
+            }
+        }
     }
 }
 
@@ -83,6 +80,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView().preferredColorScheme(.dark)
     }
 }

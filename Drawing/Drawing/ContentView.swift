@@ -7,74 +7,56 @@
 
 import SwiftUI
 
-struct Arc: InsettableShape {
-    var startAngle: Angle
-    var endAngle: Angle
-    var clockwise: Bool
-    var insetAmount: CGFloat = 0
+struct Checkerboard: Shape {
+    var rows: Int
+    var columns: Int
     
-    func path(in rect: CGRect) -> Path {
-        var path = Path()
-        path.addArc(center: CGPoint(x: rect.midX, y: rect.midY), radius: rect.width / 2 - insetAmount, startAngle: startAngle, endAngle: endAngle, clockwise: clockwise)
+    public var animatableDate: AnimatablePair<Double, Double> {
+        get {
+            AnimatablePair(Double(rows), Double(columns))
+        }
         
-        return path
-    }
-    
-    func inset(by amount: CGFloat) -> some InsettableShape {
-        var arc = self
-        arc.insetAmount += amount
-        return arc
-    }
-}
-
-extension View {
-    func animate(using animation: Animation = .easeInOut(duration: 1), _ action: @escaping () -> Void) -> some View {
-        onAppear {
-            withAnimation(animation) {
-                action()
-            }
+        set {
+            self.rows = Int(newValue.first)
+            self.columns = Int(newValue.second)
         }
     }
-}
-
-struct Arc2: InsettableShape {
-    var startAngle: Angle
-    var endAngle: Angle
-    var clockwise: Bool
-    var insetAmount: CGFloat = 0
     
     func path(in rect: CGRect) -> Path {
-        let rotationAdjustment = Angle.degrees(90)
-        let modifierStart = startAngle - rotationAdjustment
-        let modifiedEnd = endAngle - rotationAdjustment
-        
         var path = Path()
-        path.addArc(center: CGPoint(x: rect.midX, y: rect.midY), radius: rect.width / 2 - insetAmount, startAngle: modifierStart, endAngle: modifiedEnd, clockwise: !clockwise)
+        
+        let rowSize = rect.height / CGFloat(rows)
+        let columnSize = rect.width / CGFloat(columns)
+        
+        for row in 0..<rows {
+            for column in 0..<columns {
+                if (row + column).isMultiple(of: 2) {
+                    let startX = columnSize * CGFloat(column)
+                    let startY = rowSize * CGFloat(row)
+                    
+                    let rect = CGRect(x: startX, y: startY, width: columnSize, height: rowSize)
+                    path.addRect(rect)
+                }
+            }
+        }
         
         return path
     }
-    
-    func inset(by amount: CGFloat) -> some InsettableShape {
-        var arc = self
-        arc.insetAmount += amount
-        return arc
-    }
 }
+
 
 struct ContentView: View {
+    @State private var rows = 4
+    @State private var columns = 4
+    
     var body: some View {
-        VStack(spacing: 0) {
-            Circle()
-                .strokeBorder(Color.blue, lineWidth: 40)
-            
-            ZStack {
-                Arc2(startAngle: .degrees(-90), endAngle: .degrees(90), clockwise: true)
-                    .strokeBorder(Color.red, lineWidth: 40)
-                
-                Arc(startAngle: .degrees(180), endAngle: .degrees(0), clockwise: true)
-                    .strokeBorder(Color.green, lineWidth: 40)
+        Checkerboard(rows: rows, columns: columns)
+            .onTapGesture {
+                withAnimation(.linear(duration: 3)) {
+                    self.rows = 8
+                    self.columns = 16
+                }
             }
-        }
     }
 }
 

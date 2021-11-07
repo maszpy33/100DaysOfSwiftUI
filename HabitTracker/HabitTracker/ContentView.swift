@@ -22,13 +22,13 @@ struct ContentView: View {
         NavigationView {
             List {
                 ForEach(habits.tasks) { habit in
-                    NavigationLink(destination: DetailsView(habits: self.habits)) {
+                    NavigationLink(destination: DetailsView(habits: self.habits, taskTitle: habit.name)) {
                         HStack {
                             VStack(alignment: .leading) {
                                 HStack {
-                                    Label("icon only", systemImage: habit.status ? "checkmark.circle" : "xmark.circle")
+                                    Label("icon only", systemImage: habit.getStatus ? "checkmark.circle" : "xmark.circle")
                                         .labelStyle(.iconOnly)
-                                        .foregroundColor(habit.status ? .green : .red)
+                                        .foregroundColor(habit.getStatus ? .green : .red)
                                     Text(habit.name)
                                         .font(.headline)
                                     Text(" | Count: \(habit.count)")
@@ -37,10 +37,10 @@ struct ContentView: View {
                                     Label("icon only", systemImage: habit.groupImage)
                                         .labelStyle(.iconOnly)
                                     Text(habit.category)
-                                    Text("Started: \(habit.startDate, formatter: Self.taskDateFormatter)")
                                 }
                             }
                         }
+                        .font(.subheadline)
                     }
                     
                 }

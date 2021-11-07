@@ -9,16 +9,13 @@ import SwiftUI
 
 struct AddView: View {
     @Environment(\.presentationMode) var presentationMode
-    @ObservedObject var habitDetail: Habits
+    @ObservedObject var habits: Habits
     @State private var name = ""
     @State private var groupImage = "person"
     @State private var description = ""
-    @State private var todaysDate = Date()
     @State private var category = ""
     @State private var count = 0
-    @State private var status = false
-    @State private var theme = 0
-    @State private var startDate = Date()
+    @State private var modifiedDate = Date()
     
     static let groupImages = ["pills", "heart", "mustache", "clock", "person.3.sequence", "pencil", "gamecontroller", "house", "keyboard", "laptopcomputer", "apps.iphone", "apps.ipad", "applewatch", "message", "swift"]
     
@@ -31,13 +28,15 @@ struct AddView: View {
     @State private var errorMessage = ""
     @State private var showAlert = false
     
+    let mainColor = Color.orange
+    
     
     var body: some View {
-        var currentTheme = themes2[theme]
         
         NavigationView {
             List {
-                DatePicker("Start Date:", selection: $startDate, displayedComponents: .date)
+
+                DatePicker("Start Date:", selection: $modifiedDate, displayedComponents: .date)
                 
                 Picker("Habit Image:", selection: $groupImage) {
                     ForEach(Self.groupImages, id: \.self) {
@@ -50,7 +49,7 @@ struct AddView: View {
                 Picker("Category: ", selection: $category) {
                     ForEach(Self.categories, id: \.self) {
                         Text($0)
-                            .foregroundColor(currentTheme)
+                            .foregroundColor(mainColor)
                     }
                 }
                 
@@ -58,46 +57,26 @@ struct AddView: View {
                     Text("Title:")
                         .frame(alignment: .leading)
                     TextField("", text: $name)
-                        .background(Color(red: 0.4, green: 0.4, blue: 0.4))
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
                     
                     Divider()
                     
                     Text("Description:")
                         .frame(alignment: .leading)
                     TextField("", text: $description)
-                        .background(Color(red: 0.4, green: 0.4, blue: 0.4))
-                    
-//                    Toggle(isOn: $status) {
-//                        Text("Habit Switch")
-//                            .font(.headline)
-//                            .foregroundColor(currentTheme)
-//                    }
-//                    .toggleStyle(SwitchToggleStyle(tint: currentTheme))
-//                    .onChange(of: status) { _status in
-//                        if _status {
-//                            self.count += 1
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+
+//                    Picker("Change Theme:", selection: $theme) {
+//                        ForEach(Self.themes, id: \.self) { color in
+//                            Label("icon only", systemImage: self.groupImage)
+//                                .labelStyle(.iconOnly)
+//                                .foregroundColor(color)
 //                        }
 //                    }
-//                    .shadow(color: currentTheme.opacity(0.2), radius: 3, x: 0.0, y: 0.0)
-//
-//                    HStack {
-//                        Text("Adjust Count: ")
-//                        Stepper(value: $count, in: 0...365) {
-//                            Text("\(count)")
-//                        }
-//                    }
-//
-                    Picker("Change Theme:", selection: $theme) {
-                        ForEach(Self.themes, id: \.self) { color in
-                            Label("icon only", systemImage: self.groupImage)
-                                .labelStyle(.iconOnly)
-                                .foregroundColor(color)
-                        }
-                    }
-                    .foregroundColor(currentTheme)
+//                    .foregroundColor(currentTheme)
                 }
             }
-            .foregroundColor(currentTheme)
+            .foregroundColor(mainColor)
             .navigationBarTitle("Add new habit")
             .navigationBarItems(
                 leading: Button("Cancel") {
@@ -111,7 +90,8 @@ struct AddView: View {
                         return
                     }
                     
-                    let task = HabitTask(name: self.name, category: self.category, groupImage: self.groupImage, description: self.description, todaysDate: self.todaysDate, startDate: self.startDate, status: self.status, count: self.count, theme: self.theme)
+                    let task = Task(name: self.name, category: self.category, groupImage: self.groupImage, description: self.description, modifiedDate: self.modifiedDate, count: self.count)
+                    
                     self.habits.tasks.append(task)
                     self.presentationMode.wrappedValue.dismiss()
                 })
@@ -121,11 +101,11 @@ struct AddView: View {
         }
     }
     
-    func raisCount() {
-        if self.status {
-            self.count += 1
-        }
-    }
+//    func raisCount() {
+//        if self.status {
+//            self.count += 1
+//        }
+//    }
 }
 
 struct AddView_Previews: PreviewProvider {

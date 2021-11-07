@@ -14,6 +14,8 @@
 		9F81AA6127372507005FE343 /* DetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F81AA6027372507005FE343 /* DetailsView.swift */; };
 		9F81AA6327372524005FE343 /* Habit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F81AA6227372524005FE343 /* Habit.swift */; };
 		9F81AA67273733D0005FE343 /* AddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F81AA66273733D0005FE343 /* AddView.swift */; };
+		9F81AA692737D89F005FE343 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F81AA682737D89F005FE343 /* Settings.swift */; };
+		9F81AA6B2737D8B6005FE343 /* SetttingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F81AA6A2737D8B6005FE343 /* SetttingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +27,8 @@
 		9F81AA6027372507005FE343 /* DetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsView.swift; sourceTree = "<group>"; };
 		9F81AA6227372524005FE343 /* Habit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Habit.swift; sourceTree = "<group>"; };
 		9F81AA66273733D0005FE343 /* AddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddView.swift; sourceTree = "<group>"; };
+		9F81AA682737D89F005FE343 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		9F81AA6A2737D8B6005FE343 /* SetttingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetttingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +66,8 @@
 				9F81AA6027372507005FE343 /* DetailsView.swift */,
 				9F81AA66273733D0005FE343 /* AddView.swift */,
 				9F81AA6227372524005FE343 /* Habit.swift */,
+				9F81AA6A2737D8B6005FE343 /* SetttingsView.swift */,
+				9F81AA682737D89F005FE343 /* Settings.swift */,
 				9F81AA52273721BE005FE343 /* Assets.xcassets */,
 				9F81AA54273721BE005FE343 /* Preview Content */,
 			);
@@ -146,11 +152,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F81AA692737D89F005FE343 /* Settings.swift in Sources */,
 				9F81AA51273721B3005FE343 /* ContentView.swift in Sources */,
 				9F81AA6327372524005FE343 /* Habit.swift in Sources */,
 				9F81AA67273733D0005FE343 /* AddView.swift in Sources */,
 				9F81AA6127372507005FE343 /* DetailsView.swift in Sources */,
 				9F81AA4F273721B3005FE343 /* HabitTrackerApp.swift in Sources */,
+				9F81AA6B2737D8B6005FE343 /* SetttingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

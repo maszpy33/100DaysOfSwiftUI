@@ -16,13 +16,11 @@ struct AddView: View {
     @State private var category = ""
     @State private var acomplisehedCount = 0
     @State private var modifiedDate = Date()
+    @State private var getStatus: Bool = false
     
-    static let groupImages = ["pills", "heart", "mustache", "clock", "person.3.sequence", "pencil", "gamecontroller", "house", "keyboard", "laptopcomputer", "apps.iphone", "apps.ipad", "applewatch", "message", "swift"]
+    static let groupImages = ["heart", "mustache", "clock", "person.3.sequence", "pencil", "gamecontroller", "house", "book", "keyboard", "laptopcomputer", "apps.iphone", "apps.ipad", "applewatch", "message", "swift", "tortoise"]
     
     static let categories = ["Bussines", "Private", "Programming", "University", "Art"]
-    
-    static let themes: [Color] = [.orange, .red, .green, .blue, .yellow, .purple, .black, .white]
-    let themes2: [Color] = [.orange, .red, .green, .blue, .yellow, .purple, .black, .white]
     
     @State private var errorTitle = ""
     @State private var errorMessage = ""
@@ -36,12 +34,17 @@ struct AddView: View {
         NavigationView {
             List {
 
-                DatePicker("Start Date:", selection: $modifiedDate, displayedComponents: .date)
+//                DatePicker("Current Date:", selection: $modifiedDate, displayedComponents: .date)
+                HStack {
+                    Text("Last modified Date:")
+                    Text(modifiedDate, style: .date)
+                }
                 
-                Picker("Habit Image:", selection: $groupImage) {
+                Picker("Habit Icon:", selection: $groupImage) {
                     ForEach(Self.groupImages, id: \.self) {
                         Label("icon only", systemImage: $0)
                             .labelStyle(.iconOnly)
+                            .foregroundColor(mainColor)
                     }
                 }
                 
@@ -65,17 +68,8 @@ struct AddView: View {
                     TextField("", text: $description)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
 
-//                    Picker("Change Theme:", selection: $theme) {
-//                        ForEach(Self.themes, id: \.self) { color in
-//                            Label("icon only", systemImage: self.groupImage)
-//                                .labelStyle(.iconOnly)
-//                                .foregroundColor(color)
-//                        }
-//                    }
-//                    .foregroundColor(currentTheme)
                 }
             }
-            .foregroundColor(mainColor)
             .navigationBarTitle("Add new habit")
             .navigationBarItems(
                 leading: Button("Cancel") {
@@ -89,7 +83,7 @@ struct AddView: View {
                         return
                     }
                     
-                    let task = Task(name: self.name, category: self.category, groupImage: self.groupImage, description: self.description, modifiedDate: self.modifiedDate, acomplisehedCount: self.acomplisehedCount)
+                    let task = Task(name: self.name, category: self.category, groupImage: self.groupImage, description: self.description, modifiedDate: self.modifiedDate, getStatus: self.getStatus, acomplisehedCount: self.acomplisehedCount)
                     
                     self.habits.tasks.append(task)
                     self.presentationMode.wrappedValue.dismiss()
@@ -99,12 +93,6 @@ struct AddView: View {
             }
         }
     }
-    
-//    func raisCount() {
-//        if self.status {
-//            self.count += 1
-//        }
-//    }
 }
 
 struct AddView_Previews: PreviewProvider {

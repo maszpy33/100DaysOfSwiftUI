@@ -10,25 +10,27 @@ import Foundation
 struct Task: Identifiable, Codable {
     let id = UUID()
     var name: String
-    let category: String
-    let groupImage: String
-    let description: String
-    var modifiedDate = Date()
+    var category: String
+    var groupImage: String
+    var description: String
+    
+    // init modifiedDate with yesterday so getStatus stayes false
+    var modifiedDate = Date(timeIntervalSinceNow: -86400)
+    var getStatus: Bool = false
     
     var acomplisehedCount: Int = 0 {
         didSet {
+            guard modifiedDate != Date() else {
+                self.modifiedDate = Date()
+                self.getStatus = true
+                return
+            }
+            
             modifiedDate = Date()
             if acomplisehedCount < 0 {
                 acomplisehedCount = 0
             }
         }
-    }
-    
-    var getStatus: Bool {
-        guard modifiedDate == Date() else {
-            return false
-        }
-        return true
     }
 }
 
@@ -55,6 +57,18 @@ class Habits: ObservableObject {
         }
         
         self.tasks = []
+    }
+    
+    // update getStatus
+    func updateGetStatus(index: Int) {
+        guard self.tasks[index].modifiedDate == Date() else {
+            self.tasks[index].getStatus = false
+            return
+        }
+//        guard task.modifiedDate == Date() else {
+//            task.getStatus = false
+//            return
+//        }
     }
     
     // add helper functions

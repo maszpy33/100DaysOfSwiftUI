@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @AppStorage("today") var nameAno = "anonymous"
+    
     @ObservedObject var habits = Habits()
     @State private var showingDetailsView = false
     @State private var showingAddView = false
@@ -17,6 +20,8 @@ struct ContentView: View {
         formatter.dateStyle = .medium
         return formatter
     }()
+    
+    let mainColor = Color.orange
     
     var body: some View {
         NavigationView {
@@ -31,13 +36,15 @@ struct ContentView: View {
                                         .foregroundColor(self.habits.tasks[index].getStatus ? .green : .red)
                                     Text(self.habits.tasks[index].name)
                                         .font(.headline)
-                                    Text(" | Count: \(self.habits.tasks[index].acomplisehedCount)")
+                                    Text(" |  Habit Count: \(self.habits.tasks[index].acomplisehedCount)")
                                 }
                                 HStack {
                                     Label("icon only", systemImage: self.habits.tasks[index].groupImage)
                                         .labelStyle(.iconOnly)
+                                        .foregroundColor(mainColor)
                                     Text(self.habits.tasks[index].category)
                                 }
+                                .padding(5)
                             }
                         }
                         .font(.subheadline)
@@ -47,7 +54,8 @@ struct ContentView: View {
                 .onDelete(perform: removeTask)
             }
             .listStyle(GroupedListStyle())
-            .navigationBarTitle("HabitTracker:")
+            .onAppear(perform: updateGetStatus)
+            .navigationBarTitle("HabitTracker: \(nameAno)")
             .navigationBarItems(
                 leading: EditButton(),
                 trailing: Button(action: {
@@ -63,6 +71,12 @@ struct ContentView: View {
     
     func removeTask(at offsets: IndexSet) {
         habits.tasks.remove(atOffsets: offsets)
+    }
+    
+    func updateGetStatus() {
+        for ind in 0..<self.habits.tasks.count {
+            habits.updateGetStatus(index: ind)
+        }
     }
 }
 

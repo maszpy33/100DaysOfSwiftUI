@@ -13,43 +13,45 @@ struct DetailsView: View {
     var index: Int
     
     @State private var name = ""
-    @State private var groupImage = "person"
-    @State private var description = ""
-    @State private var category = ""
+    @State private var newGroupImage = ""
+    @State private var newDescription = ""
+    @State private var newCategory = ""
     @State private var count = 0
     @State private var modifiedDate = Date()
     
-    static let groupImages = ["pills", "heart", "mustache", "clock", "person.3.sequence", "pencil", "gamecontroller", "house", "keyboard", "laptopcomputer", "apps.iphone", "apps.ipad", "applewatch", "message", "swift"]
+    static let groupImages = ["heart", "mustache", "clock", "person.3.sequence", "pencil", "gamecontroller", "house", "book", "keyboard", "laptopcomputer", "apps.iphone", "apps.ipad", "applewatch", "message", "swift"]
     
-    static let categories = ["Bussines", "Private", "Programming", "University", "Art"]
+    static let categories = ["Bussines", "Private", "Programming", "University", "Art", "Education"]
     
     
     @State private var errorTitle = ""
     @State private var errorMessage = ""
     @State private var showAlert = false
     
+    let mainColor = Color.orange
     
     var body: some View {
         
         NavigationView {
             List {
-
-//                Text("\(taskTitle)")
+                HStack {
+                    Label("icon only", systemImage: "calendar")
+                        .labelStyle(.iconOnly)
+                    Text("Current Date: ")
+                    Text(modifiedDate, style: .date)
+                }
                 
-                Label("Last Modified: \(modifiedDate)", systemImage: "calendar")
-                
-                Picker("Change Icon:", selection: $groupImage) {
+                Picker("Change Icon:", selection: $newGroupImage) {
                     ForEach(Self.groupImages, id: \.self) {
                         Label("icon only", systemImage: $0)
                             .labelStyle(.iconOnly)
+                            .foregroundColor(mainColor)
                     }
                 }
                 
-                // EDIT: user can add a category name
-                Picker("Change Category: ", selection: $category) {
+                Picker("Change Category: ", selection: $newCategory) {
                     ForEach(Self.categories, id: \.self) {
                         Text($0)
-                            .foregroundColor(.orange)
                     }
                 }
                 
@@ -63,7 +65,7 @@ struct DetailsView: View {
                     
                     Text("Change Description:")
                         .frame(alignment: .leading)
-                    TextField("", text: $description)
+                    TextField("\(habits.tasks[index].description)", text: $habits.tasks[index].description)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
 
                     HStack {
@@ -74,24 +76,33 @@ struct DetailsView: View {
                     }
                 }
             }
-            .foregroundColor(.orange)
             .navigationBarTitle("DetailsView")
             .navigationBarItems(
                 leading: Button("Cancel") {
                     self.presentationMode.wrappedValue.dismiss()
                 },
                 trailing: Button("Save") {
-                    
-                    // FIXME: saving only creates a new habit with the new name
                     guard habits.tasks[index].name != "" else {
                         self.errorTitle = "input error"
                         self.errorMessage = "Your habit has to have a title!"
                         self.showAlert = true
                         return
                     }
-//                    let task = Task(name: self.name, category: self.category, groupImage: self.groupImage, description: self.description, modifiedDate: self.modifiedDate, acomplisehedCount: self.acomplisehedCount)
                     
-//                    self.habits.tasks.append(task)
+                    guard self.newCategory == "" else {
+                        habits.tasks[index].category = self.newCategory
+                        return
+                    }
+                    guard self.newGroupImage == "" else {
+                        habits.tasks[index].groupImage = self.newGroupImage
+                        return
+                    }
+                    guard self.newDescription == "" else {
+                        habits.tasks[index].description = self.newDescription
+                        return
+                    }
+                    
+
                     self.presentationMode.wrappedValue.dismiss()
                 })
             .alert(isPresented: $showAlert) {
@@ -99,6 +110,10 @@ struct DetailsView: View {
             }
         }
     }
+    
+//    func changeStatus() {
+//        if 
+//    }
 }
 
 //struct DetailsView_Previews: PreviewProvider {

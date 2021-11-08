@@ -9,8 +9,8 @@ import SwiftUI
 
 struct DetailsView: View {
     @Environment(\.presentationMode) var presentationMode
-    @ObservedObject var habits: Habits
-    @State var taskTitle: String
+    @EnvironmentObject var habits: Habits
+    var index: Int
     
     @State private var name = ""
     @State private var groupImage = "person"
@@ -34,6 +34,8 @@ struct DetailsView: View {
         NavigationView {
             List {
 
+//                Text("\(taskTitle)")
+                
                 Label("Last Modified: \(modifiedDate)", systemImage: "calendar")
                 
                 Picker("Change Icon:", selection: $groupImage) {
@@ -54,7 +56,7 @@ struct DetailsView: View {
                 VStack(alignment: .leading) {
                     Text("Change Title:")
                         .frame(alignment: .leading)
-                    TextField("\(taskTitle)", text: $name)
+                    TextField("\(habits.tasks[index].name)", text: $habits.tasks[index].name)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                     
                     Divider()
@@ -63,24 +65,11 @@ struct DetailsView: View {
                         .frame(alignment: .leading)
                     TextField("", text: $description)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
-                    
-//                    Toggle(isOn: $status) {
-//                        Text("Habit Switch")
-//                            .font(.headline)
-//                            .foregroundColor(currentTheme)
-//                    }
-//                    .toggleStyle(SwitchToggleStyle(tint: currentTheme))
-//                    .onChange(of: status) { _status in
-//                        if _status {
-//                            self.count += 1
-//                        }
-//                    }
-//                    .shadow(color: currentTheme.opacity(0.2), radius: 3, x: 0.0, y: 0.0)
-//
+
                     HStack {
                         Text("Adjust Count: ")
-                        Stepper(value: $count, in: 0...365) {
-                            Text("\(count)")
+                        Stepper(value: $habits.tasks[index].acomplisehedCount, in: 0...365) {
+                            Text("\(habits.tasks[index].acomplisehedCount)")
                         }
                     }
                 }
@@ -94,14 +83,15 @@ struct DetailsView: View {
                 trailing: Button("Save") {
                     
                     // FIXME: saving only creates a new habit with the new name
-                    guard self.name != "" else {
-                        self.name = taskTitle
+                    guard habits.tasks[index].name != "" else {
+                        self.errorTitle = "input error"
+                        self.errorMessage = "Your habit has to have a title!"
+                        self.showAlert = true
                         return
                     }
+//                    let task = Task(name: self.name, category: self.category, groupImage: self.groupImage, description: self.description, modifiedDate: self.modifiedDate, acomplisehedCount: self.acomplisehedCount)
                     
-                    let task = Task(name: self.name, category: self.category, groupImage: self.groupImage, description: self.description, modifiedDate: self.modifiedDate, count: self.count)
-                    
-                    self.habits.tasks.append(task)
+//                    self.habits.tasks.append(task)
                     self.presentationMode.wrappedValue.dismiss()
                 })
             .alert(isPresented: $showAlert) {

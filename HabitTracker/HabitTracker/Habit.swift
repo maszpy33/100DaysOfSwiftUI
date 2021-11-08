@@ -15,11 +15,11 @@ struct Task: Identifiable, Codable {
     let description: String
     var modifiedDate = Date()
     
-    var count: Int = 0 {
+    var acomplisehedCount: Int = 0 {
         didSet {
             modifiedDate = Date()
-            if count < 0 {
-                count = 0
+            if acomplisehedCount < 0 {
+                acomplisehedCount = 0
             }
         }
     }

@@ -21,22 +21,22 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             List {
-                ForEach(habits.tasks) { habit in
-                    NavigationLink(destination: DetailsView(habits: self.habits, taskTitle: habit.name)) {
+                ForEach(habits.tasks.indices, id: \.self) { index in
+                    NavigationLink(destination: DetailsView(index: index).environmentObject(self.habits)) {
                         HStack {
                             VStack(alignment: .leading) {
                                 HStack {
-                                    Label("icon only", systemImage: habit.getStatus ? "checkmark.circle" : "xmark.circle")
+                                    Label("icon only", systemImage: self.habits.tasks[index].getStatus ? "checkmark.circle" : "xmark.circle")
                                         .labelStyle(.iconOnly)
-                                        .foregroundColor(habit.getStatus ? .green : .red)
-                                    Text(habit.name)
+                                        .foregroundColor(self.habits.tasks[index].getStatus ? .green : .red)
+                                    Text(self.habits.tasks[index].name)
                                         .font(.headline)
-                                    Text(" | Count: \(habit.count)")
+                                    Text(" | Count: \(self.habits.tasks[index].acomplisehedCount)")
                                 }
                                 HStack {
-                                    Label("icon only", systemImage: habit.groupImage)
+                                    Label("icon only", systemImage: self.habits.tasks[index].groupImage)
                                         .labelStyle(.iconOnly)
-                                    Text(habit.category)
+                                    Text(self.habits.tasks[index].category)
                                 }
                             }
                         }

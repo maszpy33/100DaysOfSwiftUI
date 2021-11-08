@@ -14,7 +14,7 @@ struct AddView: View {
     @State private var groupImage = "person"
     @State private var description = ""
     @State private var category = ""
-    @State private var count = 0
+    @State private var acomplisehedCount = 0
     @State private var modifiedDate = Date()
     
     static let groupImages = ["pills", "heart", "mustache", "clock", "person.3.sequence", "pencil", "gamecontroller", "house", "keyboard", "laptopcomputer", "apps.iphone", "apps.ipad", "applewatch", "message", "swift"]
@@ -45,7 +45,6 @@ struct AddView: View {
                     }
                 }
                 
-                // EDIT: user can add a category name
                 Picker("Category: ", selection: $category) {
                     ForEach(Self.categories, id: \.self) {
                         Text($0)
@@ -90,7 +89,7 @@ struct AddView: View {
                         return
                     }
                     
-                    let task = Task(name: self.name, category: self.category, groupImage: self.groupImage, description: self.description, modifiedDate: self.modifiedDate, count: self.count)
+                    let task = Task(name: self.name, category: self.category, groupImage: self.groupImage, description: self.description, modifiedDate: self.modifiedDate, acomplisehedCount: self.acomplisehedCount)
                     
                     self.habits.tasks.append(task)
                     self.presentationMode.wrappedValue.dismiss()

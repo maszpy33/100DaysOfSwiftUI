@@ -54,7 +54,7 @@ struct ContentView: View {
                 .onDelete(perform: removeTask)
             }
             .listStyle(GroupedListStyle())
-            .onAppear(perform: updateGetStatus)
+//            .onAppear(perform: updateGetStatus(tasks: Habits))
             .navigationBarTitle("HabitTracker: \(nameAno)")
             .navigationBarItems(
                 leading: EditButton(),
@@ -71,12 +71,6 @@ struct ContentView: View {
     
     func removeTask(at offsets: IndexSet) {
         habits.tasks.remove(atOffsets: offsets)
-    }
-    
-    func updateGetStatus() {
-        for ind in 0..<self.habits.tasks.count {
-            habits.updateGetStatus(index: ind)
-        }
     }
 }
 

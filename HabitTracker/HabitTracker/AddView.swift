@@ -16,7 +16,7 @@ struct AddView: View {
     @State private var category = ""
     @State private var acomplisehedCount = 0
     @State private var modifiedDate = Date()
-    @State private var getStatus: Bool = false
+    @State private var getStatus = false
     
     static let groupImages = ["heart", "mustache", "clock", "person.3.sequence", "pencil", "gamecontroller", "house", "book", "keyboard", "laptopcomputer", "apps.iphone", "apps.ipad", "applewatch", "message", "swift", "tortoise"]
     
@@ -33,7 +33,6 @@ struct AddView: View {
         
         NavigationView {
             List {
-
 //                DatePicker("Current Date:", selection: $modifiedDate, displayedComponents: .date)
                 HStack {
                     Text("Last modified Date:")
@@ -83,7 +82,7 @@ struct AddView: View {
                         return
                     }
                     
-                    let task = Task(name: self.name, category: self.category, groupImage: self.groupImage, description: self.description, modifiedDate: self.modifiedDate, getStatus: self.getStatus, acomplisehedCount: self.acomplisehedCount)
+                    let task = Task(name: self.name, category: self.category, groupImage: self.groupImage, description: self.description, modifiedDate: self.modifiedDate, acomplisehedCount: self.acomplisehedCount)
                     
                     self.habits.tasks.append(task)
                     self.presentationMode.wrappedValue.dismiss()

@@ -17,7 +17,7 @@ struct DetailsView: View {
     @State private var newDescription = ""
     @State private var newCategory = ""
     @State private var count = 0
-    @State private var modifiedDate = Date()
+    @State private var modifiedDate = Date().addingTimeInterval(-86400)
     
     static let groupImages = ["heart", "mustache", "clock", "person.3.sequence", "pencil", "gamecontroller", "house", "book", "keyboard", "laptopcomputer", "apps.iphone", "apps.ipad", "applewatch", "message", "swift"]
     
@@ -29,6 +29,13 @@ struct DetailsView: View {
     @State private var showAlert = false
     
     let mainColor = Color.orange
+    
+    var newIndex: Int {
+        guard habits.tasks.count >= index else {
+            return habits.tasks.count
+        }
+        return index
+    }
     
     var body: some View {
         
@@ -58,7 +65,7 @@ struct DetailsView: View {
                 VStack(alignment: .leading) {
                     Text("Change Title:")
                         .frame(alignment: .leading)
-                    TextField("\(habits.tasks[index].name)", text: $habits.tasks[index].name)
+                    TextField("\(habits.tasks[newIndex].name)", text: $habits.tasks[newIndex].name)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                     
                     Divider()
@@ -102,6 +109,8 @@ struct DetailsView: View {
                         return
                     }
                     
+                    habits.updateGetStatus(task: habits.tasks[index])
+                    
 
                     self.presentationMode.wrappedValue.dismiss()
                 })
@@ -110,10 +119,6 @@ struct DetailsView: View {
             }
         }
     }
-    
-//    func changeStatus() {
-//        if 
-//    }
 }
 
 //struct DetailsView_Previews: PreviewProvider {

@@ -13,16 +13,25 @@ struct Task: Identifiable, Codable {
     var category: String
     var groupImage: String
     var description: String
-    
+
     // init modifiedDate with yesterday so getStatus stayes false
-    var modifiedDate = Date(timeIntervalSinceNow: -86400)
+//    var modifiedDate = Date(timeIntervalSinceNow: -86500)
+    var modifiedDate: Date
+    
     var getStatus: Bool = false
+//    var getStatus: Bool {
+//        guard self.modifiedDate != Date() else {
+//            print(self.modifiedDate)
+//            print(Date())
+//            return true
+//        }
+//        return false
+//    }
     
     var acomplisehedCount: Int = 0 {
         didSet {
-            guard modifiedDate != Date() else {
+            guard self.modifiedDate != Date() else {
                 self.modifiedDate = Date()
-                self.getStatus = true
                 return
             }
             
@@ -37,6 +46,7 @@ struct Task: Identifiable, Codable {
 // habits class to load and save data
 class Habits: ObservableObject {
     private static let habitsKey = "habits"
+    let formatter = DateFormatter()
     
     @Published var tasks = [Task]() {
         didSet {
@@ -60,15 +70,19 @@ class Habits: ObservableObject {
     }
     
     // update getStatus
-    func updateGetStatus(index: Int) {
-        guard self.tasks[index].modifiedDate == Date() else {
-            self.tasks[index].getStatus = false
+    func updateGetStatus(task: Task) {
+        guard let index = getIndex(task: task) else { return }
+        
+        formatter.timeStyle = .none
+        formatter.dateStyle = .medium
+        let currentDate = formatter.string(from: Date())
+        let modDate = formatter.string(from: tasks[index].modifiedDate)
+        
+        guard modDate != currentDate else {
+            tasks[index].getStatus = true
             return
         }
-//        guard task.modifiedDate == Date() else {
-//            task.getStatus = false
-//            return
-//        }
+        tasks[index].getStatus = false
     }
     
     // add helper functions

@@ -7,13 +7,21 @@
 
 import SwiftUI
 
+
+// Challenge 2
+enum AlertType {
+    case confirmation
+    case error
+}
+
 struct CheckoutView: View {
-    @ObservedObject var order: Order
+    @ObservedObject var obsOrder: ObservableOrder
     
-    @State private var animationGo = false
-    
+    // Challenge 2
+    @State private var showingAlert = false
     @State private var confirmationMessage = ""
-    @State private var showingConfirmation = false
+    @State private var errorMessage = ""
+    @State private var alertType = AlertType.confirmation
     
     var body: some View {
         ScrollView {
@@ -27,36 +35,33 @@ struct CheckoutView: View {
                 }
                 .frame(height: 233)
                 
-                Text("Your total is \(order.cost, format: .currency(code: "EUR"))")
+                Text("Your total is \(obsOrder.order.cost, format: .currency(code: "EUR"))")
                     .font(.title)
                 
                 Button("Place Order", action: {
-                    self.animationGo.toggle()
                     Task {
                         await placeOrder()
                     }
                 })
                     .padding()
-                
-                Text("🧁")
-                    .opacity(self.animationGo ? 1 : 0)
-                    .scaleEffect(self.animationGo ? 4 : 1)
-                    .offset(x: 0, y: self.animationGo ? 350 : 0)
-                    .animation(.easeIn)
             }
         }
         .navigationTitle("Check out")
         .navigationBarTitleDisplayMode(.inline)
-        .alert("Thank you!", isPresented: $showingConfirmation) {
-            Button("OK") { }
-        } message: {
-            Text(confirmationMessage)
+        .alert(isPresented: $showingAlert) { () -> Alert in
+            switch alertType {
+            case .confirmation:
+                return Alert(title: Text("Thank you!"), message: Text(confirmationMessage), dismissButton: .default(Text("OK")))
+            case .error:
+                return Alert(title: Text("Error!"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
+            }
         }
     }
     
     func placeOrder() async {
-        guard let encoded = try? JSONEncoder().encode(order) else {
+        guard let encoded = try? JSONEncoder().encode(obsOrder.order) else {
             print("Failed to encode order")
+            self.showingAlert = true
             return
         }
         
@@ -71,15 +76,31 @@ struct CheckoutView: View {
             
             let decodedOrder = try JSONDecoder().decode(Order.self, from: data)
             confirmationMessage = "Your order for \(decodedOrder.quantity)x \(Order.types[decodedOrder.type].lowercased()) cupcakes is on its way!"
-            showingConfirmation = true
+            self.showAlert(confirmation: confirmationMessage)
         } catch {
             print("Checkout failed.")
+            // Challenge 2
+            self.showAlert(error: "Connction failed, please try again")
         }
+    }
+    
+    // Challenge 2
+    func showAlert(confirmation: String) {
+        self.confirmationMessage = confirmation
+        self.alertType = .confirmation
+        self.showingAlert = true
+    }
+    
+    // Challenge 2
+    func showAlert(error: String) {
+        self.errorMessage = error
+        self.alertType = .error
+        self.showingAlert = true
     }
 }
 
 struct CheckoutView_Previews: PreviewProvider {
     static var previews: some View {
-        CheckoutView(order: Order())
+        CheckoutView(obsOrder: ObservableOrder(order: Order()))
     }
 }

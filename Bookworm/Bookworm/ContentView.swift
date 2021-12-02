@@ -7,8 +7,9 @@
 
 import SwiftUI
 
+// Challenge 2
 struct HighlightColor: ViewModifier {
-    var colorInt = 3
+    var colorInt: Int
     var highlightColor: Color {
         if colorInt == 1 {
             return Color.red
@@ -44,9 +45,6 @@ struct ContentView: View {
             
             
             NavigationView {
-                //            ZStack {
-                //                LinearGradient(gradient: Gradient(colors: [Color(red: 0.2, green: 0.2, blue: 0.2), .white]), startPoint: .leading, endPoint: .trailing)
-                //            }
                 List {
                     ForEach(books) { book in
                         NavigationLink {
@@ -61,8 +59,10 @@ struct ContentView: View {
                                         .font(.headline)
                                     
                                     HStack {
+                                        // Challenge 2
                                         Image(systemName: "circle.fill")
                                             .modifier(HighlightColor(colorInt: Int(book.rating)))
+                                        
                                         Text(book.author ?? "Unknowen Author")
                                             .foregroundColor(.secondary)
                                     }
@@ -72,7 +72,6 @@ struct ContentView: View {
                     }
                     .onDelete(perform: deleteBooks)
                     .listRowBackground(Color(red: 0.2, green: 0.2, blue: 0.2))
-                    //                .listRowBackground(LinearGradient(gradient: Gradient(colors: [Color(red: 0.2, green: 0.2, blue: 0.2), .white]), startPoint: .leading, endPoint: .trailing))
                 }
                 .navigationTitle("Bookworm")
                 .toolbar {

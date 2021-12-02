@@ -13,7 +13,16 @@ struct DetailsView: View {
     
     @Environment(\.managedObjectContext) var moc
     @Environment(\.dismiss) var dismiss
+    
     @State private var showingDelteAlert = false
+    
+    // Challenge 3
+    var dateFormatterString: String {
+        guard let date = book.dateCreated else { return "no date avaliable" }
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        return "Reviewed on \(formatter.string(from: date))"
+    }
     
     var body: some View {
         ScrollView {
@@ -35,6 +44,9 @@ struct DetailsView: View {
             Text(book.author ?? "Unknowen Author")
                 .font(.title)
                 .foregroundColor(.secondary)
+            
+            // Challenge 3
+            Text(self.dateFormatterString)
             
             Text(book.review ?? "No review")
                 .padding()

@@ -72,6 +72,9 @@ struct AddBookView: View {
                         newBook.genre = genre
                         newBook.review = review
                         
+                        // Challenge 3
+                        newBook.dateCreated = Date()
+                        
                         try? moc.save()
                         dismiss()
                     }
@@ -81,19 +84,6 @@ struct AddBookView: View {
             .navigationTitle("Add Book")
         }
     }
-    
-//    func setHighlightColor() -> String {
-//
-//        if self.rating == 1 {
-//            return "red"
-//        }
-//
-//        if self.rating == 4 || self.rating == 5 {
-//            return "green"
-//        }
-//
-//        return "gray"
-//    }
 }
 
 struct AddBookView_Previews: PreviewProvider {

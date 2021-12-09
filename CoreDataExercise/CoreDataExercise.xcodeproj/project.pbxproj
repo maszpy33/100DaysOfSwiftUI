@@ -21,6 +21,7 @@
 		9F92A82A275D90DB0026DD7E /* Singer+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F92A81F275D90DB0026DD7E /* Singer+CoreDataProperties.swift */; };
 		9F92A82B275D90DB0026DD7E /* Country+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F92A820275D90DB0026DD7E /* Country+CoreDataProperties.swift */; };
 		9F92A82D275D90DB0026DD7E /* Candy+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F92A822275D90DB0026DD7E /* Candy+CoreDataClass.swift */; };
+		9FF8EC8227621EA700F92E4A /* FilteringChallenges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF8EC8127621EA600F92E4A /* FilteringChallenges.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,7 @@
 		9F92A81F275D90DB0026DD7E /* Singer+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Singer+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		9F92A820275D90DB0026DD7E /* Country+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Country+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		9F92A822275D90DB0026DD7E /* Candy+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Candy+CoreDataClass.swift"; sourceTree = "<group>"; };
+		9FF8EC8127621EA600F92E4A /* FilteringChallenges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilteringChallenges.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +80,7 @@
 				9F92A817275D90DA0026DD7E /* Country+CoreDataClass.swift */,
 				9F92A820275D90DB0026DD7E /* Country+CoreDataProperties.swift */,
 				9F92A81B275D90DA0026DD7E /* FilteredList.swift */,
+				9FF8EC8127621EA600F92E4A /* FilteringChallenges.swift */,
 				9F92A81C275D90DB0026DD7E /* Movie+CoreDataClass.swift */,
 				9F92A818275D90DA0026DD7E /* Movie+CoreDataProperties.swift */,
 				9F92A81D275D90DB0026DD7E /* CoreDataExercise.xcdatamodeld */,
@@ -169,6 +172,7 @@
 			files = (
 				9F92A828275D90DB0026DD7E /* Movie+CoreDataClass.swift in Sources */,
 				9F92A824275D90DB0026DD7E /* Movie+CoreDataProperties.swift in Sources */,
+				9FF8EC8227621EA700F92E4A /* FilteringChallenges.swift in Sources */,
 				9F92A80C275D90660026DD7E /* ContentView.swift in Sources */,
 				9F92A829275D90DB0026DD7E /* CoreDataExercise.xcdatamodeld in Sources */,
 				9F92A825275D90DB0026DD7E /* Singer+CoreDataClass.swift in Sources */,

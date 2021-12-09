@@ -28,3 +28,4 @@ struct FilteredList<T: NSManagedObject, Content: View>: View {
     }
 }
 
+ 

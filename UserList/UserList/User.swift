@@ -58,7 +58,7 @@ class Users: ObservableObject {
 struct User: Codable, Identifiable {
     
     var id: String
-//    var isActive = false
+    var isActive: Bool
     var name: String
     var age: Int
     var company: String

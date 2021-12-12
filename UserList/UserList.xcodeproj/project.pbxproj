@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9F2D9757276640C7005BB07B /* DetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2D9756276640C7005BB07B /* DetailsView.swift */; };
+		9F2D97592766469F005BB07B /* FriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2D97582766469F005BB07B /* FriendsView.swift */; };
 		9FD5B1F127640B0400AB749D /* UserListApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B1F027640B0300AB749D /* UserListApp.swift */; };
 		9FD5B1F327640B0400AB749D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B1F227640B0400AB749D /* ContentView.swift */; };
 		9FD5B1F527640B0600AB749D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9FD5B1F427640B0600AB749D /* Assets.xcassets */; };
@@ -16,6 +18,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9F2D9756276640C7005BB07B /* DetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsView.swift; sourceTree = "<group>"; };
+		9F2D97582766469F005BB07B /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
 		9FD5B1ED27640B0300AB749D /* UserList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UserList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FD5B1F027640B0300AB749D /* UserListApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListApp.swift; sourceTree = "<group>"; };
 		9FD5B1F227640B0400AB749D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -57,6 +61,8 @@
 			children = (
 				9FD5B1F027640B0300AB749D /* UserListApp.swift */,
 				9FD5B1F227640B0400AB749D /* ContentView.swift */,
+				9F2D9756276640C7005BB07B /* DetailsView.swift */,
+				9F2D97582766469F005BB07B /* FriendsView.swift */,
 				9FD5B20027640E4B00AB749D /* Friend.swift */,
 				9FD5B1FE27640B4500AB749D /* User.swift */,
 				9FD5B1F427640B0600AB749D /* Assets.xcassets */,
@@ -143,7 +149,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F2D97592766469F005BB07B /* FriendsView.swift in Sources */,
 				9FD5B1F327640B0400AB749D /* ContentView.swift in Sources */,
+				9F2D9757276640C7005BB07B /* DetailsView.swift in Sources */,
 				9FD5B1F127640B0400AB749D /* UserListApp.swift in Sources */,
 				9FD5B1FF27640B4500AB749D /* User.swift in Sources */,
 				9FD5B20127640E4B00AB749D /* Friend.swift in Sources */,

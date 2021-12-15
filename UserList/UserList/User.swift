@@ -21,6 +21,9 @@ class Users: ObservableObject {
             return
         }
         
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        
         let request = URLRequest(url: url)
         
         let session = URLSession.shared.dataTask(with: request) { data, response, sessionError in
@@ -31,6 +34,7 @@ class Users: ObservableObject {
             
             do {
                 var decoded = try JSONDecoder().decode([User].self, from: data)
+                
                 // sort
                 decoded.sort { $0.name < $1.name }
                 for (i, _) in decoded.enumerated() {
@@ -64,8 +68,8 @@ struct User: Codable, Identifiable {
     var company: String
     var email: String
     var address: String
-//    var about = ""
-//    var registered = Date()
+//    var registered: Date
+    //    var about = ""
 //    var tags = [String]()
     var friends: [Friend]
 }

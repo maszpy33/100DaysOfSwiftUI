@@ -35,11 +35,15 @@ struct DetailsView: View {
                 
                 Divider()
                 
-                HStack {
-                    Image(systemName: "doc.text.image")
-                    Text(user.name)
+                VStack {
+                    HStack {
+                        Image(systemName: "doc.text.image")
+                        Text(user.name)
+                    }
+                    .font(.title)
+//                    Text("registered since: \(user.registered)")
                 }
-                .font(.title)
+                
                 
                 Divider()
                     .foregroundColor(.blue)

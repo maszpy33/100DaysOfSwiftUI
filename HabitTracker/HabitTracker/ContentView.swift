@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @AppStorage("today") var nameAno = "anonymous"
+    @AppStorage("today") var nameAno = "Andi"
     
     @ObservedObject var habits = Habits()
     @State private var showingDetailsView = false

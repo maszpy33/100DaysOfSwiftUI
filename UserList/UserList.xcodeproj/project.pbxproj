@@ -63,8 +63,8 @@
 				9FD5B1F227640B0400AB749D /* ContentView.swift */,
 				9F2D9756276640C7005BB07B /* DetailsView.swift */,
 				9F2D97582766469F005BB07B /* FriendsView.swift */,
-				9FD5B20027640E4B00AB749D /* Friend.swift */,
 				9FD5B1FE27640B4500AB749D /* User.swift */,
+				9FD5B20027640E4B00AB749D /* Friend.swift */,
 				9FD5B1F427640B0600AB749D /* Assets.xcassets */,
 				9FD5B1F627640B0600AB749D /* Preview Content */,
 			);

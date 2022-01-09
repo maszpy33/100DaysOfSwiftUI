@@ -21,8 +21,6 @@ struct ContentView: View {
                             VStack {
                                 Image(systemName: "icloud.circle.fill")
                                     .foregroundColor(user.isActive ? .green : .red)
-    //                            Text(user.isActive ? "online" : "offline")
-    //                                .font(.system(size: 7))
                             }
                             Text(user.name)
                         }

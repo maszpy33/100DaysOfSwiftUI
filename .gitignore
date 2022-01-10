@@ -1,5 +1,6 @@
 # ignore files
-.DS_Store 
+.DS_Store
+test.txt 
 
 # ignore dirs
 *.csv

@@ -29,8 +29,24 @@ struct DataManager {
                         let company = Company(context: moc)
                         company.name = user.company
                         newUser.company = company
+
                         
                         tempUsers.append(newUser)
+                    }
+                    
+                    for i in 0..<users.count {
+                        for friend in users[i].friends {
+                            if let newFriend = tempUsers.first(where: { $0.id == friend.id }) {
+                                tempUsers[i].addToFriend(newFriend)
+                            }
+                        }
+                    }
+                    
+                    do {
+                        try moc.save()
+                    }
+                    catch let error {
+                        print("Could not save data: \(error.localizedDescription)")
                     }
                 }
             }

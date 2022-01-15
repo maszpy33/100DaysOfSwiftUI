@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct JSONUser: Codable, Identifiable {
+struct CachedUser: Codable, Identifiable {
     var id: String
     var name: String
     var age: Int

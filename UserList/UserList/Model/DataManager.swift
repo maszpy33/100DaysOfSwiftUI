@@ -32,6 +32,7 @@ struct DataManager {
 
                         
                         tempUsers.append(newUser)
+
                     }
                     
                     for i in 0..<users.count {
@@ -53,7 +54,7 @@ struct DataManager {
         }
     }
     
-    static func fetchData(completion: @escaping ([JSONUser]) -> ()) {
+    static func fetchData(completion: @escaping ([CachedUser]) -> ()) {
         print("Fetching data...")
         guard let url = URL(string: "https://www.hackingwithswift.com/samples/friendface.json") else {
             print("Invalid URL")
@@ -69,7 +70,7 @@ struct DataManager {
             }
             
             do {
-                let decoded = try JSONDecoder().decode([JSONUser].self, from: data)
+                let decoded = try JSONDecoder().decode([CachedUser].self, from: data)
                 
                 completion(decoded)
             }

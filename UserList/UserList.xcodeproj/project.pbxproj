@@ -14,8 +14,8 @@
 		9F2D9757276640C7005BB07B /* DetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2D9756276640C7005BB07B /* DetailsView.swift */; };
 		9F2D97592766469F005BB07B /* FriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2D97582766469F005BB07B /* FriendsView.swift */; };
 		9F684070278BA3B700DFDCE7 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F68406F278BA3B700DFDCE7 /* DataManager.swift */; };
-		9F684072278BA65900DFDCE7 /* JSONUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F684071278BA65900DFDCE7 /* JSONUser.swift */; };
-		9F684074278BA66100DFDCE7 /* JSONFriend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F684073278BA66100DFDCE7 /* JSONFriend.swift */; };
+		9F684072278BA65900DFDCE7 /* CachedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F684071278BA65900DFDCE7 /* CachedUser.swift */; };
+		9F684074278BA66100DFDCE7 /* CachedFriend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F684073278BA66100DFDCE7 /* CachedFriend.swift */; };
 		9F684077278BA89500DFDCE7 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9F684075278BA89500DFDCE7 /* DataModel.xcdatamodeld */; };
 		9FD5B1F127640B0400AB749D /* UserListApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B1F027640B0300AB749D /* UserListApp.swift */; };
 		9FD5B1F327640B0400AB749D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD5B1F227640B0400AB749D /* ContentView.swift */; };
@@ -33,8 +33,8 @@
 		9F2D9756276640C7005BB07B /* DetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsView.swift; sourceTree = "<group>"; };
 		9F2D97582766469F005BB07B /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
 		9F68406F278BA3B700DFDCE7 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
-		9F684071278BA65900DFDCE7 /* JSONUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONUser.swift; sourceTree = "<group>"; };
-		9F684073278BA66100DFDCE7 /* JSONFriend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONFriend.swift; sourceTree = "<group>"; };
+		9F684071278BA65900DFDCE7 /* CachedUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedUser.swift; sourceTree = "<group>"; };
+		9F684073278BA66100DFDCE7 /* CachedFriend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedFriend.swift; sourceTree = "<group>"; };
 		9F684076278BA89500DFDCE7 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		9FD5B1ED27640B0300AB749D /* UserList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UserList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FD5B1F027640B0300AB749D /* UserListApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListApp.swift; sourceTree = "<group>"; };
@@ -60,8 +60,8 @@
 			isa = PBXGroup;
 			children = (
 				9F10BFC1278F98D5001B29BC /* CoreData */,
-				9F684071278BA65900DFDCE7 /* JSONUser.swift */,
-				9F684073278BA66100DFDCE7 /* JSONFriend.swift */,
+				9F684071278BA65900DFDCE7 /* CachedUser.swift */,
+				9F684073278BA66100DFDCE7 /* CachedFriend.swift */,
 				9F68406F278BA3B700DFDCE7 /* DataManager.swift */,
 				9F10BFCA278F9BDE001B29BC /* OldData */,
 			);
@@ -81,10 +81,10 @@
 		9F10BFC1278F98D5001B29BC /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				9F10BFC2278F98F9001B29BC /* Company+CoreDataClass.swift */,
-				9F10BFC3278F98F9001B29BC /* Company+CoreDataProperties.swift */,
 				9F10BFC4278F98F9001B29BC /* User+CoreDataClass.swift */,
 				9F10BFC5278F98F9001B29BC /* User+CoreDataProperties.swift */,
+				9F10BFC2278F98F9001B29BC /* Company+CoreDataClass.swift */,
+				9F10BFC3278F98F9001B29BC /* Company+CoreDataProperties.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -211,14 +211,14 @@
 				9F10BFC8278F98F9001B29BC /* User+CoreDataClass.swift in Sources */,
 				9F684077278BA89500DFDCE7 /* DataModel.xcdatamodeld in Sources */,
 				9FD5B1F327640B0400AB749D /* ContentView.swift in Sources */,
-				9F684072278BA65900DFDCE7 /* JSONUser.swift in Sources */,
+				9F684072278BA65900DFDCE7 /* CachedUser.swift in Sources */,
 				9F2D9757276640C7005BB07B /* DetailsView.swift in Sources */,
 				9F684070278BA3B700DFDCE7 /* DataManager.swift in Sources */,
 				9FD5B1F127640B0400AB749D /* UserListApp.swift in Sources */,
 				9F10BFC9278F98F9001B29BC /* User+CoreDataProperties.swift in Sources */,
 				9FD5B1FF27640B4500AB749D /* UserOLD.swift in Sources */,
 				9FD5B20127640E4B00AB749D /* FriendOLD.swift in Sources */,
-				9F684074278BA66100DFDCE7 /* JSONFriend.swift in Sources */,
+				9F684074278BA66100DFDCE7 /* CachedFriend.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

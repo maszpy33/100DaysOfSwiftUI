@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct JSONFriend: Codable, Identifiable {
+struct CachedFriend: Codable, Identifiable {
     var id: String
     var name: String
 }

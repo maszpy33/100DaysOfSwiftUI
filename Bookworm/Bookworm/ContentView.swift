@@ -60,7 +60,7 @@ struct ContentView: View {
                                     
                                     HStack {
                                         // Challenge 2
-                                        Image(systemName: "circle.fill")
+                                        Image(systemName: "star.fill")
                                             .modifier(HighlightColor(colorInt: Int(book.rating)))
                                         
                                         Text(book.author ?? "Unknowen Author")

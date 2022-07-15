@@ -12,6 +12,12 @@ import SwiftUI
 struct ContentView: View {
     @State private var image: Image?
     @State private var filterIntensity = 0.5
+    @State private var filterRadius = 0.5
+    @State private var filterScale = 0.5
+    
+    @State private var intensityDisable = true
+    @State private var radiusDisable = true
+    @State private var scaleDisable = true
     
     @State private var showingImagePicker = false
     @State private var inputImage: UIImage?
@@ -22,31 +28,63 @@ struct ContentView: View {
     
     @State private var showingFilterSheet = false
     
+    @State private var disableSaveButton = true
+    
+    
     var body: some View {
         NavigationView {
             VStack {
                 ZStack {
                     Rectangle()
-                        .fill(.secondary)
+                        .fill(Color(red: 0.1, green: 0.1, blue: 0.1))
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
                     
-                    Text("Tap to select a picture")
-                        .foregroundColor(.white)
-                        .font(.headline)
+                    if image != nil {
+                        image?
+                            .resizable()
+                            .scaledToFit()
+                    } else {
+                        Text("Tap to select a picture")
+                            .foregroundColor(.white)
+                            .font(.headline)
+                    }
                     
-                    image?
-                        .resizable()
-                        .scaledToFit()
                 }
                 .onTapGesture {
                     showingImagePicker = true
                 }
                 
-                HStack {
-                    Text("Intensity")
-                    Slider(value: $filterIntensity)
-                        .onChange(of: filterIntensity) { _ in applyProcessing() }
+                // 2.Challenge
+                if currentFilter.inputKeys.contains(kCIInputIntensityKey) {
+                    HStack {
+                        Text("Intensity")
+                            .frame(width: 80)
+                        Slider(value: $filterIntensity)
+                            .onChange(of: filterIntensity) { _ in applyProcessing() }
+                    }
+                    .padding([.vertical, .horizontal])
                 }
-                .padding(.vertical)
+                // 2.Challenge
+                if currentFilter.inputKeys.contains(kCIInputRadiusKey) {
+                    HStack {
+                        Text("Radius")
+                            .frame(width: 80)
+                        Slider(value: $filterRadius)
+                            .onChange(of: filterRadius) { _ in applyProcessing() }
+                        
+                    }
+                    .padding([.vertical, .horizontal])
+                }
+                // 2.Challenge
+                if currentFilter.inputKeys.contains(kCIInputScaleKey) {
+                    HStack {
+                        Text("Scale")
+                            .frame(width: 80)
+                        Slider(value: $filterScale)
+                            .onChange(of: filterScale) { _ in applyProcessing() }
+                    }
+                    .padding([.vertical, .horizontal])
+                }
                 
                 HStack {
                     Button("Change Filter") {
@@ -56,13 +94,25 @@ struct ContentView: View {
                     Spacer()
                     
                     Button("Save", action: save)
+                        .disabled(disableSaveButton)
                 }
+                .padding(.horizontal)
             }
             .padding([.horizontal, .bottom])
             .navigationTitle("Instafilter")
-            .onChange(of: inputImage) { _ in loadImage() }
+            .onChange(of: inputImage) { _ in
+                
+                loadImage()
+                
+                // 1.Challenge: disable save button if image == nil
+                if image != nil {
+                    disableSaveButton = false
+                } else {
+                    disableSaveButton = true
+                }
+            }
             .sheet(isPresented: $showingImagePicker) {
-                ImagePicker(image: $inputImage)
+                ImagePicker(image: $inputImage, disableSaveButton: $disableSaveButton)
             }
             .confirmationDialog("Select a filter", isPresented: $showingFilterSheet) {
                 Button("Crystalize") { setFilter(CIFilter.crystallize()) }
@@ -75,25 +125,6 @@ struct ContentView: View {
                 Button("Cancel", role: .cancel) { }
             }
         }
-//        VStack {
-//            image?
-//                .resizable()
-//                .scaledToFit()
-//
-//            Button("Select Image") {
-//                showingImagePicker = true
-//            }
-//
-//            Button("Save Image") {
-//                guard let inputImage = inputImage else { return }
-//                let imageSaver = ImageSaver()
-//                imageSaver.writeToPhotoAlbum(image: inputImage)
-//            }
-//        }
-//        .sheet(isPresented: $showingImagePicker) {
-//            ImagePicker(image: $inputImage)
-//        }
-//        .onChange(of: inputImage) { _ in loadImage() }
     }
     
     func loadImage() {
@@ -124,13 +155,16 @@ struct ContentView: View {
         let inputKeys = currentFilter.inputKeys
         
         if inputKeys.contains(kCIInputIntensityKey) {
+            // 3.Challenge
             currentFilter.setValue(filterIntensity, forKey: kCIInputIntensityKey)
         }
         if inputKeys.contains(kCIInputRadiusKey) {
-            currentFilter.setValue(filterIntensity * 200, forKey: kCIInputRadiusKey)
+            // 3.Challenge
+            currentFilter.setValue(filterRadius * 200, forKey: kCIInputRadiusKey)
         }
         if inputKeys.contains(kCIInputScaleKey) {
-            currentFilter.setValue(filterIntensity * 10, forKey: kCIInputScaleKey)
+            // 3.Challenge
+            currentFilter.setValue(filterScale * 100, forKey: kCIInputScaleKey)
         }
         
         guard let outputImage = currentFilter.outputImage else { return }

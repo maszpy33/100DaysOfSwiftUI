@@ -10,7 +10,10 @@ import SwiftUI
 
 
 struct ImagePicker: UIViewControllerRepresentable {
+
     @Binding var image: UIImage?
+    @Binding var disableSaveButton: Bool
+    
     
     // nested class, could also be initialized outside of the struct
     class Coordinator: NSObject, PHPickerViewControllerDelegate  {
@@ -44,7 +47,7 @@ struct ImagePicker: UIViewControllerRepresentable {
     }
     
     func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-        
+        // required function, do not delete
     }
     
     func makeCoordinator() -> Coordinator {

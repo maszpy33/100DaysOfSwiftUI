@@ -86,7 +86,7 @@ struct EditView: View {
             let (data, _) = try await URLSession.shared.data(from: url)
             let items = try JSONDecoder().decode(Result.self, from: data)
             pages = items.query.pages.values.sorted()
-            loadingState = .loading
+            loadingState = .loaded
         } catch {
             loadingState = .failed
         }

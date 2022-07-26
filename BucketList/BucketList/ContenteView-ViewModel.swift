@@ -17,6 +17,13 @@ extension ContentView {
         @Published var selectedPlace: Location?
         @Published var isUnlocked = false
         
+        @Published var changePinStyle = false
+        
+        // 2. Challenge: Error message
+        @Published var showUnlockError = false
+        @Published var errorTitle = ""
+        @Published var errorMessage = ""
+        
         let savePath = FileManager.documentsDirectory.appendingPathComponent("SavedPlaces")
         
         init() {
@@ -49,7 +56,6 @@ extension ContentView {
                 return
             }
             
-            
             if let index = locations.firstIndex(of: selectedPlace) {
                 locations[index] = location
                 save()
@@ -69,11 +75,16 @@ extension ContentView {
                             self.isUnlocked = true
                         }
                     } else {
-                        // error
+                        Task { @MainActor in
+                            self.errorTitle = "Unlock Failed"
+                            self.errorMessage = authentificationError?.localizedDescription ?? "Something went wrong! Try again."
+                            self.showUnlockError = true
+                        }
                     }
                 }
             } else {
-                // no biometrics
+                self.errorTitle = "Unlock Failed"
+                self.errorMessage = "Can not access Touch ID or Face ID"
             }
         }
     }

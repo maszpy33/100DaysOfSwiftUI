@@ -11,13 +11,15 @@ import MapKit
 
 struct ContentView: View {
     
-    @StateObject private var viewModel = ViewModel()
+    @StateObject var contentViewModel = ViewModel()
+    
+    @State var indexToDelete: Int = 0
     
     var body: some View {
-        if viewModel.isUnlocked {
+        if contentViewModel.isUnlocked {
             ZStack {
-                if !viewModel.changePinStyle {
-                    Map(coordinateRegion: $viewModel.mapRegion, annotationItems: viewModel.locations) { location in
+                if !contentViewModel.changePinStyle {
+                    Map(coordinateRegion: $contentViewModel.mapRegion, annotationItems: contentViewModel.locations) { location in
                         MapAnnotation(coordinate: location.coordinate) {
                             VStack {
                                 Image(systemName: "star.circle")
@@ -30,13 +32,13 @@ struct ContentView: View {
                                     .fixedSize()
                             }
                             .onTapGesture {
-                                viewModel.selectedPlace = location
+                                contentViewModel.selectedPlace = location
                             }
                         }
                     }
                     .ignoresSafeArea()
                 } else {
-                    Map(coordinateRegion: $viewModel.mapRegion, annotationItems: viewModel.locations) { location in
+                    Map(coordinateRegion: $contentViewModel.mapRegion, annotationItems: contentViewModel.locations) { location in
                         MapPin(coordinate: location.coordinate, tint: .red)
                     }
                     .ignoresSafeArea()
@@ -54,9 +56,9 @@ struct ContentView: View {
                     
                     HStack {
                         Button {
-                            viewModel.changePinStyle.toggle()
+                            contentViewModel.changePinStyle.toggle()
                         } label: {
-                            Image(systemName: viewModel.changePinStyle ? "paintbrush" : "paintbrush.fill")
+                            Image(systemName: contentViewModel.changePinStyle ? "paintbrush" : "paintbrush.fill")
                                 .padding()
                                 .background(.black.opacity(0.75))
                                 .foregroundColor(.white)
@@ -65,10 +67,34 @@ struct ContentView: View {
                                 .padding(.leading)
                         }
                         
+                        Button {
+                            contentViewModel.errorTitle = "Deleting all marked locations"
+                            contentViewModel.errorMessage = "do you really want to continue and delte all data?"
+                            contentViewModel.showDeleteAllAlert.toggle()
+                        } label: {
+                            Image(systemName: "trash")
+                                .padding()
+                                .background(.black.opacity(0.75))
+                                .foregroundColor(.white)
+                                .font(.title)
+                                .clipShape(Circle())
+                                .padding(.leading)
+                        }
+                        .alert(isPresented: $contentViewModel.showDeleteAllAlert) {
+                            Alert(
+                                title: Text(contentViewModel.errorTitle),
+                                message: Text(contentViewModel.errorMessage),
+                                primaryButton: .destructive(Text("Delete all")) {
+                                    contentViewModel.deleteAllData()
+                                },
+                                secondaryButton: .cancel()
+                            )
+                        }
+                        
                         Spacer()
                         
                         Button {
-                            viewModel.addLocation()
+                            contentViewModel.addLocation()
                         } label: {
                             // 1.Challenge: Circle() is now also part of the button and reacts on press
                             Image(systemName: "plus")
@@ -82,29 +108,30 @@ struct ContentView: View {
                     }
                 }
             }
-            .sheet(item: $viewModel.selectedPlace) { place in
+            .sheet(item: $contentViewModel.selectedPlace) { place in
                 EditView(location: place) { newLocation in
-                    viewModel.updateLocation(location: newLocation)
+                    contentViewModel.updateLocation(location: newLocation)
                 }
+                .environmentObject(contentViewModel)
             }
         } else {
             Button("Unlock Places") {
-                viewModel.authenticate()
+                contentViewModel.authenticate()
             }
             .padding()
             .background(.blue)
             .foregroundColor(.white)
             .clipShape(Capsule())
             // 2. Challenge
-            .alert(isPresented: self.$viewModel.showUnlockError) {
-                Alert(title: Text(viewModel.errorTitle), message: Text(viewModel.errorMessage))
+            .alert(isPresented: self.$contentViewModel.showErrorMessage) {
+                Alert(title: Text(contentViewModel.errorTitle), message: Text(contentViewModel.errorMessage))
             }
         }
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ContentView()
+//    }
+//}

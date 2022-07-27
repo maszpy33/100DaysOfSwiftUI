@@ -20,11 +20,14 @@ extension ContentView {
         @Published var changePinStyle = false
         
         // 2. Challenge: Error message
-        @Published var showUnlockError = false
+        @Published var showErrorMessage = false
         @Published var errorTitle = ""
         @Published var errorMessage = ""
         
+        @Published var showDeleteAllAlert = false
+        
         let savePath = FileManager.documentsDirectory.appendingPathComponent("SavedPlaces")
+        
         
         init() {
             do {
@@ -62,6 +65,23 @@ extension ContentView {
             }
         }
         
+//        func deleteLocation(locationToDelete: Location) {
+//            let indexOfLocation = locations.firstIndex { $0.id == locationToDelete.id }
+//            print("Index: \(String(describing: indexOfLocation))")
+//            print("Type of index: \(type(of: indexOfLocation))")
+//////            guard indexOfLocation != nil else {
+////                return
+////            }
+////
+////            locations.remove(at: indexOfLocation)
+//            
+//        }
+        
+        func deleteAllData() {
+            locations.removeAll()
+            save()
+        }
+        
         func authenticate() {
             let context = LAContext()
             var error: NSError?
@@ -78,7 +98,7 @@ extension ContentView {
                         Task { @MainActor in
                             self.errorTitle = "Unlock Failed"
                             self.errorMessage = authentificationError?.localizedDescription ?? "Something went wrong! Try again."
-                            self.showUnlockError = true
+                            self.showErrorMessage = true
                         }
                     }
                 }

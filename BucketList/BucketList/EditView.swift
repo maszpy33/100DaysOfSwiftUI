@@ -17,7 +17,6 @@ struct EditView: View {
     var onSave: (Location) -> Void
     
     
-    
     var body: some View {
         NavigationView {
             Form {
@@ -48,7 +47,7 @@ struct EditView: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Delete") {
                         // delte location
-                        print("Under Construction, currently not working")
+                        
                         dismiss()
                     }
                 }
@@ -71,6 +70,7 @@ struct EditView: View {
         
         _editVM = StateObject(wrappedValue: EditViewModel(location: location))
     }
+    
     //    init(location: Location, onSave: @escaping (Location) -> Void) {
     //        self.location = location
     //        self.onSave = onSave

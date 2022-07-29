@@ -9,24 +9,6 @@ import SwiftUI
 
 struct ContentView: View {
     
-    let pictures = [
-        "GOlang1",
-        "HolowKnightLogo",
-        "Joker_code_logo_darkBG",
-        "Le_Brain_logo",
-        "linux"
-    ]
-    
-    let labels = [
-        "Programming language",
-        "Game Character",
-        "Programmer Logo",
-        "Brain creative and analytic part illustraition",
-        "most used operating system logo"
-    ]
-    
-    @State private var selectedPicture = Int.random(in: 0...3)
-    
     @State private var value = 10
     
     var body: some View {

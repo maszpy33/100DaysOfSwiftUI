@@ -27,10 +27,24 @@ struct ContentView: View {
                     .autocapitalization(.none)
                     .padding()
                 
-                List(usedWords, id: \.self) {
+                List(usedWords, id: \.self) { word in
                     // icon number with the length of the word on the list
-                    Image(systemName: "\($0.count).circle")
-                    Text($0)
+                    HStack {
+                        Image(systemName: "\(word.count).circle")
+                        Text(word)
+                    }
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("\(word), \(word.count) letters")
+                    
+                    // ALTERNATIVE
+//                    HStack {
+//                        Image(systemName: "\(word.count).circle")
+//                        Text(word)
+//                    }
+//                    .accessibilityElement(children: .ignore)
+//                    .accessibilityLabel(word)
+//                    .accessibilityHint("\(word.count) letters")
+
                 }
                 
                 Text("One point for each letter in a new word")

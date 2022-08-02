@@ -17,12 +17,12 @@ import UIKit
     @Published var photoList: [Photo]
     @Published var selectedPhoto: UIImage?
     @Published var updatePhoto: Photo?
-    @Published var photoName: String?
+    @Published var photoName: String = ""
     @Published var photoDescription: String?
     
     let savePath = FileManager.documentsDirectory.appendingPathComponent("SavedPhotos")
     
-    var exampleImage = UIImage(systemName: "example6")
+    let exampleImage = UIImage(systemName: "example6")
     
     init() {
         do {
@@ -31,6 +31,21 @@ import UIKit
         } catch {
             photoList = []
         }
+    }
+    
+    // HELPER FUNCTION
+    func addExamples() {
+        let randomPhoto = UIImage(named: "example\(Int.random(in: 1...6))")
+        
+        guard let jpegData = randomPhoto?.jpegData(compressionQuality: 0.8) else {
+            print("image compression error")
+            return
+        }
+        
+        let newPhoto = Photo(id: UUID(), name: "GoLang Scientist", description: "Mascot of the programming language Go", photoData: jpegData)
+        
+//        photoList.append(newPhoto)
+        photoList.insert(newPhoto, at: 0)
     }
     
     func save() {
@@ -43,18 +58,30 @@ import UIKit
         }
     }
     
-    func addPhoto() {
-//        if let jpegData = exampleImage!.jpegData(compressionQuality: 0.8) {
-//            try? jpegData.write(to: savePath, options: [.atomic, .completeFileProtection])
-//        }
-        
-        guard let jpegData = exampleImage!.jpegData(compressionQuality: 0.8) else {
+    func addPhoto(photo: UIImage, name: String, description: String?) {
+        // compress image with quality 0.8
+        guard let jpegData = photo.jpegData(compressionQuality: 0.8) else {
             print("image compression error")
             return
         }
         
-        let newPhoto = Photo(id: UUID(), name: "New location", description: "", photoData: jpegData)
-        photoList.append(newPhoto)
+        let newPhoto = Photo(id: UUID(), name: photoName, description: photoDescription, photoData: jpegData)
+        
+        // remove append and save from function so user has to name the photo first, before it is saved
+//        photoList.append(newPhoto)
+        photoList.insert(newPhoto, at: 0)
+        save()
+    }
+    
+    func deletePhoto(photo: Photo) {
+        if let index = photoList.firstIndex(where: { $0.id == photo.id }) {
+            photoList.remove(at: index)
+            save()
+        }
+    }
+    
+    func deleteAllContent() {
+        photoList = []
         save()
     }
     

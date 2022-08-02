@@ -1,28 +1,29 @@
 //
-//  NewEditView.swift
+//  PhotoEditView.swift
 //  PhotoGallery
 //
-//  Created by Andreas Zwikirsch on 02.08.22.
+//  Created by Andreas Zwikirsch on 31.07.22.
 //
 
 import SwiftUI
+import Combine
 
-struct EditView: View {
+struct AddView: View {
     
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var photoVM: PhotoViewModel
     
-    @State var image: Image?
-    @State var photo: Photo
-    @State var showAlert: Bool = false
-    
+    let exampleImage: UIImage = UIImage(systemName: "questionmark")!
     @State private var name: String = ""
     @State private var description: String = ""
+    
+    @State private var showAlert: Bool = false
+    
     
     var body: some View {
         NavigationView {
             ScrollView {
-                Image(uiImage: UIImage(data: photo.photoData)!)
+                Image(uiImage: photoVM.selectedPhoto ?? exampleImage)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 250, height: 250)
@@ -87,18 +88,12 @@ struct EditView: View {
             .alert("Pleace enter a Name for the image", isPresented: $showAlert) {
                 Button("OK", role: .cancel) { }
             }
-            .onAppear {
-                name = photo.name
-                if photo.description != nil {
-                    description = photo.description!
-                }
-            }
         }
     }
 }
-
-//struct EditView_Previews: PreviewProvider {
+//
+//struct PhotoEditView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        EditView()
+//        PhotoEditView()
 //    }
 //}

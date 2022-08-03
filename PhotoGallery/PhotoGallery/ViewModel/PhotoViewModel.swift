@@ -86,17 +86,21 @@ import UIKit
     }
     
     func updatePhoto(photo: Photo) {
+        // check if photo is nil or corrupted
         guard let updatePhoto = updatePhoto else {
             return
         }
         
         let index = photoList.first { $0.id == updatePhoto.id }
         guard index != nil else {
+            print("photo not found")
             return
         }
         
         if let index = photoList.firstIndex(of: updatePhoto) {
-            photoList[index] = photo
+            
+            photoList[index].name = photoName
+            photoList[index].description = photoDescription
             save()
         }
     }

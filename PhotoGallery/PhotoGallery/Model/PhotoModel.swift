@@ -13,4 +13,8 @@ struct Photo: Identifiable, Codable, Equatable {
     var name: String
     var description: String?
     var photoData: Data
+    
+    static func <(lhs: Photo, rhs: Photo) -> Bool {
+        lhs.name < rhs.name
+    }
 }

@@ -19,52 +19,64 @@ struct EditView: View {
     @State private var name: String = ""
     @State private var description: String = ""
     
+    
     var body: some View {
         NavigationView {
-            ScrollView {
-                Image(uiImage: UIImage(data: photo.photoData)!)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 250, height: 250)
+            Form {
+                Section {
+                    VStack {
+                        Image(uiImage: UIImage(data: photo.photoData)!)
+                            .resizable()
+                            .scaledToFit()
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .stroke(.gray, lineWidth: 3)
+                            )
+                            .frame(width: 250, height: 250)
+                            .padding(.horizontal)
+                        
+                        HStack {
+                            Text("Photo Name: ")
+                                .font(.subheadline)
+                                .bold()
+                            Text("\(name)")
+                                .font(.subheadline)
+                            Spacer()
+                        }
+                        .padding(.horizontal)
+                    }
+                }
+
+                Section(header: Text("Name: ")) {
+                    VStack(alignment: .leading) {
+//                        Text("Name: ")
+//                            .bold()
+                        TextField("enter photo name", text: $name)
+                            .padding()
+//                            .overlay(
+//                                RoundedRectangle(cornerRadius: 16)
+//                                    .stroke(.blue, lineWidth: 2)
+//                            )
+                    }
                     .padding(.horizontal)
-                
-                HStack {
-                    Text("Photo Name: ")
-                        .font(.subheadline)
-                        .bold()
-                    Text("\(name)")
-                        .font(.subheadline)
-                    Spacer()
                 }
-                .padding(.horizontal)
-                
-                VStack(alignment: .leading) {
-                    Text("Name: ")
-                        .bold()
-                    TextField("enter photo name", text: $name)
-                        .padding()
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 16)
-                                .stroke(.blue, lineWidth: 2)
-                        )
+
+                Section(header: Text("Description: ")) {
+                    VStack(alignment: .leading) {
+//                        Text("Description: ")
+//                            .bold()
+                        
+                        TextEditor(text: $description)
+                            .frame(minHeight: 100)
+                            .multilineTextAlignment(.leading)
+//                            .overlay(
+//                                RoundedRectangle(cornerRadius: 10)
+//                                    .stroke(.blue, lineWidth: 2)
+//                            )
+                    }
+                    .padding(.horizontal)
                 }
-                .padding(.horizontal)
-                .padding(.vertical, 10)
-                
-                VStack(alignment: .leading) {
-                    Text("Description: ")
-                        .bold()
-                    
-                    TextEditor(text: $description)
-                        .frame(minHeight: 100)
-                        .multilineTextAlignment(.leading)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(.blue, lineWidth: 2)
-                        )
-                }
-                .padding(.horizontal)
-                .padding(.vertical, 10)
             }
             .navigationTitle("Add New Photo")
             .toolbar {
@@ -74,8 +86,8 @@ struct EditView: View {
                             photoVM.photoName = name
                             photoVM.photoDescription = description
                             
-                            photoVM.addPhoto(photo: photoVM.selectedPhoto!, name: photoVM.photoName, description: photoVM.photoDescription)
-                            print("saved new image")
+                            photoVM.updatePhoto(photo: photo)
+                            print("updated image")
                             
                             dismiss()
                         } else {

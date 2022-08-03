@@ -19,13 +19,19 @@ struct AddView: View {
     
     @State private var showAlert: Bool = false
     
+    @Binding var showAddView: Bool
     
     var body: some View {
         NavigationView {
-            ScrollView {
+            Form {
                 Image(uiImage: photoVM.selectedPhoto ?? exampleImage)
                     .resizable()
                     .scaledToFit()
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(.gray, lineWidth: 3)
+                    )
                     .frame(width: 250, height: 250)
                     .padding(.horizontal)
                 
@@ -70,17 +76,30 @@ struct AddView: View {
             .navigationTitle("Add New Photo")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Save") {
-                        if name.replacingOccurrences(of: " ", with: "") != "" {
-                            photoVM.photoName = name
-                            photoVM.photoDescription = description
+                    HStack {
+                        Button("Save") {
+                            if name.replacingOccurrences(of: " ", with: "") != "" {
+                                photoVM.photoName = name
+                                photoVM.photoDescription = description
+                                
+                                photoVM.addPhoto(photo: photoVM.selectedPhoto!, name: photoVM.photoName, description: photoVM.photoDescription)
+                                print("saved new image")
+                                
+                                showAddView = false
+                                
+                                dismiss()
+                            } else {
+                                showAlert = true
+                            }
+                        }
+                        
+                        Button("Cancel") {
+                            photoVM.photoName = ""
+                            photoVM.photoDescription = ""
+                            photoVM.selectedPhoto = nil
                             
-                            photoVM.addPhoto(photo: photoVM.selectedPhoto!, name: photoVM.photoName, description: photoVM.photoDescription)
-                            print("saved new image")
-                            
+                            showAddView = false
                             dismiss()
-                        } else {
-                            showAlert = true
                         }
                     }
                 }

@@ -54,6 +54,8 @@ extension ContentView {
             save()
         }
         
+        
+        
         func updateLocation(location: Location) {
             guard let selectedPlace = selectedPlace else {
                 return

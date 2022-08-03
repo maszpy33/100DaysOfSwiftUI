@@ -19,7 +19,7 @@ struct PhotoGalleryView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
+            ZStack {
                 ScrollView {
                     LazyVGrid(columns: adaptiveColumns, spacing: 20) {
                         ForEach(photoVM.photoList) { photo in
@@ -27,6 +27,11 @@ struct PhotoGalleryView: View {
                                 Image(uiImage: UIImage(data: photo.photoData) ?? UIImage(systemName: "questionmark")!)
                                     .resizable()
                                     .scaledToFit()
+                                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 16)
+                                            .stroke(.gray, lineWidth: 3)
+                                    )
                                 Text(photo.name)
                                     .font(.subheadline)
                             }
@@ -40,7 +45,12 @@ struct PhotoGalleryView: View {
                         }
                     }
                 }
+                
+//                if showEditView {
+//                    EditView(photo: photoVM.updatePhoto!, showEditView: $showEditView)
+//                }
             }
+            .navigationTitle("Photo Gallery:")
             .sheet(isPresented: $showEditView) {
                 EditView(photo: photoVM.updatePhoto!)
             }

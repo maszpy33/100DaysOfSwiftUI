@@ -15,6 +15,7 @@ import UIKit
     let examplePhotos = ["example1", "example2", "example3", "example4", "example5", "example6", "example7", "example8"]
     
     @Published var photoList: [Photo]
+    @Published var sortetdPhotoList: [Photo] = []
     @Published var selectedPhoto: UIImage?
     @Published var updatePhoto: Photo?
     @Published var photoName: String = ""
@@ -23,6 +24,7 @@ import UIKit
     let savePath = FileManager.documentsDirectory.appendingPathComponent("SavedPhotos")
     
     let exampleImage = UIImage(systemName: "example6")
+    
     
     init() {
         do {
@@ -44,8 +46,10 @@ import UIKit
         
         let newPhoto = Photo(id: UUID(), name: "GoLang Scientist", description: "Mascot of the programming language Go", photoData: jpegData)
         
-//        photoList.append(newPhoto)
-        photoList.insert(newPhoto, at: 0)
+        photoList.append(newPhoto)
+//        photoList.insert(newPhoto, at: 0)
+        sortetdPhotoList = photoList.sorted(by: { $0.name < $1.name })
+        save()
     }
     
     func save() {
@@ -69,18 +73,24 @@ import UIKit
         
         // remove append and save from function so user has to name the photo first, before it is saved
 //        photoList.append(newPhoto)
-        photoList.insert(newPhoto, at: 0)
+//        photoList.insert(newPhoto, at: 0)
+        photoList.append(newPhoto)
+        sortetdPhotoList = photoList.sorted(by: { $0.name < $1.name })
+        
         save()
     }
     
     func deletePhoto(photo: Photo) {
         if let index = photoList.firstIndex(where: { $0.id == photo.id }) {
+            print("remove photo with name \(photoList[index].name)")
             photoList.remove(at: index)
+            sortetdPhotoList = photoList.sorted(by: { $0.name < $1.name })
             save()
         }
     }
     
     func deleteAllContent() {
+        sortetdPhotoList = []
         photoList = []
         save()
     }
@@ -101,6 +111,8 @@ import UIKit
             
             photoList[index].name = photoName
             photoList[index].description = photoDescription
+            sortetdPhotoList = photoList.sorted(by: { $0.name < $1.name })
+            
             save()
         }
     }

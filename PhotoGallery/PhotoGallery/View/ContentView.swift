@@ -52,7 +52,7 @@ struct ContentView: View {
                     VStack {
                         Spacer()
                         HStack {
-                            Spacer()
+//                            Spacer()
                             
                             VStack {
                                 Button {
@@ -86,25 +86,25 @@ struct ContentView: View {
                                     .font(.system(size: 12, weight: .light))
                             }
                             
-                            VStack {
-                                Button {
-                                    photoVM.save()
-                                } label: {
-                                    Image(systemName: "s.circle")
-                                        .padding()
-                                        .background(.black.opacity(0.75))
-                                        .foregroundColor(.green)
-                                        .font(.title)
-                                        .clipShape(Circle())
-                                        .overlay(
-                                            Circle()
-                                                .stroke(.green, lineWidth: 1)
-                                        )
-                                        .padding(.horizontal, 15)
-                                }
-                                Text("Save Examples")
-                                    .font(.system(size: 12, weight: .light))
-                            }
+//                            VStack {
+//                                Button {
+//                                    photoVM.save()
+//                                } label: {
+//                                    Image(systemName: "s.circle")
+//                                        .padding()
+//                                        .background(.black.opacity(0.75))
+//                                        .foregroundColor(.green)
+//                                        .font(.title)
+//                                        .clipShape(Circle())
+//                                        .overlay(
+//                                            Circle()
+//                                                .stroke(.green, lineWidth: 1)
+//                                        )
+//                                        .padding(.horizontal, 15)
+//                                }
+//                                Text("Save Examples")
+//                                    .font(.system(size: 12, weight: .light))
+//                            }
                             
                             VStack {
                                 Button {
@@ -224,7 +224,9 @@ struct ContentView: View {
                 }
             }
         }
-
+        .onAppear {
+            photoVM.sortetdPhotoList = photoVM.photoList
+        }
     }
     
     // helper function to convert UIImage to Image and save it

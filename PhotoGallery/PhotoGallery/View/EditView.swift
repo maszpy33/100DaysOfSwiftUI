@@ -47,33 +47,33 @@ struct EditView: View {
                         .padding(.horizontal)
                     }
                 }
-
+                
                 Section(header: Text("Name: ")) {
                     VStack(alignment: .leading) {
-//                        Text("Name: ")
-//                            .bold()
+                        //                        Text("Name: ")
+                        //                            .bold()
                         TextField("enter photo name", text: $name)
                             .padding()
-//                            .overlay(
-//                                RoundedRectangle(cornerRadius: 16)
-//                                    .stroke(.blue, lineWidth: 2)
-//                            )
+                        //                            .overlay(
+                        //                                RoundedRectangle(cornerRadius: 16)
+                        //                                    .stroke(.blue, lineWidth: 2)
+                        //                            )
                     }
                     .padding(.horizontal)
                 }
-
+                
                 Section(header: Text("Description: ")) {
                     VStack(alignment: .leading) {
-//                        Text("Description: ")
-//                            .bold()
+                        //                        Text("Description: ")
+                        //                            .bold()
                         
                         TextEditor(text: $description)
                             .frame(minHeight: 100)
                             .multilineTextAlignment(.leading)
-//                            .overlay(
-//                                RoundedRectangle(cornerRadius: 10)
-//                                    .stroke(.blue, lineWidth: 2)
-//                            )
+                        //                            .overlay(
+                        //                                RoundedRectangle(cornerRadius: 10)
+                        //                                    .stroke(.blue, lineWidth: 2)
+                        //                            )
                     }
                     .padding(.horizontal)
                 }
@@ -81,18 +81,28 @@ struct EditView: View {
             .navigationTitle("Add New Photo")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Save") {
-                        if name.replacingOccurrences(of: " ", with: "") != "" {
-                            photoVM.photoName = name
-                            photoVM.photoDescription = description
-                            
-                            photoVM.updatePhoto(photo: photo)
-                            print("updated image")
+                    HStack {
+                        Button("Delete") {
+                            photoVM.deletePhoto(photo: photo)
                             
                             dismiss()
-                        } else {
-                            showAlert = true
                         }
+                        .foregroundColor(.red)
+                        
+                        Button("Save") {
+                            if name.replacingOccurrences(of: " ", with: "") != "" {
+                                photoVM.photoName = name
+                                photoVM.photoDescription = description
+                                
+                                photoVM.updatePhoto(photo: photo)
+                                print("updated image")
+                                
+                                dismiss()
+                            } else {
+                                showAlert = true
+                            }
+                        }
+
                     }
                 }
             }

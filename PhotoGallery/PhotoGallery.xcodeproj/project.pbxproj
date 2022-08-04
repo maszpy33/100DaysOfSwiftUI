@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9F8D1165289C74C800C06564 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F8D1164289C74C800C06564 /* MapViewModel.swift */; };
 		9FAB4BEF2895E28300364AC0 /* PhotoGalleryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FAB4BEE2895E28300364AC0 /* PhotoGalleryApp.swift */; };
 		9FAB4BF12895E28300364AC0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FAB4BF02895E28300364AC0 /* ContentView.swift */; };
 		9FAB4BF32895E28400364AC0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9FAB4BF22895E28400364AC0 /* Assets.xcassets */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9F8D1164289C74C800C06564 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
 		9FAB4BEB2895E28300364AC0 /* PhotoGallery.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoGallery.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FAB4BEE2895E28300364AC0 /* PhotoGalleryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoGalleryApp.swift; sourceTree = "<group>"; };
 		9FAB4BF02895E28300364AC0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 			isa = PBXGroup;
 			children = (
 				9FAB4C002895E52B00364AC0 /* PhotoViewModel.swift */,
+				9F8D1164289C74C800C06564 /* MapViewModel.swift */,
 				9FD5F777289728740058A543 /* FileManager-DocumentsDirectory.swift */,
 			);
 			path = ViewModel;
@@ -183,6 +186,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9FAB4BFD2895E2A800364AC0 /* PhotoModel.swift in Sources */,
+				9F8D1165289C74C800C06564 /* MapViewModel.swift in Sources */,
 				9FD5F77A289732C20058A543 /* AddView.swift in Sources */,
 				9FD5F77F2899AC880058A543 /* EditView.swift in Sources */,
 				9FD5F778289728740058A543 /* FileManager-DocumentsDirectory.swift in Sources */,
@@ -322,6 +326,7 @@
 				DEVELOPMENT_TEAM = J9T7CX8U3Q;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Give me your location data I want to sell them";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -351,6 +356,7 @@
 				DEVELOPMENT_TEAM = J9T7CX8U3Q;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Give me your location data I want to sell them";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

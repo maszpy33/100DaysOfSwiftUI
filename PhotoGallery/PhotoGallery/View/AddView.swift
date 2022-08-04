@@ -77,22 +77,6 @@ struct AddView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     HStack {
-                        Button("Save") {
-                            if name.replacingOccurrences(of: " ", with: "") != "" {
-                                photoVM.photoName = name
-                                photoVM.photoDescription = description
-                                
-                                photoVM.addPhoto(photo: photoVM.selectedPhoto!, name: photoVM.photoName, description: photoVM.photoDescription)
-                                print("saved new image")
-                                
-                                showAddView = false
-                                
-                                dismiss()
-                            } else {
-                                showAlert = true
-                            }
-                        }
-                        
                         Button("Cancel") {
                             photoVM.photoName = ""
                             photoVM.photoDescription = ""
@@ -100,6 +84,21 @@ struct AddView: View {
                             
                             showAddView = false
                             dismiss()
+                        }
+                        
+                        Button("Save") {
+                            if name.replacingOccurrences(of: " ", with: "") != "" {
+                                photoVM.photoName = name
+                                photoVM.photoDescription = description
+                                
+                                photoVM.addPhoto(photo: photoVM.selectedPhoto!, name: photoVM.photoName, description: photoVM.photoDescription)
+                                
+                                showAddView = false
+                                
+                                dismiss()
+                            } else {
+                                showAlert = true
+                            }
                         }
                     }
                 }

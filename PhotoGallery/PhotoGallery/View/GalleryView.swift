@@ -22,7 +22,7 @@ struct PhotoGalleryView: View {
             ZStack {
                 ScrollView {
                     LazyVGrid(columns: adaptiveColumns, spacing: 20) {
-                        ForEach(photoVM.photoList) { photo in
+                        ForEach(photoVM.sortetdPhotoList) { photo in
                             VStack {
                                 Image(uiImage: UIImage(data: photo.photoData) ?? UIImage(systemName: "questionmark")!)
                                     .resizable()
@@ -37,8 +37,6 @@ struct PhotoGalleryView: View {
                             }
                             .padding(8)
                             .onTapGesture {
-//                                showEditView = true
-                                print(photo.name)
                                 photoVM.updatePhoto = photo
                                 showEditView = true
                             }

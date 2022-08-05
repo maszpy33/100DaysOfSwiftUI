@@ -12,6 +12,7 @@ struct AddView: View {
     
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var photoVM: PhotoViewModel
+    let locationFetcher = LocationFetcher()
     
     let exampleImage: UIImage = UIImage(systemName: "questionmark")!
     @State private var name: String = ""
@@ -91,7 +92,7 @@ struct AddView: View {
                                 photoVM.photoName = name
                                 photoVM.photoDescription = description
                                 
-                                photoVM.addPhoto(photo: photoVM.selectedPhoto!, name: photoVM.photoName, description: photoVM.photoDescription)
+                                photoVM.addPhoto(photo: photoVM.selectedPhoto!, name: photoVM.photoName, description: photoVM.photoDescription, latitude: photoVM.latitude, longitude: photoVM.longitude)
                                 
                                 showAddView = false
                                 
@@ -105,6 +106,13 @@ struct AddView: View {
             }
             .alert("Pleace enter a Name for the image", isPresented: $showAlert) {
                 Button("OK", role: .cancel) { }
+            }
+        }
+        .onAppear {
+            self.locationFetcher.start()
+            if let location = self.locationFetcher.lastKnownLocation {
+                photoVM.latitude = location.latitude
+                photoVM.longitude = location.longitude
             }
         }
     }

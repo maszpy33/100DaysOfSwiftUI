@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import MapKit
 
 
 struct Photo: Identifiable, Codable, Equatable, Comparable {
@@ -13,6 +14,12 @@ struct Photo: Identifiable, Codable, Equatable, Comparable {
     var name: String
     var description: String?
     var photoData: Data
+    let latitude: Double
+    let longitude: Double
+    
+    var coordinate: CLLocationCoordinate2D {
+        CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
     
     static func ==(lhs: Photo, rhs: Photo) -> Bool {
         lhs.id == rhs.id

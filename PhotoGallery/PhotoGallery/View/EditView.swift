@@ -35,16 +35,6 @@ struct EditView: View {
                             )
                             .frame(width: 250, height: 250)
                             .padding(.horizontal)
-                        
-                        HStack {
-                            Text("Photo Name: ")
-                                .font(.subheadline)
-                                .bold()
-                            Text("\(name)")
-                                .font(.subheadline)
-                            Spacer()
-                        }
-                        .padding(.horizontal)
                     }
                 }
                 

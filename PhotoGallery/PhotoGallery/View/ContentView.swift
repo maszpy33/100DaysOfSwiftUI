@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MapKit
 
 
 struct ContentView: View {
@@ -19,10 +20,11 @@ struct ContentView: View {
     @State private var showAddView = false
     @State var showEditView = false
     
-//    @State var name: String = ""
-//    @State var description: String = ""
-    
     @State private var showAlert: Bool = false
+    
+    @State private var toggleMiniMap: Bool = false
+    
+    @State var showMapView: Bool = false
     
     
     var body: some View {
@@ -30,18 +32,76 @@ struct ContentView: View {
             ZStack {
                 ZStack {
                     VStack {
-                        if image != nil {
-                            HStack {
-                                Text("Last added: ")
-                                image?
-                                    .resizable()
-                                    .scaledToFit()
-                                    .clipShape(RoundedRectangle(cornerRadius: 16))
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 16)
-                                            .stroke(.gray, lineWidth: 3)
-                                    )
-                                    .frame(width: 80, height: 80)
+                        HStack {
+                            if image != nil {
+                                HStack {
+                                    VStack {
+                                        Text("Last added: ")
+                                            .padding(.leading)
+                                            .padding(.trailing, 15)
+                                        image?
+                                            .resizable()
+                                            .scaledToFit()
+                                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 16)
+                                                    .stroke(.gray, lineWidth: 3)
+                                            )
+                                            .frame(width: 100, height: 100)
+                                            .padding(.leading)
+                                            .padding(.trailing, 15)
+                                    }
+                                    
+                                    HStack {
+                                        if toggleMiniMap {
+                                            VStack {
+                                                Text("Location")
+                                                Map(coordinateRegion: $photoVM.mapRegion, showsUserLocation: true, userTrackingMode: .constant(.follow))
+                                                    .frame(width: 100, height: 100)
+                                                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                                                    .overlay(
+                                                        RoundedRectangle(cornerRadius: 16)
+                                                            .stroke(.gray, lineWidth: 3)
+                                                    )
+                                                    .onTapGesture {
+                                                        showMapView = true
+                                                    }
+                                            }
+                                        } else {
+                                            VStack {
+                                                Text("Location")
+                                                MapView()
+                                                    .environmentObject(photoVM)
+                                                    .frame(width: 100, height: 100)
+                                                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                                                    .overlay(
+                                                        RoundedRectangle(cornerRadius: 16)
+                                                            .stroke(.gray, lineWidth: 3)
+                                                    )
+                                                    .onTapGesture {
+                                                        showMapView = true
+                                                    }
+                                            }
+                                        }
+                                    }
+                                    .sheet(isPresented: $showMapView) {
+                                        MapView()
+                                            .environmentObject(photoVM)
+                                    }
+                                    
+                                    VStack {
+                                        Image(systemName: "location.fill.viewfinder")
+                                            .foregroundColor(toggleMiniMap ? .blue : .gray)
+                                            .padding(.vertical)
+                                        //                                            Text(" - ")
+                                        Image(systemName: "photo")
+                                            .foregroundColor(toggleMiniMap ? .gray : .blue)
+                                            .padding(.vertical)
+                                    }
+                                    .onTapGesture {
+                                        toggleMiniMap.toggle()
+                                    }
+                                }
                             }
                         }
                         
@@ -52,7 +112,7 @@ struct ContentView: View {
                     VStack {
                         Spacer()
                         HStack {
-//                            Spacer()
+                            //                            Spacer()
                             
                             VStack {
                                 Button {
@@ -85,26 +145,6 @@ struct ContentView: View {
                                 Text("Delete All")
                                     .font(.system(size: 12, weight: .light))
                             }
-                            
-//                            VStack {
-//                                Button {
-//                                    photoVM.save()
-//                                } label: {
-//                                    Image(systemName: "s.circle")
-//                                        .padding()
-//                                        .background(.black.opacity(0.75))
-//                                        .foregroundColor(.green)
-//                                        .font(.title)
-//                                        .clipShape(Circle())
-//                                        .overlay(
-//                                            Circle()
-//                                                .stroke(.green, lineWidth: 1)
-//                                        )
-//                                        .padding(.horizontal, 15)
-//                                }
-//                                Text("Save Examples")
-//                                    .font(.system(size: 12, weight: .light))
-//                            }
                             
                             VStack {
                                 Button {
@@ -156,46 +196,18 @@ struct ContentView: View {
                         }
                     }
                 }
-                .navigationTitle("Photo Gallary")
+                .navigationTitle("Welcome to PhotoGal")
                 .navigationBarTitleDisplayMode(.inline)
                 .sheet(isPresented: $showingImagePicker) {
                     ImagePicker(image: $inputImage)
                 }
                 .onChange(of: inputImage) { _ in loadImage() }
-//                .sheet(isPresented: $showAddView, onDismiss: {
-//                    print("dismiss EditView")
-//    //                 check if photoList is not empty -> would throw an error
-//                    if !photoVM.photoList.isEmpty {
-//                        if photoVM.photoName == "" {
-//    //                        photoVM.deletePhoto(photo: photoVM.photoList.first!)
-//
-//                            // check again if photoList is now empty
-//                            // if its empty mage last added image preview nil
-//                            if photoVM.photoList.isEmpty {
-//                                image = nil
-//                            } else {
-//                                print("List Count: \(photoVM.photoList.count)")
-//                                image = Image(uiImage: UIImage(data: photoVM.photoList.first!.photoData) ?? UIImage(systemName: "questionmark")!)
-//                            }
-//                        } else {
-//                            photoVM.save()
-//                        }
-//                    } else {
-//                        image = nil
-//                    }
-//
-//                    photoVM.photoName = ""
-//                    photoVM.photoDescription = ""
-//                }) {
-//                    AddView()
-//                        .environmentObject(photoVM)
-//                }
                 .onAppear {
-    //                 check if photoList is not empty -> would throw an error
+                    //                    check if photoList is not empty -> would throw an error
                     if !photoVM.photoList.isEmpty {
                         if photoVM.photoName == "" {
-    //                        photoVM.deletePhoto(photo: photoVM.photoList.first!)
-    
+                            //                            photoVM.deletePhoto(photo: photoVM.photoList.first!)
+                            
                             // check again if photoList is now empty
                             // if its empty mage last added image preview nil
                             if photoVM.photoList.isEmpty {
@@ -210,13 +222,10 @@ struct ContentView: View {
                     } else {
                         image = nil
                     }
-    
+                    
                     photoVM.photoName = ""
                     photoVM.photoDescription = ""
                 }
-    //            .onAppear {
-    //                photoVM.save()
-    //            }
                 
                 if showAddView {
                     AddView(showAddView: $showAddView)

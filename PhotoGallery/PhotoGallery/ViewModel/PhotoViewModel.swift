@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import MapKit
 
 
 
@@ -20,6 +21,13 @@ import UIKit
     @Published var updatePhoto: Photo?
     @Published var photoName: String = ""
     @Published var photoDescription: String?
+    @Published var latitude: Double = 37.785834
+    @Published var longitude: Double = -122.406417
+    @Published var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 50, longitude: 0), span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))
+    
+//    var mapRegion: MKCoordinateRegion {
+//        return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), span: MKCoordinateSpan(latitudeDelta: 25, longitudeDelta: 25))
+//    }
     
     let savePath = FileManager.documentsDirectory.appendingPathComponent("SavedPhotos")
     
@@ -44,7 +52,7 @@ import UIKit
             return
         }
         
-        let newPhoto = Photo(id: UUID(), name: "GoLang Scientist", description: "Mascot of the programming language Go", photoData: jpegData)
+        let newPhoto = Photo(id: UUID(), name: "GoLang Scientist", description: "Mascot of the programming language Go", photoData: jpegData, latitude: 37.785834, longitude: -122.406417)
         
         photoList.append(newPhoto)
 //        photoList.insert(newPhoto, at: 0)
@@ -62,14 +70,14 @@ import UIKit
         }
     }
     
-    func addPhoto(photo: UIImage, name: String, description: String?) {
+    func addPhoto(photo: UIImage, name: String, description: String?, latitude: Double, longitude: Double) {
         // compress image with quality 0.8
         guard let jpegData = photo.jpegData(compressionQuality: 0.8) else {
             print("image compression error")
             return
         }
         
-        let newPhoto = Photo(id: UUID(), name: photoName, description: photoDescription, photoData: jpegData)
+        let newPhoto = Photo(id: UUID(), name: photoName, description: photoDescription, photoData: jpegData, latitude: latitude, longitude: longitude)
         
         // remove append and save from function so user has to name the photo first, before it is saved
 //        photoList.append(newPhoto)

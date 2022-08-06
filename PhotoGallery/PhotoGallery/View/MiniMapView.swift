@@ -1,16 +1,15 @@
 //
-//  MapView.swift
+//  MiniMapView.swift
 //  PhotoGallery
 //
-//  Created by Andreas Zwikirsch on 06.08.22.
+//  Created by Andreas Zwikirsch on 07.08.22.
 //
 
 import SwiftUI
 import MapKit
 
-struct MapView: View {
+struct MiniMapView: View {
     
-    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var photoVM: PhotoViewModel
     
     @Binding var toggleMiniMap: Bool
@@ -48,22 +47,13 @@ struct MapView: View {
                     }
                     .ignoresSafeArea()
                 }
-
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Cancel") {
-                        dismiss()
-                    }
-                    .foregroundColor(.primary)
-                }
             }
         }
     }
 }
 
-//struct MapView_Previews: PreviewProvider {
+//struct MiniMapView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        MapView()
+//        MiniMapView()
 //    }
 //}

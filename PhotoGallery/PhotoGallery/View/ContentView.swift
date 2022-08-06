@@ -22,7 +22,7 @@ struct ContentView: View {
     
     @State private var showAlert: Bool = false
     
-    @State private var toggleMiniMap: Bool = false
+    @State var toggleMiniMap: Bool = false
     
     @State var showMapView: Bool = false
     
@@ -52,41 +52,23 @@ struct ContentView: View {
                                             .padding(.trailing, 15)
                                     }
                                     
-                                    HStack {
-                                        if toggleMiniMap {
-                                            VStack {
-                                                Text("Location")
-                                                Map(coordinateRegion: $photoVM.mapRegion, showsUserLocation: true, userTrackingMode: .constant(.follow))
-                                                    .frame(width: 100, height: 100)
-                                                    .clipShape(RoundedRectangle(cornerRadius: 16))
-                                                    .overlay(
-                                                        RoundedRectangle(cornerRadius: 16)
-                                                            .stroke(.gray, lineWidth: 3)
-                                                    )
-                                                    .onTapGesture {
-                                                        showMapView = true
-                                                    }
-                                            }
-                                        } else {
-                                            VStack {
-                                                Text("Location")
-                                                MapView()
-                                                    .environmentObject(photoVM)
-                                                    .frame(width: 100, height: 100)
-                                                    .clipShape(RoundedRectangle(cornerRadius: 16))
-                                                    .overlay(
-                                                        RoundedRectangle(cornerRadius: 16)
-                                                            .stroke(.gray, lineWidth: 3)
-                                                    )
-                                                    .onTapGesture {
-                                                        showMapView = true
-                                                    }
-                                            }
-                                        }
-                                    }
-                                    .sheet(isPresented: $showMapView) {
-                                        MapView()
+                                    VStack {
+                                        Text("Location")
+                                        MiniMapView(toggleMiniMap: $toggleMiniMap)
                                             .environmentObject(photoVM)
+                                            .frame(width: 100, height: 100)
+                                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 16)
+                                                    .stroke(.gray, lineWidth: 3)
+                                            )
+                                            .onTapGesture {
+                                                showMapView = true
+                                            }
+                                            .sheet(isPresented: $showMapView) {
+                                                MapView(toggleMiniMap: $toggleMiniMap)
+                                                    .environmentObject(photoVM)
+                                            }
                                     }
                                     
                                     VStack {

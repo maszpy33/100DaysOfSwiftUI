@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		9F8D1165289C74C800C06564 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F8D1164289C74C800C06564 /* MapViewModel.swift */; };
 		9F8D1167289DD73F00C06564 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F8D1166289DD73F00C06564 /* MapView.swift */; };
+		9F8D1169289F1E8F00C06564 /* MiniMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F8D1168289F1E8F00C06564 /* MiniMapView.swift */; };
+		9F8D116B289F288900C06564 /* CustomToggleSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F8D116A289F288900C06564 /* CustomToggleSwitch.swift */; };
 		9FAB4BEF2895E28300364AC0 /* PhotoGalleryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FAB4BEE2895E28300364AC0 /* PhotoGalleryApp.swift */; };
 		9FAB4BF12895E28300364AC0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FAB4BF02895E28300364AC0 /* ContentView.swift */; };
 		9FAB4BF32895E28400364AC0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9FAB4BF22895E28400364AC0 /* Assets.xcassets */; };
@@ -25,6 +27,8 @@
 /* Begin PBXFileReference section */
 		9F8D1164289C74C800C06564 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
 		9F8D1166289DD73F00C06564 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		9F8D1168289F1E8F00C06564 /* MiniMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniMapView.swift; sourceTree = "<group>"; };
+		9F8D116A289F288900C06564 /* CustomToggleSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomToggleSwitch.swift; sourceTree = "<group>"; };
 		9FAB4BEB2895E28300364AC0 /* PhotoGallery.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoGallery.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FAB4BEE2895E28300364AC0 /* PhotoGalleryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoGalleryApp.swift; sourceTree = "<group>"; };
 		9FAB4BF02895E28300364AC0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -113,7 +117,9 @@
 				9FAB4BFE2895E4DC00364AC0 /* GalleryView.swift */,
 				9FD5F779289732C20058A543 /* AddView.swift */,
 				9FD5F77E2899AC880058A543 /* EditView.swift */,
+				9F8D116A289F288900C06564 /* CustomToggleSwitch.swift */,
 				9F8D1166289DD73F00C06564 /* MapView.swift */,
+				9F8D1168289F1E8F00C06564 /* MiniMapView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -191,9 +197,11 @@
 				9FAB4BFD2895E2A800364AC0 /* PhotoModel.swift in Sources */,
 				9F8D1165289C74C800C06564 /* MapViewModel.swift in Sources */,
 				9FD5F77A289732C20058A543 /* AddView.swift in Sources */,
+				9F8D116B289F288900C06564 /* CustomToggleSwitch.swift in Sources */,
 				9F8D1167289DD73F00C06564 /* MapView.swift in Sources */,
 				9FD5F77F2899AC880058A543 /* EditView.swift in Sources */,
 				9FD5F778289728740058A543 /* FileManager-DocumentsDirectory.swift in Sources */,
+				9F8D1169289F1E8F00C06564 /* MiniMapView.swift in Sources */,
 				9FAB4BF12895E28300364AC0 /* ContentView.swift in Sources */,
 				9FAB4BFF2895E4DC00364AC0 /* GalleryView.swift in Sources */,
 				9FD5F776289725F40058A543 /* ImagePicker.swift in Sources */,

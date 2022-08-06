@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import MapKit
+
 
 struct EditView: View {
     
@@ -19,22 +21,37 @@ struct EditView: View {
     @State private var name: String = ""
     @State private var description: String = ""
     
+    @State var photoLocationToggle: Bool = false
+    
     
     var body: some View {
         NavigationView {
             Form {
                 Section {
                     VStack {
-                        Image(uiImage: UIImage(data: photo.photoData)!)
-                            .resizable()
-                            .scaledToFit()
-                            .clipShape(RoundedRectangle(cornerRadius: 16))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 16)
-                                    .stroke(.gray, lineWidth: 3)
-                            )
-                            .frame(width: 250, height: 250)
-                            .padding(.horizontal)
+                        CustomToggleSwitch(photoLocationToggle: $photoLocationToggle, leftButtonText: "Photo", rightButtonText: "Location")
+                        
+                        if !photoLocationToggle {
+                            Image(uiImage: UIImage(data: photo.photoData)!)
+                                .resizable()
+                                .scaledToFit()
+                                .clipShape(RoundedRectangle(cornerRadius: 16))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .stroke(.gray, lineWidth: 3)
+                                )
+                                .frame(width: 250, height: 250)
+                                .padding(.horizontal)
+                        } else {
+                            Map(coordinateRegion: .constant(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: photo.coordinate.latitude, longitude: photo.coordinate.longitude), span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))), interactionModes: [])
+                                .clipShape(RoundedRectangle(cornerRadius: 16))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .stroke(.gray, lineWidth: 3)
+                                )
+                                .frame(width: 250, height: 250)
+                                .padding(.horizontal)
+                        }
                     }
                 }
                 

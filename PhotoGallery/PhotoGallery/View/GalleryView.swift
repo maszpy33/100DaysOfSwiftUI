@@ -19,22 +19,24 @@ struct PhotoGalleryView: View {
     
     var body: some View {
         NavigationView {
-            ZStack {
                 ScrollView {
                     LazyVGrid(columns: adaptiveColumns, spacing: 20) {
-                        ForEach(photoVM.sortetdPhotoList) { photo in
-                            VStack {
-                                Image(uiImage: UIImage(data: photo.photoData) ?? UIImage(systemName: "questionmark")!)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .clipShape(RoundedRectangle(cornerRadius: 16))
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 16)
-                                            .stroke(.gray, lineWidth: 3)
-                                    )
-                                Text(photo.name)
-                                    .font(.subheadline)
-                            }
+                        ForEach(photoVM.sortetdPhotoList, id: \.self) { photo in
+                            NavigationLink(destination: EditView(photo: photo), label: {
+                                VStack {
+                                    Image(uiImage: UIImage(data: photo.photoData) ?? UIImage(systemName: "questionmark")!)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 16)
+                                                .stroke(.gray, lineWidth: 3)
+                                        )
+                                    Text(photo.name)
+                                        .font(.subheadline)
+
+                                }
+                            })
                             .padding(8)
                             .onTapGesture {
                                 photoVM.updatePhoto = photo
@@ -43,15 +45,32 @@ struct PhotoGalleryView: View {
                         }
                     }
                 }
-                
-//                if showEditView {
-//                    EditView(photo: photoVM.updatePhoto!, showEditView: $showEditView)
-//                }
-            }
-            .navigationTitle("Photo Gallery:")
-            .sheet(isPresented: $showEditView) {
-                EditView(photo: photoVM.updatePhoto!)
-            }
+                //                ScrollView {
+                //                    LazyVGrid(columns: adaptiveColumns, spacing: 20) {
+                //                        ForEach(photoVM.sortetdPhotoList) { photo in
+                //                            VStack {
+                //                                Image(uiImage: UIImage(data: photo.photoData) ?? UIImage(systemName: "questionmark")!)
+                //                                    .resizable()
+                //                                    .scaledToFit()
+                //                                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                //                                    .overlay(
+                //                                        RoundedRectangle(cornerRadius: 16)
+                //                                            .stroke(.gray, lineWidth: 3)
+                //                                    )
+                //                                Text(photo.name)
+                //                                    .font(.subheadline)
+                //                            }
+                //                            .padding(8)
+                //                            .onTapGesture {
+                //                                photoVM.updatePhoto = photo
+                //                                showEditView = true
+                //                            }
+                //                        }
+                //                    }
+                //                }
+//            .sheet(isPresented: $showEditView) {
+//                EditView(photo: photoVM.updatePhoto!)
+//            }
         }
     }
 }

@@ -7,11 +7,13 @@
 
 import SwiftUI
 import MapKit
+import CoreLocation
 
 
 struct ContentView: View {
     
     @StateObject var photoVM = PhotoViewModel()
+    let locationFetcher = LocationFetcher()
     
     @State private var image: Image?
     @State private var inputImage: UIImage?
@@ -22,9 +24,14 @@ struct ContentView: View {
     
     @State private var showAlert: Bool = false
     
-    @State var toggleMiniMap: Bool = false
+    @State private var currentLatitude: Double = 0.0
+    @State private var currentLongitude: Double = 0.0
     
     @State var showMapView: Bool = false
+    
+    private let adaptiveColumns = [
+        GridItem(.adaptive(minimum: 150))
+    ]
     
     
     var body: some View {
@@ -37,6 +44,7 @@ struct ContentView: View {
                                 HStack {
                                     VStack {
                                         Text("Last added: ")
+                                            .font(.title2)
                                             .padding(.leading)
                                             .padding(.trailing, 15)
                                         image?
@@ -47,54 +55,77 @@ struct ContentView: View {
                                                 RoundedRectangle(cornerRadius: 16)
                                                     .stroke(.gray, lineWidth: 3)
                                             )
-                                            .frame(width: 100, height: 100)
+                                            .frame(width: 150, height: 150)
                                             .padding(.leading)
                                             .padding(.trailing, 15)
                                     }
                                     
                                     VStack {
-                                        Text("Location")
-                                        MiniMapView(toggleMiniMap: $toggleMiniMap)
+                                        Text("Latitude: \(currentLatitude)")
+                                            .font(.subheadline)
+                                        Text("Longitude: \(currentLongitude)")
+                                            .font(.subheadline)
+                                        Text("Show Map")
+                                        NavigationLink(destination:
+                                                        MapView()
                                             .environmentObject(photoVM)
-                                            .frame(width: 100, height: 100)
-                                            .clipShape(RoundedRectangle(cornerRadius: 16))
-                                            .overlay(
-                                                RoundedRectangle(cornerRadius: 16)
-                                                    .stroke(.gray, lineWidth: 3)
-                                            )
-                                            .onTapGesture {
-                                                showMapView = true
-                                            }
-                                            .sheet(isPresented: $showMapView) {
-                                                MapView(toggleMiniMap: $toggleMiniMap)
-                                                    .environmentObject(photoVM)
-                                            }
-                                    }
-                                    
-                                    VStack {
-                                        Image(systemName: "location.fill.viewfinder")
-                                            .foregroundColor(toggleMiniMap ? .blue : .gray)
-                                            .padding(.vertical)
-                                        //                                            Text(" - ")
-                                        Image(systemName: "photo")
-                                            .foregroundColor(toggleMiniMap ? .gray : .blue)
-                                            .padding(.vertical)
-                                    }
-                                    .onTapGesture {
-                                        toggleMiniMap.toggle()
+                                        ) {
+                                            Image(systemName: "map.fill")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .padding(10)
+                                                .clipShape(RoundedRectangle(cornerRadius: 16))
+                                                .overlay(
+                                                    RoundedRectangle(cornerRadius: 16)
+                                                        .stroke(.gray, lineWidth: 3)
+                                                )
+                                                .frame(width: 60, height: 60)
+                                                .padding(.top, 10)
+                                                .foregroundColor(.orange)
+                                        }
                                     }
                                 }
                             }
                         }
                         
-                        PhotoGalleryView()
-                            .environmentObject(photoVM)
+                        ScrollView {
+                            LazyVGrid(columns: adaptiveColumns, spacing: 20) {
+                                ForEach(photoVM.sortetdPhotoList, id: \.self) { photo in
+                                    NavigationLink(destination:
+                                                    EditView(photo: photo)
+                                        .environmentObject(photoVM)
+                                                   
+                                                   , label: {
+                                        VStack {
+                                            Image(uiImage: UIImage(data: photo.photoData) ?? UIImage(systemName: "questionmark")!)
+                                                .resizable()
+                                                .scaledToFit()
+                                                .clipShape(RoundedRectangle(cornerRadius: 16))
+                                                .overlay(
+                                                    RoundedRectangle(cornerRadius: 16)
+                                                        .stroke(.gray, lineWidth: 3)
+                                                )
+                                            Text(photo.name)
+                                                .font(.subheadline)
+
+                                        }
+                                    })
+                                    .padding(8)
+                                    .onTapGesture {
+                                        photoVM.updatePhoto = photo
+                                        showEditView = true
+                                    }
+                                }
+                            }
+                        }
+//                        PhotoGalleryView()
+//                            .environmentObject(photoVM)
                     }
                     
+                    // BUTTON SECTION (could be in a seperated view for a cleaner ContentView
                     VStack {
                         Spacer()
                         HStack {
-                            //                            Spacer()
                             
                             VStack {
                                 Button {
@@ -153,6 +184,20 @@ struct ContentView: View {
                             
                             VStack {
                                 Button {
+                                    self.locationFetcher.start()
+                                    if let location = self.locationFetcher.lastKnownLocation {
+                                        photoVM.latitude = location.latitude
+                                        photoVM.longitude = location.longitude
+                                        print("___________________________")
+                                        print("Latitude \(photoVM.latitude)")
+                                        print("Longitude \(photoVM.longitude)")
+                                        print("___________________________")
+                                    } else {
+                                        print("___________________________")
+                                        print("Location detection error")
+                                        print("___________________________")
+                                    }
+                                    
                                     showingImagePicker = true
                                     
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -175,6 +220,45 @@ struct ContentView: View {
                                 Text("Add Photo")
                                     .font(.system(size: 12, weight: .light))
                             }
+                            
+                            VStack {
+                                Button {
+                                    print("Current Location")
+                                    
+                                    locationFetcher.start()
+                                    
+                                    if let location = self.locationFetcher.lastKnownLocation {
+                                        photoVM.latitude = location.latitude
+                                        photoVM.longitude = location.longitude
+                                        currentLatitude = location.latitude
+                                        currentLongitude = location.longitude
+                                        print("___________________________")
+                                        print("Your location is \(location)")
+                                        print("Latitude \(photoVM.latitude)")
+                                        print("Longitude \(photoVM.longitude)")
+                                        print("___________________________")
+                                    } else {
+                                        print("___________________________")
+                                        print("Your location is unknown")
+                                        print("___________________________")
+                                    }
+                                    
+                                } label: {
+                                    Image(systemName: "mappin.and.ellipse")
+                                        .padding()
+                                        .background(.black.opacity(0.75))
+                                        .foregroundColor(.white)
+                                        .font(.title)
+                                        .clipShape(Circle())
+                                        .overlay(
+                                            Circle()
+                                                .stroke(.white, lineWidth: 1)
+                                        )
+                                        .padding(.horizontal, 15)
+                                }
+                                Text("Print Location")
+                                    .font(.system(size: 12, weight: .light))
+                            }
                         }
                     }
                 }
@@ -185,7 +269,7 @@ struct ContentView: View {
                 }
                 .onChange(of: inputImage) { _ in loadImage() }
                 .onAppear {
-                    //                    check if photoList is not empty -> would throw an error
+//                    check if photoList is not empty -> would throw an error
                     if !photoVM.photoList.isEmpty {
                         if photoVM.photoName == "" {
                             //                            photoVM.deletePhoto(photo: photoVM.photoList.first!)
@@ -210,7 +294,7 @@ struct ContentView: View {
                 }
                 
                 if showAddView {
-                    AddView(showAddView: $showAddView)
+                    AddView(locationFetcher: locationFetcher, showAddView: $showAddView)
                         .environmentObject(photoVM)
                 }
             }

@@ -19,8 +19,10 @@ class LocationFetcher: NSObject, CLLocationManagerDelegate {
     }
 
     func start() {
+        print("location request")
         manager.requestWhenInUseAuthorization()
         manager.startUpdatingLocation()
+        print("Location requeswt confirmed")
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {

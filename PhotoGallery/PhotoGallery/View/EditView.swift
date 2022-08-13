@@ -9,6 +9,11 @@ import SwiftUI
 import MapKit
 
 
+struct Marker: Identifiable {
+    let id = UUID()
+    var location: MapMarker
+}
+
 struct EditView: View {
     
     @Environment(\.dismiss) var dismiss
@@ -22,6 +27,8 @@ struct EditView: View {
     @State private var description: String = ""
     
     @State var photoLocationToggle: Bool = false
+    
+    let markers = [Marker(location: MapMarker(coordinate: CLLocationCoordinate2D(latitude: 38.8977, longitude: -77.0365), tint: .red))]
     
     
     var body: some View {
@@ -43,7 +50,22 @@ struct EditView: View {
                                 .frame(width: 250, height: 250)
                                 .padding(.horizontal)
                         } else {
-                            Map(coordinateRegion: .constant(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: photo.coordinate.latitude, longitude: photo.coordinate.longitude), span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))), interactionModes: [])
+                            VStack {
+                                Map(coordinateRegion: $photoVM.mapRegion, interactionModes: .all, showsUserLocation: true, annotationItems: photoVM.photoList) { photo in
+                                    MapAnnotation(coordinate: photo.coordinate) {
+                                        VStack {
+        //                                    MapPin(coordinate: photo.coordinate)
+                                            Image(systemName: "mappin")
+                                                .resizable()
+                                                .symbolRenderingMode(.palette)
+                                                .foregroundStyle(.red, .gray)
+                                                .frame(width: 10, height: 25)
+                                            
+                                            
+                                        }
+                                    }
+                                }
+                                .frame(width: 250, height: 250)
                                 .clipShape(RoundedRectangle(cornerRadius: 16))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 16)
@@ -51,36 +73,38 @@ struct EditView: View {
                                 )
                                 .frame(width: 250, height: 250)
                                 .padding(.horizontal)
+                                .padding(.horizontal)
+                                
+    //                            Map(coordinateRegion: .constant(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: photo.coordinate.latitude, longitude: photo.coordinate.longitude), span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))), interactionModes: [.zoom])
+    //                                .clipShape(RoundedRectangle(cornerRadius: 16))
+    //                                .overlay(
+    //                                    RoundedRectangle(cornerRadius: 16)
+    //                                        .stroke(.gray, lineWidth: 3)
+    //                                )
+    //                                .frame(width: 250, height: 250)
+    //                                .padding(.horizontal)
+                            }
+                        }
+                        HStack {
+                            Text("Longitude: \(photo.longitude, specifier: "%.2f")")
+                            Text("Latitude: \(photo.latitude, specifier: "%.2f")")
                         }
                     }
                 }
                 
                 Section(header: Text("Name: ")) {
                     VStack(alignment: .leading) {
-                        //                        Text("Name: ")
-                        //                            .bold()
                         TextField("enter photo name", text: $name)
                             .padding()
-                        //                            .overlay(
-                        //                                RoundedRectangle(cornerRadius: 16)
-                        //                                    .stroke(.blue, lineWidth: 2)
-                        //                            )
                     }
                     .padding(.horizontal)
                 }
                 
                 Section(header: Text("Description: ")) {
                     VStack(alignment: .leading) {
-                        //                        Text("Description: ")
-                        //                            .bold()
-                        
                         TextEditor(text: $description)
                             .frame(minHeight: 100)
                             .multilineTextAlignment(.leading)
-                        //                            .overlay(
-                        //                                RoundedRectangle(cornerRadius: 10)
-                        //                                    .stroke(.blue, lineWidth: 2)
-                        //                            )
                     }
                     .padding(.horizontal)
                 }

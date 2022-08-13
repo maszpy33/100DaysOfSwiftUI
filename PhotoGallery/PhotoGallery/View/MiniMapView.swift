@@ -7,6 +7,7 @@
 
 import SwiftUI
 import MapKit
+import CoreLocation
 
 struct MiniMapView: View {
     
@@ -31,12 +32,12 @@ struct MiniMapView: View {
                     Map(coordinateRegion: $photoVM.mapRegion, annotationItems: photoVM.photoList) { photo in
                         MapAnnotation(coordinate: photo.coordinate) {
                             VStack {
-                                Image(systemName: "star.circle")
+                                Image(systemName: "mappin")
                                     .resizable()
                                     .foregroundColor(.red)
-                                    .frame(width: 44, height: 44)
-                                    .background(.white)
-                                    .clipShape(Circle())
+                                    .frame(width: 5, height: 20)
+//                                    .background(.white)
+//                                    .clipShape(Circle())
                                 Text(photo.name)
                                     .fixedSize()
                             }

@@ -7,12 +7,14 @@
 
 import SwiftUI
 import Combine
+import CoreLocation
+
 
 struct AddView: View {
     
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var photoVM: PhotoViewModel
-    let locationFetcher = LocationFetcher()
+    let locationFetcher: LocationFetcher
     
     let exampleImage: UIImage = UIImage(systemName: "questionmark")!
     @State private var name: String = ""
@@ -92,7 +94,21 @@ struct AddView: View {
                                 photoVM.photoName = name
                                 photoVM.photoDescription = description
                                 
-                                photoVM.addPhoto(photo: photoVM.selectedPhoto!, name: photoVM.photoName, description: photoVM.photoDescription, latitude: photoVM.latitude, longitude: photoVM.longitude)
+                                self.locationFetcher.start()
+                                if let location = self.locationFetcher.lastKnownLocation {
+                                    print("before")
+                                    print("\(photoVM.latitude)")
+                                    print("\(photoVM.longitude)")
+                                    photoVM.latitude = location.latitude
+                                    photoVM.longitude = location.longitude
+                                    print("after")
+                                    print("\(photoVM.latitude)")
+                                    print("\(photoVM.longitude)")
+                                } else {
+                                    print("Location detection error")
+                                }
+                                
+                                photoVM.addPhoto(photo: photoVM.selectedPhoto!, name: photoVM.photoName, description: photoVM.photoDescription, currentLatitude: photoVM.latitude, currentLongitude: photoVM.longitude)
                                 
                                 showAddView = false
                                 
@@ -106,13 +122,6 @@ struct AddView: View {
             }
             .alert("Pleace enter a Name for the image", isPresented: $showAlert) {
                 Button("OK", role: .cancel) { }
-            }
-        }
-        .onAppear {
-            self.locationFetcher.start()
-            if let location = self.locationFetcher.lastKnownLocation {
-                photoVM.latitude = location.latitude
-                photoVM.longitude = location.longitude
             }
         }
     }

@@ -21,13 +21,11 @@ import MapKit
     @Published var updatePhoto: Photo?
     @Published var photoName: String = ""
     @Published var photoDescription: String?
-    @Published var latitude: Double = 37.785834
-    @Published var longitude: Double = -122.406417
-    @Published var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 50, longitude: 0), span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))
-    
-//    var mapRegion: MKCoordinateRegion {
-//        return MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), span: MKCoordinateSpan(latitudeDelta: 25, longitudeDelta: 25))
-//    }
+    @Published var latitude: Double = 50.77
+    @Published var longitude: Double = 6.1
+
+    @Published var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 50.77, longitude: 6.1), span: MKCoordinateSpan(latitudeDelta: 11, longitudeDelta: 11))
+
     
     let savePath = FileManager.documentsDirectory.appendingPathComponent("SavedPhotos")
     
@@ -52,7 +50,17 @@ import MapKit
             return
         }
         
-        let newPhoto = Photo(id: UUID(), name: "GoLang Scientist", description: "Mascot of the programming language Go", photoData: jpegData, latitude: 37.785834, longitude: -122.406417)
+        let randLat = Double.random(in: 5.0...7.0)
+        let roundLati = round(randLat * 100) / 100.0
+        
+        let randLongi = Double.random(in: 50.0...52.0)
+        let roundLongi = round(randLongi * 100) / 100.0
+        
+        print("Random Longitude: \(roundLongi)")
+        print("Random Latitude: \(roundLati)")
+
+        
+        let newPhoto = Photo(id: UUID(), name: "GoLang Scientist", description: "Mascot of the programming language Go", photoData: jpegData, latitude: roundLati, longitude: roundLongi)
         
         photoList.append(newPhoto)
 //        photoList.insert(newPhoto, at: 0)
@@ -70,14 +78,14 @@ import MapKit
         }
     }
     
-    func addPhoto(photo: UIImage, name: String, description: String?, latitude: Double, longitude: Double) {
+    func addPhoto(photo: UIImage, name: String, description: String?, currentLatitude: Double, currentLongitude: Double) {
         // compress image with quality 0.8
         guard let jpegData = photo.jpegData(compressionQuality: 0.8) else {
             print("image compression error")
             return
         }
         
-        let newPhoto = Photo(id: UUID(), name: photoName, description: photoDescription, photoData: jpegData, latitude: latitude, longitude: longitude)
+        let newPhoto = Photo(id: UUID(), name: photoName, description: photoDescription, photoData: jpegData, latitude: currentLatitude, longitude: currentLongitude)
         
         // remove append and save from function so user has to name the photo first, before it is saved
 //        photoList.append(newPhoto)

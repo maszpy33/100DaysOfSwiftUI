@@ -7,20 +7,22 @@
 
 import SwiftUI
 import MapKit
+import CoreLocation
 
 struct MapView: View {
     
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var photoVM: PhotoViewModel
     
-    @Binding var toggleMiniMap: Bool
+//    @Binding var toggleMiniMap: Bool
+    let someBool = false
     
     var body: some View {
         NavigationView {
             ZStack {
                 //                Map(coordinateRegion: $photoVM.mapRegion, showsUserLocation: true, userTrackingMode: .constant(.follow))
                 //                            .frame(width: 400, height: 300)
-                if toggleMiniMap {
+                if someBool {
                     Map(coordinateRegion: $photoVM.mapRegion, showsUserLocation: true, userTrackingMode: .constant(.follow))
                         .clipShape(RoundedRectangle(cornerRadius: 16))
                         .overlay(
@@ -29,20 +31,17 @@ struct MapView: View {
                         )
                         .ignoresSafeArea()
                 } else {
-                    Map(coordinateRegion: $photoVM.mapRegion, annotationItems: photoVM.photoList) { photo in
+                    Map(coordinateRegion: $photoVM.mapRegion,  interactionModes: .all, showsUserLocation: true, annotationItems: photoVM.photoList) { photo in
                         MapAnnotation(coordinate: photo.coordinate) {
                             VStack {
-                                Image(systemName: "star.circle")
+                                Image(systemName: "mappin")
                                     .resizable()
                                     .foregroundColor(.red)
-                                    .frame(width: 44, height: 44)
-                                    .background(.white)
-                                    .clipShape(Circle())
+                                    .frame(width: 10, height: 25)
+//                                    .background(.white)
+//                                    .clipShape(Circle())
                                 Text(photo.name)
                                     .fixedSize()
-                            }
-                            .onTapGesture {
-                                photoVM.updatePhoto = photo
                             }
                         }
                     }

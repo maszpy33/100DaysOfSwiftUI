@@ -9,7 +9,7 @@ import Foundation
 import MapKit
 
 
-struct Photo: Identifiable, Codable, Equatable, Comparable {
+struct Photo: Identifiable, Codable, Equatable, Comparable, Hashable {
     var id: UUID
     var name: String
     var description: String?

@@ -7,51 +7,33 @@
 
 import SwiftUI
 
-@MainActor class User: ObservableObject {
-    @Published var name = "Taylor Swift"
-}
-
-struct DisplayView: View {
-    static let tag = "DisplayView"
-    @EnvironmentObject var user: User
-    
-    var body: some View {
-        Text("Display View: \(user.name)")
-    }
-}
-
-struct EditView: View {
-    static let tag = "EditView"
-    @EnvironmentObject var user: User
-    
-    var body: some View {
-        Text("Edit View: \(user.name)")
-    }
-}
 
 struct ContentView: View {
-    static let tag = "ContentView"
-    @StateObject var user = User()
-    
-    @State private var selectedTab = "One"
+    @StateObject var prospects = Prospects()
     
     var body: some View {
-        TabView(selection: $selectedTab) {
-            DisplayView()
-                .environmentObject(user)
+        TabView {
+            ProspectsView(filter: .none)
                 .tabItem {
-                    Label("MainView", systemImage: "star")
+                    Label("Everyone", systemImage: "person.3")
                 }
-                .tag(DisplayView.tag)
             
-            EditView()
-                .environmentObject(user)
+            ProspectsView(filter: .uncontacted)
                 .tabItem {
-                    Label("EditView", systemImage: "circle")
+                    Label("Contacted", systemImage: "checkmark.circle")
                 }
-                .tag("Two")
-                .tag(EditView.tag)
+            
+            ProspectsView(filter: .contacted)
+                .tabItem {
+                    Label("Uncontacted", systemImage: "questionmark.diamond")
+                }
+            
+            MeView()
+                .tabItem {
+                    Label("Me", systemImage: "person.crop.square")
+                }
         }
+        .environmentObject(prospects)
     }
 }
 

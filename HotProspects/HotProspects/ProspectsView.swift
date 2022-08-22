@@ -23,11 +23,21 @@ struct ProspectsView: View {
         NavigationView {
             List {
                 ForEach(filteredProspects) { prospect in
-                    VStack(alignment: .leading) {
-                        Text(prospect.name)
-                            .font(.headline)
-                        Text(prospect.emailAddress)
-                            .foregroundColor(.secondary)
+                    HStack {
+                        if filter == .none {
+                            Image(systemName: prospect.isContacted ? "bubble.left.circle.fill" : "bubble.left.circle")
+                                .resizable()
+                                .scaledToFit()
+                                .foregroundColor(prospect.isContacted ? .green : .gray)
+                                .frame(width: 28, height: 28)
+                                .padding(.trailing, 8)
+                        }
+                        VStack(alignment: .leading) {
+                            Text(prospect.name)
+                                .font(.headline)
+                            Text(prospect.emailAddress)
+                                .foregroundColor(.secondary)
+                        }
                     }
                     .swipeActions {
                         if prospect.isContacted {
@@ -56,13 +66,32 @@ struct ProspectsView: View {
                 }
             }
             .navigationTitle(title)
-            .toolbar {
-                Button {
-                    isShowingScanner = true
-                } label: {
-                    Label("Scan", systemImage: "qrcode.viewfinder")
-                }
-            }
+            .navigationBarItems(
+                leading:
+                    Button {
+                        // change sort preferences with context menu
+                    } label: {
+                        HStack {
+                            Text("Sort By")
+                                .bold()
+                            Image(systemName: "arrow.up.arrow.down.circle")
+                        }
+//                        Label("Sort By", systemImage: "arrow.up.arrow.down.circle")
+                    },
+                trailing:
+                    Button {
+                        isShowingScanner = true
+                    } label: {
+                        Label("Scan", systemImage: "qrcode.viewfinder")
+                    }
+            )
+            //            .toolbar {
+            //                Button {
+            //                    isShowingScanner = true
+            //                } label: {
+            //                    Label("Scan", systemImage: "qrcode.viewfinder")
+            //                }
+            //            }
             .sheet(isPresented: $isShowingScanner) {
                 CodeScannerView(codeTypes: [.qr], simulatedData: "LemonCode\nlemon.code@hackingwithswift.com", completion: handleScan)
             }
@@ -85,9 +114,9 @@ struct ProspectsView: View {
         case .none:
             return prospects.people
         case .contacted:
-            return prospects.people.filter { !$0.isContacted }
-        case .uncontacted:
             return prospects.people.filter { $0.isContacted }
+        case .uncontacted:
+            return prospects.people.filter { !$0.isContacted }
         }
     }
     
@@ -111,22 +140,22 @@ struct ProspectsView: View {
     
     func addNotification(for prospect: Prospect) {
         let center = UNUserNotificationCenter.current()
-
+        
         let addRequest = {
             let content = UNMutableNotificationContent()
             content.title = "Contact \(prospect.name)"
             content.subtitle = prospect.emailAddress
             content.sound = UNNotificationSound.default
-
+            
             var dateComponents = DateComponents()
             dateComponents.hour = 9
             let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
-//            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
-
+            //            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+            
             let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
             center.add(request)
         }
-
+        
         center.getNotificationSettings { settings in
             if settings.authorizationStatus == .authorized {
                 addRequest()

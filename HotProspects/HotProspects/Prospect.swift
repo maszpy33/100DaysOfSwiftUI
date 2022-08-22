@@ -17,22 +17,42 @@ class Prospect: Identifiable, Codable {
 @MainActor class Prospects: ObservableObject {
     @Published private(set) var people: [Prospect]
     let saveKey = "SavedData"
+    let saveKeyFileManager = "SavedProspects"
+    let savePath = FileManager.documentsDirectory.appendingPathComponent("SavedProspects")
     
     init() {
-        if let data = UserDefaults.standard.data(forKey: saveKey) {
-            if let decoded = try? JSONDecoder().decode([Prospect].self, from: data) {
-                people = decoded
-                return
-            }
-        }
+//        if let data = UserDefaults.standard.data(forKey: saveKey) {
+//            if let decoded = try? JSONDecoder().decode([Prospect].self, from: data) {
+//                people = decoded
+//                return
+//            }
+//        }
+//        people = [] 
         
-        people = [] 
+        do {
+            let data = try Data(contentsOf: savePath)
+            people = try JSONDecoder().decode([Prospect].self, from: data)
+        } catch {
+            people = []
+        }
     }
     
     // private so save func is only callabel from iside the class
+//    private func save() {
+//        if let encoded = try? JSONEncoder().encode(people) {
+//            UserDefaults.standard.set(encoded, forKey: saveKey)
+//        }
+//    }
+    
     private func save() {
-        if let encoded = try? JSONEncoder().encode(people) {
-            UserDefaults.standard.set(encoded, forKey: saveKey)
+        do {
+            let data = try JSONEncoder().encode(people)
+            // .completeFileProtection encryptes the data
+            try data.write(to: savePath, options: [.atomicWrite, .completeFileProtection])
+        } catch {
+            print("####################")
+            print("Unable to save data")
+            print("####################")
         }
     }
     

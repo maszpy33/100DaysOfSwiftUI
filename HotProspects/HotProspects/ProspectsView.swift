@@ -15,6 +15,7 @@ struct ProspectsView: View {
         case none, contacted, uncontacted
     }
     
+    
     @EnvironmentObject var prospects: Prospects
     @State private var isShowingScanner = false
     let filter: FilterType
@@ -68,16 +69,33 @@ struct ProspectsView: View {
             .navigationTitle(title)
             .navigationBarItems(
                 leading:
-                    Button {
-                        // change sort preferences with context menu
+                    Menu {
+                        VStack {
+                            Button("Sort by name") {
+                                prospects.peopleFilter = .name
+                            }
+                            Button("Sort by recent") {
+                                prospects.peopleFilter = .none
+                            }
+                        }
                     } label: {
                         HStack {
                             Text("Sort By")
                                 .bold()
                             Image(systemName: "arrow.up.arrow.down.circle")
                         }
-//                        Label("Sort By", systemImage: "arrow.up.arrow.down.circle")
-                    },
+                    }
+//                    Button {
+//                        // change sort preferences with context menu
+//                    } label: {
+//                        HStack {
+//                            Text("Sort By")
+//                                .bold()
+//                            Image(systemName: "arrow.up.arrow.down.circle")
+//                        }
+////                        Label("Sort By", systemImage: "arrow.up.arrow.down.circle")
+//                    }
+                ,
                 trailing:
                     Button {
                         isShowingScanner = true
@@ -93,7 +111,7 @@ struct ProspectsView: View {
             //                }
             //            }
             .sheet(isPresented: $isShowingScanner) {
-                CodeScannerView(codeTypes: [.qr], simulatedData: "LemonCode\nlemon.code@hackingwithswift.com", completion: handleScan)
+                CodeScannerView(codeTypes: [.qr], simulatedData: "DuckCode\nlemon.code@hackingwithswift.com", completion: handleScan)
             }
         }
     }
@@ -112,11 +130,11 @@ struct ProspectsView: View {
     var filteredProspects: [Prospect] {
         switch filter {
         case .none:
-            return prospects.people
+            return prospects.orderedPeople
         case .contacted:
-            return prospects.people.filter { $0.isContacted }
+            return prospects.orderedPeople.filter { $0.isContacted }
         case .uncontacted:
-            return prospects.people.filter { !$0.isContacted }
+            return prospects.orderedPeople.filter { !$0.isContacted }
         }
     }
     

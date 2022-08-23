@@ -12,6 +12,10 @@ class Prospect: Identifiable, Codable {
     var name = "Anonymous"
     var emailAddress = ""
     fileprivate(set) var isContacted = false
+    
+    static func <(lhs: Prospect, rhs: Prospect) -> Bool {
+        lhs.name < rhs.name
+    }
 }
 
 @MainActor class Prospects: ObservableObject {
@@ -19,6 +23,12 @@ class Prospect: Identifiable, Codable {
     let saveKey = "SavedData"
     let saveKeyFileManager = "SavedProspects"
     let savePath = FileManager.documentsDirectory.appendingPathComponent("SavedProspects")
+    
+    enum searchType {
+        case none, name
+    }
+    
+    @Published var peopleFilter: searchType = .none
     
     init() {
 //        if let data = UserDefaults.standard.data(forKey: saveKey) {
@@ -43,6 +53,15 @@ class Prospect: Identifiable, Codable {
 //            UserDefaults.standard.set(encoded, forKey: saveKey)
 //        }
 //    }
+    
+    var orderedPeople: [Prospect] {
+        switch peopleFilter {
+        case .none:
+            return people
+        case .name:
+            return people.sorted(by: { $0.name < $1.name })
+        }
+    }
     
     private func save() {
         do {

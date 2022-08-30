@@ -85,16 +85,6 @@ struct ProspectsView: View {
                             Image(systemName: "arrow.up.arrow.down.circle")
                         }
                     }
-//                    Button {
-//                        // change sort preferences with context menu
-//                    } label: {
-//                        HStack {
-//                            Text("Sort By")
-//                                .bold()
-//                            Image(systemName: "arrow.up.arrow.down.circle")
-//                        }
-////                        Label("Sort By", systemImage: "arrow.up.arrow.down.circle")
-//                    }
                 ,
                 trailing:
                     Button {
@@ -103,13 +93,6 @@ struct ProspectsView: View {
                         Label("Scan", systemImage: "qrcode.viewfinder")
                     }
             )
-            //            .toolbar {
-            //                Button {
-            //                    isShowingScanner = true
-            //                } label: {
-            //                    Label("Scan", systemImage: "qrcode.viewfinder")
-            //                }
-            //            }
             .sheet(isPresented: $isShowingScanner) {
                 CodeScannerView(codeTypes: [.qr], simulatedData: "DuckCode\nlemon.code@hackingwithswift.com", completion: handleScan)
             }

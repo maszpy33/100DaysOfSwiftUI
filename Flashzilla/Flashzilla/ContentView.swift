@@ -7,36 +7,39 @@
 
 import SwiftUI
 
+extension View {
+    func stacked(at position: Int, in total: Int) -> some View {
+        let offset = Double(total - position)
+        return self.offset(x: 0, y: offset * 10)
+    }
+}
+
 struct ContentView: View {
-    
-    @Environment(\.scenePhase) var scenePhase
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    @State private var counter = 0
-    @State private var currTime = 0
+    @State private var cards = Array<Card>(repeating: Card.example, count: 10)
     
     var body: some View {
-        VStack {
-            Text("\(currTime)")
-            Text("Hello World!")
-                .onReceive(timer) { time in
-                    if counter == 100 {
-                        timer.upstream.connect().cancel()
-                    } else {
-                        print("The time is now \(time)")
+        ZStack {
+            Image("background")
+                .resizable()
+                .ignoresSafeArea()
+            
+            VStack {
+                ZStack {
+                    ForEach(0..<cards.count, id: \.self) { index in
+                        CardView(card: cards[index]) {
+                            withAnimation {
+                                removeCard(at: index)
+                            }
+                        }
+                        .stacked(at: index, in: cards.count)
                     }
-                    
-                    counter += 1
                 }
-        }
-        .onChange(of: scenePhase) { newPhase in
-            if newPhase == .active {
-                print("Active")
-            } else if newPhase == .inactive {
-                print("Inactive")
-            } else if newPhase == .background {
-                print("Background")
             }
         }
+    }
+    
+    func removeCard(at index: Int) {
+        cards.remove(at: index)
     }
 }
 

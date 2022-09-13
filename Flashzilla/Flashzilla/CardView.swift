@@ -8,13 +8,21 @@
 import SwiftUI
 
 struct CardView: View {
+    @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
+    @Environment(\.accessibilityVoiceOverEnabled) var voiceOverEnabled
+    
     let card: Card
-    var removal: (() -> Void)? = nil
     
     @State private var feedback = UINotificationFeedbackGenerator()
     
-    @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
-    @Environment(\.accessibilityVoiceOverEnabled) var voiceOverEnabled
+    // Challenge 3
+    let retryIncorrectCards: Bool
+    private var shouldResetPosition: Bool {
+        offset.width < 0 && retryIncorrectCards
+    }
+    
+    var removal: ((_ isCorrect: Bool) -> Void)?
+
     @State private var isShowingAnswer = false
     @State private var offset = CGSize.zero
     
@@ -31,7 +39,8 @@ struct CardView: View {
                     differentiateWithoutColor
                     ? nil
                     : RoundedRectangle(cornerRadius: 25, style: .continuous)
-                        .fill(offset.width > 0 ? .green : .red)
+//                        .fill(offset.width > 0 ? .green : .red)
+                        .fill(setBackgroundColor(offset: offset))
                 )
                 .shadow(radius: 10)
             
@@ -71,21 +80,42 @@ struct CardView: View {
                         if offset.width < 0 {
                             feedback.notificationOccurred(.error)
                         }
-                        removal?()
+                        removal?(self.offset.width > 0)
+                        
+                        // Challenge 3
+                        if self.shouldResetPosition {
+                            self.isShowingAnswer = false
+                            self.offset = .zero
+                        }
+                        
                     } else {
                         offset = .zero
                     }
                 }
         )
         .onTapGesture {
-            isShowingAnswer.toggle()
+            withAnimation(.easeOut) {
+                isShowingAnswer.toggle()
+            }
         }
         .animation(.spring(), value: offset)
     }
-}
-
-struct CardView_Previews: PreviewProvider {
-    static var previews: some View {
-        CardView(card: Card.example)
+    
+    func setBackgroundColor(offset: CGSize) -> Color {
+        if offset.width > 0 {
+            return .green
+        }
+        
+        if offset.width < 0 {
+            return .red
+        }
+        
+        return .white
     }
 }
+
+//struct CardView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        CardView(card: Card.example)
+//    }
+//}

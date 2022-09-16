@@ -7,32 +7,26 @@
 
 import SwiftUI
 
-extension VerticalAlignment {
-    struct MidAccountAndName: AlignmentID {
-        static func defaultValue(in context: ViewDimensions) -> CGFloat {
-            context[.top]
-        }
-    }
-    
-    static let midAccountAndName = VerticalAlignment(MidAccountAndName.self)
-}
 
 struct ContentView: View {
+    
+    let colors: [Color] = [.red, .green, .blue, .orange, .pink, .purple, .yellow]
+    
     var body: some View {
-        HStack(alignment: .midAccountAndName) {
-            VStack {
-                Text("@LemonCode")
-                    .alignmentGuide(.midAccountAndName) { d in d[VerticalAlignment.center] }
-                Image("Go_Scientist")
-                    .resizable()
-                    .frame(width: 64, height: 64)
-            }
-            
-            VStack {
-                Text("Full name:")
-                Text("Andi Zwick")
-                    .alignmentGuide(.midAccountAndName) { d in d[VerticalAlignment.center] }
-                    .font(.largeTitle)
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 0) {
+                ForEach(1..<20) { num in
+                    GeometryReader { geo in
+                        Text("Number \(num)")
+                            .font(.largeTitle)
+                            .padding()
+                            .background(colors[num % 7])
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .rotation3DEffect(.degrees(-geo.frame(in: .global).minX) / 8, axis: (x: 0, y: 1, z: 0))
+                            .frame(width: 200, height: 200)
+                    }
+                    .frame(width: 200, height: 200)
+                }
             }
         }
     }

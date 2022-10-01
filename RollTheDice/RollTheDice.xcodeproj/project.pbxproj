@@ -1,0 +1,408 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9F723F6E28E8D50500ABD22C /* HeadDiceAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F723F6D28E8D50500ABD22C /* HeadDiceAnimationView.swift */; };
+		9F723F7028E8F1D000ABD22C /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F723F6F28E8F1D000ABD22C /* StatisticsView.swift */; };
+		9F723F7328E8FAAD00ABD22C /* ThemeButtonModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F723F7228E8FAAD00ABD22C /* ThemeButtonModifier.swift */; };
+		9F7F3A6E28D9172300DF6B10 /* RollTheDiceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7F3A6D28D9172300DF6B10 /* RollTheDiceApp.swift */; };
+		9F7F3A7028D9172300DF6B10 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7F3A6F28D9172300DF6B10 /* ContentView.swift */; };
+		9F7F3A7228D9172400DF6B10 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9F7F3A7128D9172400DF6B10 /* Assets.xcassets */; };
+		9F7F3A7528D9172400DF6B10 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9F7F3A7428D9172400DF6B10 /* Preview Assets.xcassets */; };
+		9F7F3A8028D917CE00DF6B10 /* DiceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7F3A7F28D917CE00DF6B10 /* DiceModel.swift */; };
+		9F7F3A8228D91A4600DF6B10 /* DiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7F3A8128D91A4600DF6B10 /* DiceViewModel.swift */; };
+		9F7F3A8428D91A5400DF6B10 /* DiceRollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7F3A8328D91A5400DF6B10 /* DiceRollView.swift */; };
+		9F7F3A8628D91A6200DF6B10 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7F3A8528D91A6200DF6B10 /* SettingsView.swift */; };
+		9F7F3A8828D91AFC00DF6B10 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7F3A8728D91AFC00DF6B10 /* HistoryView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		9F723F6D28E8D50500ABD22C /* HeadDiceAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadDiceAnimationView.swift; sourceTree = "<group>"; };
+		9F723F6F28E8F1D000ABD22C /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
+		9F723F7228E8FAAD00ABD22C /* ThemeButtonModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeButtonModifier.swift; sourceTree = "<group>"; };
+		9F7F3A6A28D9172200DF6B10 /* RollTheDice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RollTheDice.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9F7F3A6D28D9172300DF6B10 /* RollTheDiceApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollTheDiceApp.swift; sourceTree = "<group>"; };
+		9F7F3A6F28D9172300DF6B10 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		9F7F3A7128D9172400DF6B10 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9F7F3A7428D9172400DF6B10 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		9F7F3A7F28D917CE00DF6B10 /* DiceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiceModel.swift; sourceTree = "<group>"; };
+		9F7F3A8128D91A4600DF6B10 /* DiceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiceViewModel.swift; sourceTree = "<group>"; };
+		9F7F3A8328D91A5400DF6B10 /* DiceRollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiceRollView.swift; sourceTree = "<group>"; };
+		9F7F3A8528D91A6200DF6B10 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		9F7F3A8728D91AFC00DF6B10 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9F7F3A6728D9172200DF6B10 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9F723F7128E8FA9700ABD22C /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				9F723F7228E8FAAD00ABD22C /* ThemeButtonModifier.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		9F7F3A6128D9172200DF6B10 = {
+			isa = PBXGroup;
+			children = (
+				9F7F3A6C28D9172200DF6B10 /* RollTheDice */,
+				9F7F3A6B28D9172200DF6B10 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9F7F3A6B28D9172200DF6B10 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9F7F3A6A28D9172200DF6B10 /* RollTheDice.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9F7F3A6C28D9172200DF6B10 /* RollTheDice */ = {
+			isa = PBXGroup;
+			children = (
+				9F7F3A6D28D9172300DF6B10 /* RollTheDiceApp.swift */,
+				9F7F3A7D28D917AE00DF6B10 /* Model */,
+				9F7F3A7C28D917AA00DF6B10 /* ViewModel */,
+				9F7F3A7B28D9179D00DF6B10 /* View */,
+				9F723F7128E8FA9700ABD22C /* Utils */,
+				9F7F3A7128D9172400DF6B10 /* Assets.xcassets */,
+				9F7F3A7328D9172400DF6B10 /* Preview Content */,
+			);
+			path = RollTheDice;
+			sourceTree = "<group>";
+		};
+		9F7F3A7328D9172400DF6B10 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				9F7F3A7428D9172400DF6B10 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		9F7F3A7B28D9179D00DF6B10 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				9F7F3A6F28D9172300DF6B10 /* ContentView.swift */,
+				9F723F6D28E8D50500ABD22C /* HeadDiceAnimationView.swift */,
+				9F723F6F28E8F1D000ABD22C /* StatisticsView.swift */,
+				9F7F3A8328D91A5400DF6B10 /* DiceRollView.swift */,
+				9F7F3A8728D91AFC00DF6B10 /* HistoryView.swift */,
+				9F7F3A8528D91A6200DF6B10 /* SettingsView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		9F7F3A7C28D917AA00DF6B10 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				9F7F3A8128D91A4600DF6B10 /* DiceViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		9F7F3A7D28D917AE00DF6B10 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				9F7F3A7F28D917CE00DF6B10 /* DiceModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9F7F3A6928D9172200DF6B10 /* RollTheDice */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9F7F3A7828D9172400DF6B10 /* Build configuration list for PBXNativeTarget "RollTheDice" */;
+			buildPhases = (
+				9F7F3A6628D9172200DF6B10 /* Sources */,
+				9F7F3A6728D9172200DF6B10 /* Frameworks */,
+				9F7F3A6828D9172200DF6B10 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RollTheDice;
+			productName = RollTheDice;
+			productReference = 9F7F3A6A28D9172200DF6B10 /* RollTheDice.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9F7F3A6228D9172200DF6B10 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1330;
+				LastUpgradeCheck = 1330;
+				TargetAttributes = {
+					9F7F3A6928D9172200DF6B10 = {
+						CreatedOnToolsVersion = 13.3;
+					};
+				};
+			};
+			buildConfigurationList = 9F7F3A6528D9172200DF6B10 /* Build configuration list for PBXProject "RollTheDice" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9F7F3A6128D9172200DF6B10;
+			productRefGroup = 9F7F3A6B28D9172200DF6B10 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9F7F3A6928D9172200DF6B10 /* RollTheDice */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9F7F3A6828D9172200DF6B10 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9F7F3A7528D9172400DF6B10 /* Preview Assets.xcassets in Resources */,
+				9F7F3A7228D9172400DF6B10 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9F7F3A6628D9172200DF6B10 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9F723F6E28E8D50500ABD22C /* HeadDiceAnimationView.swift in Sources */,
+				9F7F3A8828D91AFC00DF6B10 /* HistoryView.swift in Sources */,
+				9F7F3A8028D917CE00DF6B10 /* DiceModel.swift in Sources */,
+				9F7F3A7028D9172300DF6B10 /* ContentView.swift in Sources */,
+				9F723F7328E8FAAD00ABD22C /* ThemeButtonModifier.swift in Sources */,
+				9F723F7028E8F1D000ABD22C /* StatisticsView.swift in Sources */,
+				9F7F3A8428D91A5400DF6B10 /* DiceRollView.swift in Sources */,
+				9F7F3A8628D91A6200DF6B10 /* SettingsView.swift in Sources */,
+				9F7F3A6E28D9172300DF6B10 /* RollTheDiceApp.swift in Sources */,
+				9F7F3A8228D91A4600DF6B10 /* DiceViewModel.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		9F7F3A7628D9172400DF6B10 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		9F7F3A7728D9172400DF6B10 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9F7F3A7928D9172400DF6B10 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"RollTheDice/Preview Content\"";
+				DEVELOPMENT_TEAM = J9T7CX8U3Q;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = LemonCode.RollTheDice;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9F7F3A7A28D9172400DF6B10 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"RollTheDice/Preview Content\"";
+				DEVELOPMENT_TEAM = J9T7CX8U3Q;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = LemonCode.RollTheDice;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9F7F3A6528D9172200DF6B10 /* Build configuration list for PBXProject "RollTheDice" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9F7F3A7628D9172400DF6B10 /* Debug */,
+				9F7F3A7728D9172400DF6B10 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9F7F3A7828D9172400DF6B10 /* Build configuration list for PBXNativeTarget "RollTheDice" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9F7F3A7928D9172400DF6B10 /* Debug */,
+				9F7F3A7A28D9172400DF6B10 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9F7F3A6228D9172200DF6B10 /* Project object */;
+}

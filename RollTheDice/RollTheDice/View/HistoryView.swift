@@ -31,7 +31,7 @@ struct HistoryView: View {
                                 
                                 Spacer()
                                 
-                                NavigationLink(destination: StatisticsView().environmentObject(diceVM)) {
+                                NavigationLink(destination: BarChartAPI_Test(diceRound: diceRound).environmentObject(diceVM)) {
                                     Text("📊")
                                         .font(.system(size: 25))
                                         .padding(5)

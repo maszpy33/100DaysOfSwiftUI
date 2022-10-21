@@ -10,11 +10,13 @@ import SwiftUI
 struct ContentView: View {
     
     @StateObject var diceVM = DiceViewModel()
+    @StateObject var hapticM = HapticManager()
     
     var body: some View {
         TabView {
             DiceRollView()
                 .environmentObject(diceVM)
+                .environmentObject(hapticM)
                 .tabItem {
                     Label("Roll Dice", systemImage: "dice")
                 }
@@ -27,11 +29,13 @@ struct ContentView: View {
             
             SettingsView()
                 .environmentObject(diceVM)
+                .environmentObject(hapticM)
                 .tabItem {
                     Label("Settings", systemImage: "gear")
                 }
         }
         .accentColor(diceVM.primaryAccentColor)
+        .onAppear(perform: hapticM.prepareHaptics)
     }
 }
 

@@ -11,6 +11,10 @@ struct HistoryView: View {
     
     @EnvironmentObject var diceVM: DiceViewModel
     @State private var showingAlert: Bool = false
+    @State private var animateStatisticTransition: Bool = false
+    @State private var showStatisticsView: Bool = false
+    
+    @State var selectedDiceRound: Dice?
     
     var body: some View {
         NavigationView {
@@ -30,12 +34,31 @@ struct HistoryView: View {
                                 }
                                 
                                 Spacer()
-                                
-                                NavigationLink(destination: BarChartAPI_Test(diceRound: diceRound).environmentObject(diceVM)) {
+  
+                                Button {
+//                                    withAnimation(.easeOut) {
+//                                        animateStatisticTransition = true
+//                                    }
+                                    selectedDiceRound = diceRound
+                                    showStatisticsView = true
+                                    
+//                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+//                                        showStatisticsView = true
+//                                    }
+                                    
+                                } label: {
                                     Text("📊")
                                         .font(.system(size: 25))
                                         .padding(5)
+                                        .scaleEffect(animateStatisticTransition ? 50 : 1)
+                                        .brightness(animateStatisticTransition ? -1 : 0)
                                 }
+                                .sheet(isPresented: $showStatisticsView, onDismiss: dismissAnimation) {
+                                    BarChartView(diceRound: selectedDiceRound ?? Dice.sampleDice).environmentObject(diceVM)
+                                }
+//                                NavigationLink(destination: BarChartAPI_Test(diceRound: diceRound).environmentObject(diceVM)) {
+//
+//                                }
                             }
                             
                             ScrollView(.horizontal) {
@@ -80,6 +103,13 @@ struct HistoryView: View {
         }
         .onAppear {
             print("DiceRoll List length: \(diceVM.diceRollList.count)")
+        }
+    }
+    
+    // helper function for sheet dismiss
+    func dismissAnimation() {
+        withAnimation(.linear) {
+            animateStatisticTransition = false
         }
     }
     

@@ -11,12 +11,16 @@ import Combine
 struct SettingsView: View {
     
     @EnvironmentObject var diceVM: DiceViewModel
+    @EnvironmentObject var hapticM: HapticManager
     
     @State private var diceGameRounds: String = "1"
     @State private var diceGameSize: String = "6"
     @State private var diceRollDuration: String = "3"
     
     @State private var wrappedQuickRollModeToggle: Bool = false
+    
+    @FocusState private var focusKeyboard: Bool
+    
     
     var body: some View {
         NavigationView {
@@ -51,7 +55,8 @@ struct SettingsView: View {
                                 .font(.title3)
                                 .foregroundColor(.accentColor)
                                 .padding(8)
-                            TextField("enter dice game rounds", text: $diceGameRounds)
+                            TextField("enter dice game rounds...", text: $diceVM.rounds)
+                                .focused($focusKeyboard)
                                 .keyboardType(.numberPad)
                                 .onReceive(Just(diceGameRounds)) { newValue in
                                     let filtered = newValue.filter { "0123456789".contains($0) }
@@ -64,6 +69,18 @@ struct SettingsView: View {
                                         self.diceGameRounds = filtered
                                     }
                                 }
+                                .toolbar {
+                                    ToolbarItemGroup(placement: .keyboard) {
+                                        HStack {
+                                            Spacer()
+                                            Button {
+                                                focusKeyboard = false
+                                            } label: {
+                                                Image(systemName: "arrowtriangle.down")
+                                            }
+                                        }
+                                    }
+                                }
                         }
                         
                         HStack {
@@ -71,19 +88,26 @@ struct SettingsView: View {
                                 .font(.title3)
                                 .foregroundColor(.accentColor)
                                 .padding(8)
-                            TextField("enter dice size", text: $diceGameSize)
-                                .keyboardType(.numberPad)
-                                .onReceive(Just(diceGameSize)) { newValue in
-                                    let filtered = newValue.filter { "0123456789".contains($0) }
-                                    if filtered != newValue {
-                                        self.diceGameSize = filtered
-                                    }
-                                    
-                                    if (Int(self.diceGameSize) ?? 6) > 50 {
-//                                        self.diceGameRounds.removeLast()
-                                        self.diceGameSize = "50"
-                                    }
+                            Picker("", selection: $diceVM.diceSize) {
+                                ForEach(diceVM.diceOptions, id: \.self) {
+                                    Text($0.capitalized)
                                 }
+                            }
+                            .pickerStyle(SegmentedPickerStyle())
+//                            TextField("enter dice size...", text: $diceGameSize)
+//                                .focused($focusKeyboard)
+//                                .keyboardType(.numberPad)
+//                                .onReceive(Just(diceGameSize)) { newValue in
+//                                    let filtered = newValue.filter { "0123456789".contains($0) }
+//                                    if filtered != newValue {
+//                                        self.diceGameSize = filtered
+//                                    }
+//
+//                                    if (Int(self.diceGameSize) ?? 6) > 50 {
+////                                        self.diceGameRounds.removeLast()
+//                                        self.diceGameSize = "50"
+//                                    }
+//                                }
                         }
                         
                         HStack {
@@ -91,17 +115,24 @@ struct SettingsView: View {
                                 .font(.title3)
                                 .foregroundColor(.accentColor)
                                 .padding(8)
-                            TextField("enter dice size", text: $diceRollDuration)
-                                .keyboardType(.numberPad)
-                                .onReceive(Just(diceRollDuration)) { newValue in
-                                    let filtered = newValue.filter { "0123456789".contains($0) }
-                                    if filtered != newValue {
-                                        self.diceRollDuration = filtered
-                                    }
-                                    if (Int(self.diceRollDuration) ?? 3) > 10 {
-                                        self.diceRollDuration = "7"
-                                    }
+                            Picker("", selection: $diceVM.duration) {
+                                ForEach(diceVM.rollDurationOptions, id: \.self) {
+                                    Text($0.capitalized)
                                 }
+                            }
+                            .pickerStyle(SegmentedPickerStyle())
+//                            TextField("enter roll time...", text: $diceRollDuration)
+//                                .focused($focusKeyboard)
+//                                .keyboardType(.numberPad)
+//                                .onReceive(Just(diceRollDuration)) { newValue in
+//                                    let filtered = newValue.filter { "0123456789".contains($0) }
+//                                    if filtered != newValue {
+//                                        self.diceRollDuration = filtered
+//                                    }
+//                                    if (Int(self.diceRollDuration) ?? 3) > 10 {
+//                                        self.diceRollDuration = "7"
+//                                    }
+//                                }
                         }
                     }
                     
@@ -146,22 +177,25 @@ struct SettingsView: View {
             .toolbar {
                 // SAVE SETTING CHANGES
                 Button("save") {
-                    saveSettingChanges()
+                    focusKeyboard = false
+                    diceVM.rounds = diceGameRounds
+//                    saveSettingChanges()
+                    hapticM.complexSuccess()
                 }
             }
         }
         .onAppear {
             diceGameRounds = String(diceVM.rounds)
-            diceGameSize = String(diceVM.diceSize)
-            diceRollDuration = String(diceVM.duration)
+//            diceGameSize = String(diceVM.diceSize)
+//            diceRollDuration = String(diceVM.duration)
         }
     }
 
     
     func saveSettingChanges() {
         diceVM.rounds = diceGameRounds
-        diceVM.diceSize = diceGameSize
-        diceVM.duration = diceRollDuration
+//        diceVM.diceSize = diceGameSize
+//        diceVM.duration = diceRollDuration
 //        diceVM.save()
     }
 }

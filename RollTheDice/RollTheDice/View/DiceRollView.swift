@@ -10,6 +10,7 @@ import SwiftUI
 struct DiceRollView: View {
     
     @EnvironmentObject var diceVM: DiceViewModel
+    @EnvironmentObject var hapticM: HapticManager
     
     @State private var diceNumber: Int = 1
     
@@ -43,8 +44,9 @@ struct DiceRollView: View {
             VStack {
                 HeadDiceAnimationView()
                     .environmentObject(diceVM)
+                    .padding(35)
                 
-                Spacer()
+//                Spacer()
                 
                 VStack(alignment: .leading) {
                     HStack {
@@ -84,6 +86,7 @@ struct DiceRollView: View {
                 Button {
                     diceVM.lastRollDateTime = diceVM.formatDate(date: Date())
                     
+                    // QUICK ROLL IS ON
                     guard !diceVM.quickRollToggle else {
                         diceVM.quickRollMode()
                         currentRound = 0
@@ -93,9 +96,14 @@ struct DiceRollView: View {
                             xNumberOffset = 250
                         }
                         
+                        hapticM.quickRollHapticOne()
+                        
                         DispatchQueue.main.asyncAfter(deadline: .now() + Double(rollDurationSettings)) {
+                            hapticM.complexSuccess()
+                            
                             xNumberOffset = -250
                             diceNumber = Int.random(in: 1..<diceSizeSettings)
+                            
                             withAnimation(.easeOut) {
 //                                self.animateQuickAdd = false
                                 xNumberOffset = 0
@@ -104,7 +112,11 @@ struct DiceRollView: View {
                             diceVM.numbCache.append(diceNumber)
                             print("Number: \(diceVM.numbCache)")
                             
-                            currentRound += 1
+                            if diceVM.quickRollToggle {
+                                currentRound = Int(diceVM.rounds)!
+                            } else {
+                                currentRound += 1
+                            }
                             
                             self.disableDiceButton = false
                         }
@@ -112,11 +124,14 @@ struct DiceRollView: View {
                         return
                     }
                     
+                    // QUICK ROLL IS OFF
                     if resultAnimation {
                         withAnimation(.linear) {
                             resultAnimation = false
                         }
                     }
+                    
+                    hapticM.numberRotationHaptic(duration: Double(diceVM.duration) ?? 1.0)
                     
                     if currentRound == roundsSettings {
                         currentRound = 0
@@ -134,6 +149,9 @@ struct DiceRollView: View {
                     
                     // rotate result number
                     DispatchQueue.main.asyncAfter(deadline: .now() + Double(rollDurationSettings)) {
+                        // vibrate device
+                        hapticM.complexSuccess()
+                        
                         withAnimation(.easeOut) {
                             self.resultAnimation = true
                             self.resultAngle += 360
@@ -146,6 +164,10 @@ struct DiceRollView: View {
                         
                         self.disableDiceButton = false
                     }
+                    
+//                    DispatchQueue.main.async {
+//                        hapticM.numberRotationHaptic(duration: Double(diceVM.duration) ?? 1.0)
+//                    }
                     
                     // animate dice result
                     DispatchQueue.main.asyncAfter(deadline: .now() + Double(rollDurationSettings + 2)) {
@@ -165,8 +187,9 @@ struct DiceRollView: View {
                     }
                 }
                 .disabled(disableDiceButton)
+                .padding(40)
                 
-                Spacer()
+//                Spacer()
             }
             .onReceive(diceAnimationCounter) { diceCount in
                 guard disableDiceButton else { return }
@@ -188,6 +211,10 @@ struct DiceRollView: View {
             rollDurationSettings = Int(diceVM.duration) ?? 3
             diceSizeSettings = (Int(diceVM.diceSize) ?? 6)+1
             roundsSettings = Int(diceVM.rounds) ?? 3
+            
+            if currentRound >= roundsSettings {
+                currentRound = 0
+            }
         }
     }
 }

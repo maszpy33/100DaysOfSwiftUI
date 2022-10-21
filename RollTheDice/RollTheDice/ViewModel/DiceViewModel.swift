@@ -24,6 +24,8 @@ extension FileManager {
     let dateFormatter = DateFormatter()
     let lavendelColor: Color = Color(red: 177/255, green: 156/255, blue: 217/255)
     let colors = ["blue", "orange", "red", "green", "purple", "white"]
+    let diceOptions = ["4", "6", "8", "12", "20", "60", "80", "100"]
+    let rollDurationOptions = ["1", "2", "3", "4", "5"]
     
     @Published var diceRollList: [Dice]
     @Published var numbCache: [Int] = []

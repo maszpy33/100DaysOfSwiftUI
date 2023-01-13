@@ -38,6 +38,7 @@ struct DiceRollView: View {
     // quickAddAnimation
     @State private var animateQuickAdd: Bool = false
     @State private var xNumberOffset: CGFloat = 0.0
+    @State private var yNumberOffset: CGFloat = 0.0
     
     var body: some View {
         NavigationView {
@@ -80,7 +81,7 @@ struct DiceRollView: View {
                     .padding([.top, .bottom], 50)
                     .scaleEffect(resultAnimation ? 1.8 : 1.0)
                     .rotationEffect(.degrees(resultAngle))
-                    .offset(x: xNumberOffset)
+                    .offset(x: xNumberOffset, y: yNumberOffset)
                 
                 // LOGIC DICE ROLL BUTTON
                 Button {
@@ -203,6 +204,25 @@ struct DiceRollView: View {
                     diceRollCountdownTime -= 1
                 } else {
 
+                }
+            }
+            .toolbar {
+                // reset hist data
+                Button("reset dice") {
+                    disableDiceButton = false
+                    currentRound = 0
+                    
+                    withAnimation(.easeIn) {
+                        yNumberOffset += 500
+                    }
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + Double(rollDurationSettings)) {
+                        yNumberOffset = -100
+                        hapticM.complexSuccess()
+                        withAnimation(.easeOut) {
+                            yNumberOffset = 0
+                        }
+                    }
                 }
             }
         }

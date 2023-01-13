@@ -25,7 +25,7 @@ struct SettingsView: View {
     var body: some View {
         NavigationView {
             VStack {
-                Toggle("Turn Animations \(diceVM.animationToggle ? "Off" : "ON"): ", isOn: $diceVM.animationToggle)
+                Toggle("Turn Animations \(diceVM.animationToggle ? "On" : "Off"): ", isOn: $diceVM.animationToggle)
                     .tint(diceVM.primaryAccentColor)
                     .padding(.horizontal, 25)
                     .onChange(of: wrappedQuickRollModeToggle) { newValue in

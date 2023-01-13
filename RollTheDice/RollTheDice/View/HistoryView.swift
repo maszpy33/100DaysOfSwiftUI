@@ -20,11 +20,12 @@ struct HistoryView: View {
         NavigationView {
             List {
                 ScrollView {
-                    ForEach(diceVM.diceRollList.reversed()) { diceRound in
+                    ForEach(diceVM.diceRollList.enumerated().reversed(), id: \.offset) { index, diceRound in
                         VStack(alignment: .leading) {
                             HStack {
                                 VStack(alignment: .leading) {
                                     HStack {
+                                        Text("\(index + 1).")
                                         Image(systemName: "dice.fill")
                                             .foregroundColor(.accentColor)
                                         Text("Date: \(diceVM.formatDate(date: diceRound.date))")
@@ -36,15 +37,9 @@ struct HistoryView: View {
                                 Spacer()
   
                                 Button {
-//                                    withAnimation(.easeOut) {
-//                                        animateStatisticTransition = true
-//                                    }
+
                                     selectedDiceRound = diceRound
                                     showStatisticsView = true
-                                    
-//                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-//                                        showStatisticsView = true
-//                                    }
                                     
                                 } label: {
                                     Text("📊")
@@ -56,23 +51,23 @@ struct HistoryView: View {
                                 .sheet(isPresented: $showStatisticsView, onDismiss: dismissAnimation) {
                                     BarChartView(diceRound: selectedDiceRound ?? Dice.sampleDice).environmentObject(diceVM)
                                 }
-//                                NavigationLink(destination: BarChartAPI_Test(diceRound: diceRound).environmentObject(diceVM)) {
-//
-//                                }
                             }
                             
                             ScrollView(.horizontal) {
                                 HStack(spacing: 10) {
                                     ForEach(diceRound.numbers.indices, id: \.self) { index in
-        //                                Text("Round \(index+1)/ - got number \(diceRound.numbers.count): \(diceRound.numbers[index]) ")
-                                        ZStack {
-                                            Image(systemName: "square.fill")
-                                                .resizable()
-                                                .foregroundColor(diceVM.primaryAccentColor)
-                                                .font(.system(size: 36))
-                                                .brightness(-0.3)
-                                            Text("\(diceRound.numbers[index])")
-                                                .font(.system(size: 28))
+                                        VStack {
+                                            ZStack {
+                                                Image(systemName: "square.fill")
+                                                    .resizable()
+                                                    .foregroundColor(diceVM.primaryAccentColor)
+                                                    .font(.system(size: 36))
+                                                    .brightness(-0.3)
+                                                Text("\(diceRound.numbers[index])")
+                                                    .font(.system(size: 28))
+                                            }
+                                            Text("\(index + 1)")
+                                                .font(.system(size: 8))
                                         }
                                     }
                                 }
